@@ -64,7 +64,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
-
+//prueba
 public class Main extends AppCompatActivity{
 
     private static final int MAX_PREVIEW_WIDTH = 1920;
