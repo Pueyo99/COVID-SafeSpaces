@@ -1,13 +1,8 @@
-from flask import Flask
-from flask import jsonify
+from flask import Flask, jsonify, request
 from PIL import Image
-from flask import request
 import base64
 from io import BytesIO
 import datetime
-
-
-SQR_M_PERSON = 4.0
 
 app = Flask(__name__)
 
@@ -18,7 +13,7 @@ def max_cap(room_dim):
     return jsonify(
 
         {'max_cap': max_capacity}
-        
+
         )
 
 
