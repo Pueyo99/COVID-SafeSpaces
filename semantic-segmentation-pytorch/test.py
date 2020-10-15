@@ -18,6 +18,9 @@ from PIL import Image
 from tqdm import tqdm
 from mit_semseg.config import cfg
 
+#Personal imports
+from process_image import calculate_window
+
 colors = loadmat('data/color150.mat')['colors']
 names = {}
 with open('data/object150_info.csv') as f:
@@ -50,6 +53,8 @@ def visualize_result(data, pred, cfg):
     img_name = info.split('/')[-1]
     Image.fromarray(im_vis).save(
         os.path.join(cfg.TEST.result, img_name.replace('.jpg', '.png')))
+
+    calculate_window(img_name.replace('.jpg', '.png'))
 
 
 def test(segmentation_module, loader, gpu):
