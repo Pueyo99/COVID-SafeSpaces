@@ -71,6 +71,7 @@ public class Main extends AppCompatActivity{
     private static final int MAX_PREVIEW_HEIGHT = 1080;
     private static final int REQUEST_CAMERA_PERMISSION = 1;
     //private static final int REQUEST_STORAGE_PERMISSION = 2;
+    private final int REQUEST_GPS_LOCATION = 3;
     private static final int STATE_PREVIEW = 0;
     private static final int STATE_WAIT_LOCK = 1;
 
@@ -230,8 +231,9 @@ public class Main extends AppCompatActivity{
         captureButton = findViewById(R.id.captureButton);
         captureButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v){
                 lockFocus();
+                Toast.makeText(getApplicationContext(), "Image captured", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -590,6 +592,16 @@ public class Main extends AppCompatActivity{
         }else{
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+
+        if(requestCode == REQUEST_GPS_LOCATION){
+            if(grantResults.length != 1 || grantResults[0] != PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(Main.this, "ERROR: Ubication permissions not granted",
+                        Toast.LENGTH_LONG).show();
+            }
+        }else{
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
         /*if(requestCode == REQUEST_STORAGE_PERMISSION){
             if(grantResults.length != 1 || grantResults[0] != PackageManager.PERMISSION_GRANTED){
                 Toast.makeText(Main.this, "ERROR: Storage writing permissions not granted",
