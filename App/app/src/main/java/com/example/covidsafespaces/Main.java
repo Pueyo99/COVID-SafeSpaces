@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.ImageFormat;
@@ -26,13 +27,19 @@ import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.media.Image;
 import android.media.ImageReader;
+import android.os.Build;
 import android.os.Bundle;
 
 import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.provider.Settings;
 import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
@@ -50,6 +57,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.tasks.OnSuccessListener;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -62,6 +74,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
@@ -92,6 +105,9 @@ public class Main extends AppCompatActivity{
      */
 
     private int mCaptureState = STATE_PREVIEW;
+
+    private FusedLocationProviderClient mFusedLocationClient;
+    private String countryName;
     private Button captureButton;
     private String mCameraId;
     private AutoFitTextureView mTextureView;
@@ -225,7 +241,6 @@ public class Main extends AppCompatActivity{
 
         //createImageFolder();
         addOrientationListener();
-
         mTextureView = (AutoFitTextureView) findViewById(R.id.texture);
 
         captureButton = findViewById(R.id.captureButton);
@@ -236,12 +251,106 @@ public class Main extends AppCompatActivity{
                 Toast.makeText(getApplicationContext(), "Image captured", Toast.LENGTH_SHORT).show();
             }
         });
+
+    }
+
+    public void getLocation(){
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestUbicationPermission();
+            return;
+        }
+
+        /*if(!isLocationEnabled()){
+            showSettingsAlert();
+            return;
+        }
+
+         */
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if(location != null){
+                    getCountryName(location.getLatitude(),location.getLongitude());
+                }
+            }
+        });
+
+    }
+
+    public void showSettingsAlert(){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(Main.this);
+
+        // Setting Dialog Title
+        alertDialog.setTitle("GPS is settings");
+
+        // Setting Dialog Message
+        alertDialog.setMessage("GPS is not enabled. Do you want to go to settings menu?");
+
+        // On pressing the Settings button.
+        alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int which) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                Main.this.startActivity(intent);
+            }
+        });
+
+        // On pressing the cancel button
+        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
+    }
+
+    public boolean isLocationEnabled()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+// This is new method provided in API 28
+            LocationManager lm = (LocationManager) Main.this.getSystemService(Context.LOCATION_SERVICE);
+            return lm.isLocationEnabled();
+        } else {
+// This is Deprecated in API 28
+            int mode = Settings.Secure.getInt(getContentResolver(), Settings.Secure.LOCATION_MODE,
+                    Settings.Secure.LOCATION_MODE_OFF);
+            return  (mode != Settings.Secure.LOCATION_MODE_OFF);
+
+        }
+    }
+
+    public void getCountryName(double latitude, double longitude){
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        List<Address> addresses = null;
+        try{
+            addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            Address result;
+
+            if (addresses != null && !addresses.isEmpty()){
+                countryName = addresses.get(0).getCountryCode();
+                //countryName = addresses.get(0).getCountryName();
+                Toast.makeText(Main.this, "Your country is\n"+countryName,Toast.LENGTH_LONG).show();
+                Log.i("prueba", countryName);
+                Log.i("prueba", "Latitud: "+latitude+"\nLongitud: "+longitude);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         startBackgroundThread();
+        mBackgroundHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                getLocation();
+            }
+        });
 
         if(mTextureView.isAvailable()){
             openCamera(mTextureView.getWidth(), mTextureView.getHeight());  //If it's available, we open the camera
@@ -690,6 +799,27 @@ public class Main extends AppCompatActivity{
         }
     }
 
+    private void requestUbicationPermission(){
+        if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_FINE_LOCATION)){
+            new AlertDialog.Builder(Main.this).setMessage("R string request permission")
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions(Main.this,
+                                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_GPS_LOCATION);
+                        }
+                    }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            }).create();
+        } else{
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_GPS_LOCATION);
+        }
+    }
+
     /*
     private void createImageFolder(){
         File imageFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
@@ -715,6 +845,7 @@ public class Main extends AppCompatActivity{
     private String createFileName(){
         return new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
     }
+
 
     /*
     private void requestStoragePermission(){
