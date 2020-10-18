@@ -1,5 +1,7 @@
 package com.example.covidsafespaces;
 
+import data.DBAccess;
+
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -335,6 +337,13 @@ public class Main extends AppCompatActivity{
                 Toast.makeText(Main.this, "Your country is\n"+countryName,Toast.LENGTH_LONG).show();
                 Log.i("prueba", countryName);
                 Log.i("prueba", "Latitud: "+latitude+"\nLongitud: "+longitude);
+                DBAccess database = new DBAccess(this);
+                database.open();
+                double distance = database.getDistance(countryName);
+                database.close();
+                Log.i("prueba", String.valueOf(distance));
+                Toast.makeText(Main.this, "Security distance: "+distance, Toast.LENGTH_LONG).show();
+
             }
         } catch (IOException e) {
             e.printStackTrace();
