@@ -3,6 +3,9 @@ from PIL import Image
 import base64
 from io import BytesIO
 import datetime
+import time
+
+SQR_M_PERSON = 4.0
 
 app = Flask(__name__)
 
@@ -10,6 +13,7 @@ app = Flask(__name__)
 def max_cap(room_dim):
 
     max_capacity = int(room_dim / SQR_M_PERSON)
+    time.sleep(3)
     return jsonify(
 
         {'max_cap': max_capacity}
