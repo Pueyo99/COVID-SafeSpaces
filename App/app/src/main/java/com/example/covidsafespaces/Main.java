@@ -3,6 +3,7 @@ package com.example.covidsafespaces;
 import data.DBAccess;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -10,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.Point;
@@ -45,12 +47,20 @@ import android.provider.Settings;
 import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.OrientationEventListener;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -63,6 +73,9 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.tasks.OnSuccessListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -80,7 +93,7 @@ import java.util.Locale;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
-public class Main extends AppCompatActivity{
+public class Main extends AppCompatActivity implements Listener{
 
     private static final int MAX_PREVIEW_WIDTH = 1920;
     private static final int MAX_PREVIEW_HEIGHT = 1080;
@@ -108,9 +121,11 @@ public class Main extends AppCompatActivity{
 
     private int mCaptureState = STATE_PREVIEW;
 
+    private AlertDialog alertDialog;
     private FusedLocationProviderClient mFusedLocationClient;
     private String countryName;
     private Button captureButton;
+    private Button endButton;
     private String mCameraId;
     private AutoFitTextureView mTextureView;
     private int mSensorOrientation;
@@ -254,6 +269,15 @@ public class Main extends AppCompatActivity{
             }
         });
 
+        endButton = findViewById(R.id.endButton);
+        endButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setProgressDialog();
+                new ServerConnection().getCapacity("275.0", Main.this);
+            }
+        });
+
     }
 
     public void getLocation(){
@@ -348,6 +372,57 @@ public class Main extends AppCompatActivity{
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setProgressDialog() {
+
+        LayoutInflater inflater = LayoutInflater.from(Main.this);
+        View v = inflater.inflate(R.layout.alert_dialog, null, false);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+        builder.setView(v);
+
+        alertDialog = builder.create();
+        alertDialog.show();
+        Window window = alertDialog.getWindow();
+        if (window != null) {
+            WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+            layoutParams.copyFrom(alertDialog.getWindow().getAttributes());
+            layoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT;
+            layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+            alertDialog.getWindow().setAttributes(layoutParams);
+        }
+    }
+
+    @Override
+    public void receiveMessage(JSONObject data) {
+        try {
+            alertDialog.dismiss();
+            String capacity = data.getString("max_cap");
+            showCapacity(capacity);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showCapacity(String capacity){
+        LayoutInflater inflater = LayoutInflater.from(this);
+        final View v = inflater.inflate(R.layout.show_capacity, null,false);
+
+        ((TextView)v.findViewById(R.id.capacidad)).setText("This room can accommodate "+capacity+" people");
+
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+
+        final PopupWindow popupWindow = new PopupWindow(v,width,height,true);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                popupWindow.showAtLocation(v, Gravity.CENTER, 0 ,0);
+            }
+        });
+
     }
 
     @Override
