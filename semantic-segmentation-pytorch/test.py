@@ -56,7 +56,7 @@ def visualize_result(data, pred, cfg):
         os.path.join(cfg.TEST.result, "result_images/" + img_name.replace('.jpg', '.png')))
 
     #Output the window percentage and both original and processed image
-    calculate_window(img_name.replace('.jpg', '.png'))
+    calculate_window("result_images/" + img_name.replace('.jpg', '.png'))
 
 
 def test(segmentation_module, loader, gpu):

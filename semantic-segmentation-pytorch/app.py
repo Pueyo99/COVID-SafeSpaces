@@ -3,6 +3,7 @@ from PIL import Image
 import base64
 from io import BytesIO
 import datetime
+import os
 
 app = Flask(__name__)
 
@@ -28,7 +29,7 @@ def read_image():
 	image.save("test_images/"+filename+".jpg")
 
 	# Run test.py
-	os.system("python3 -u test.py --imgs test_images/ --gpu 0 --cfg config/ade20k-resnet50dilated-ppm_deepsup.yaml")
+	os.system("python3 -u test.py --imgs test_images/" +filename+ ".jpg --gpu 0 --cfg config/ade20k-resnet50dilated-ppm_deepsup.yaml")
 	
 	return jsonify({'prueba':'Imagen guardada'})
 
