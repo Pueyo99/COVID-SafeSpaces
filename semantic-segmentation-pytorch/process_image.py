@@ -14,10 +14,11 @@ def calculate_window(img_name):
     for c in colors:
         if c[1] == (230,230,230):
             window_pixels = c[0]
-
-    total_pixels = (width*height)/2
-    percentage = (window_pixels/total_pixels)*100
-    print(f"Percentage of windows = {percentage}")
+            total_pixels = (width*height)/2
+            percentage = (window_pixels/total_pixels)*100
+            print(f"Percentage of windows = {percentage}")
+        else:
+            print("No windows found")
 
     img_original.show()
     img_crop.show()
