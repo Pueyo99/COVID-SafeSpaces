@@ -1,7 +1,7 @@
 from PIL import Image
 
 def calculate_window(img_name):
-    img = Image.open(r"/home/pueyo99/Desktop/PAE/semantic-segmentation-pytorch/" + img_name)
+    img = Image.open(img_name)
 
     width, height = img.size
 
