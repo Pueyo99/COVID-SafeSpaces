@@ -53,7 +53,7 @@ def visualize_result(data, pred, cfg):
 
     img_name = info.split('/')[-1]
     Image.fromarray(im_vis).save(
-        os.path.join(cfg.TEST.result, img_name.replace('.jpg', '.png')))
+        os.path.join(cfg.TEST.result, "result_images/" + img_name.replace('.jpg', '.png')))
 
     #Output the window percentage and both original and processed image
     calculate_window(img_name.replace('.jpg', '.png'))
