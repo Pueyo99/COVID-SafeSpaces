@@ -70,6 +70,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -93,7 +94,7 @@ import java.util.Locale;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
-public class Main extends AppCompatActivity implements Listener{
+public class Main extends AppCompatActivity implements Listener {
 
     private static final int MAX_PREVIEW_WIDTH = 1920;
     private static final int MAX_PREVIEW_HEIGHT = 1080;
@@ -133,15 +134,15 @@ public class Main extends AppCompatActivity implements Listener{
     private CameraCaptureSession mPreviewCaptureSession;
     private CameraCaptureSession.CaptureCallback mPreviewCaptureCallback = new
             CameraCaptureSession.CaptureCallback() {
-                private void process(CaptureResult captureResult){
-                    switch (mCaptureState){
+                private void process(CaptureResult captureResult) {
+                    switch (mCaptureState) {
                         case STATE_PREVIEW:
                             //Do nothing
                             break;
                         case STATE_WAIT_LOCK:
                             mCaptureState = STATE_PREVIEW;
                             Integer afState = captureResult.get(CaptureResult.CONTROL_AF_STATE);
-                            if(afState == CaptureResult.CONTROL_AF_STATE_FOCUSED_LOCKED || afState == CaptureResult.CONTROL_AF_STATE_NOT_FOCUSED_LOCKED){
+                            if (afState == CaptureResult.CONTROL_AF_STATE_FOCUSED_LOCKED || afState == CaptureResult.CONTROL_AF_STATE_NOT_FOCUSED_LOCKED) {
                                 startStillCaptureRequest();
                             }
                             break;
@@ -169,10 +170,11 @@ public class Main extends AppCompatActivity implements Listener{
                     mBackgroundHandler.post(new ImageSaver(reader.acquireLatestImage()));
                 }
             };
-    private class ImageSaver implements Runnable{
+
+    private class ImageSaver implements Runnable {
         private final Image mImage;
 
-        public ImageSaver(Image image){
+        public ImageSaver(Image image) {
             mImage = image;
         }
 
@@ -201,6 +203,7 @@ public class Main extends AppCompatActivity implements Listener{
             }*/
         }
     }
+
     private CaptureRequest.Builder mPreviewRequestBuilder;
     private CaptureRequest mPreviewRequest;
     private Semaphore mCameraOpenCloseLock = new Semaphore(1);
@@ -208,12 +211,12 @@ public class Main extends AppCompatActivity implements Listener{
     private final TextureView.SurfaceTextureListener mSurfaceTextureListener = new TextureView.SurfaceTextureListener() {
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-            openCamera(width,height);      //when TextureView is available we open the camera
+            openCamera(width, height);      //when TextureView is available we open the camera
         }
 
         @Override
         public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-            configureTransform(width,height);
+            configureTransform(width, height);
         }
 
         @Override
@@ -239,14 +242,14 @@ public class Main extends AppCompatActivity implements Listener{
         public void onDisconnected(@NonNull CameraDevice camera) {
             mCameraOpenCloseLock.release();
             camera.close();
-            mCameraDevice=null;
+            mCameraDevice = null;
         }
 
         @Override
         public void onError(@NonNull CameraDevice camera, int error) {
             mCameraOpenCloseLock.release();
             camera.close();
-            mCameraDevice=null;
+            mCameraDevice = null;
             finish();
         }
     };
@@ -263,7 +266,7 @@ public class Main extends AppCompatActivity implements Listener{
         captureButton = findViewById(R.id.captureButton);
         captureButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 lockFocus();
                 Toast.makeText(getApplicationContext(), "Image captured", Toast.LENGTH_SHORT).show();
             }
@@ -280,11 +283,14 @@ public class Main extends AppCompatActivity implements Listener{
 
     }
 
-    public void getLocation(){
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+    public void getLocation() {
+
+        /*if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestUbicationPermission();
             return;
         }
+
+         */
 
         /*if(!isLocationEnabled()){
             showSettingsAlert();
@@ -293,16 +299,19 @@ public class Main extends AppCompatActivity implements Listener{
 
          */
 
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+        mFusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, null).addOnSuccessListener(this, new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
+                Log.i("prueba", "Ha habido exito");
                 if(location != null){
-                    getCountryName(location.getLatitude(),location.getLongitude());
+                    getCountryName(location.getLatitude(), location.getLongitude());
                 }
             }
         });
-
     }
 
     public void showSettingsAlert(){
@@ -326,12 +335,44 @@ public class Main extends AppCompatActivity implements Listener{
         alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
+                finish();
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.create().show();
+    }
+
+    /*public void showSettingsAlert(){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(Main.this);
+
+        // Setting Dialog Title
+        alertDialog.setTitle("GPS is settings");
+
+        // Setting Dialog Message
+        alertDialog.setMessage("GPS is not enabled. Do you want to go to settings menu?");
+
+        // On pressing the Settings button.
+        alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int which) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                Main.this.startActivity(intent);
+            }
+        });
+
+        // On pressing the cancel button
+        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                finish();
             }
         });
 
         // Showing Alert Message
         alertDialog.show();
     }
+
+     */
 
     public boolean isLocationEnabled()
     {
@@ -349,6 +390,7 @@ public class Main extends AppCompatActivity implements Listener{
     }
 
     public void getCountryName(double latitude, double longitude){
+        Log.i("prueba", "He entrado a pillar el nombre");
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
         List<Address> addresses = null;
         try{
@@ -358,7 +400,7 @@ public class Main extends AppCompatActivity implements Listener{
             if (addresses != null && !addresses.isEmpty()){
                 countryName = addresses.get(0).getCountryCode();
                 //countryName = addresses.get(0).getCountryName();
-                Toast.makeText(Main.this, "Your country is\n"+countryName,Toast.LENGTH_LONG).show();
+                //Toast.makeText(Main.this, "Your country is\n"+countryName,Toast.LENGTH_LONG).show();
                 Log.i("prueba", countryName);
                 Log.i("prueba", "Latitud: "+latitude+"\nLongitud: "+longitude);
                 DBAccess database = new DBAccess(this);
@@ -429,6 +471,15 @@ public class Main extends AppCompatActivity implements Listener{
     protected void onResume() {
         super.onResume();
         startBackgroundThread();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestUbicationPermission();
+            return;
+        }
+        if(!isLocationEnabled()){
+            showSettingsAlert();
+            return;
+        }
+
         mBackgroundHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -505,6 +556,7 @@ public class Main extends AppCompatActivity implements Listener{
             if(mCameraDevice!=null){
                 mCameraDevice.close();
                 mCameraDevice=null;
+                Log.i("prueba", "Camera closed");
             }
             if(mImageReader != null){
                 mImageReader.close();
@@ -514,64 +566,10 @@ public class Main extends AppCompatActivity implements Listener{
             throw new RuntimeException("Interrupted while trying to lock camera closing",e);
         } finally {
             mCameraOpenCloseLock.release();
+
         }
     }
-
-
-    /*private void setUpCameraOutputs(int width, int height){
-        CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
-        try{
-            for(String cameraId : manager.getCameraIdList()){
-                CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);
-                //We don't want to use front camera
-                Integer front = characteristics.get(CameraCharacteristics.LENS_FACING);
-                if(front != null && front == CameraCharacteristics.LENS_FACING_FRONT){
-                    continue;  //we skip the front camera loop, we only do the setup for the rear camera
-                }
-
-                StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
-                if(map == null){
-                    continue;
-                }
-                Size largest = Collections.max(Arrays.asList(map.getOutputSizes(ImageFormat.JPEG)), //we get all the possible choices from an Image
-                        new CompareSizesByArea());
-
-                Point displaySize = new Point();
-                getWindowManager().getDefaultDisplay().getSize(displaySize);
-                int rotatedPreviewWidth = width;
-                int rotatedPreviewHeight = height;
-                int maxPreviewWidth = displaySize.x;
-                int maxPreviewHeight = displaySize.y;
-
-                if(maxPreviewWidth > MAX_PREVIEW_WIDTH){
-                    maxPreviewWidth = MAX_PREVIEW_WIDTH;
-                }
-                if(maxPreviewHeight > MAX_PREVIEW_HEIGHT){
-                    maxPreviewHeight = MAX_PREVIEW_HEIGHT;
-                }
-
-
-
-                mPreviewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class),  //we get all the possible choices of the preview
-                        rotatedPreviewWidth, rotatedPreviewHeight,maxPreviewWidth,maxPreviewHeight,largest);
-
-                mImageSize = largest;
-                mImageReader = ImageReader.newInstance(mImageSize.getWidth(),mImageSize.getHeight(),
-                        ImageFormat.JPEG,2);
-                mImageReader.setOnImageAvailableListener(mOnImageAvailableListener, mBackgroundHandler);
-
-                mCameraId = cameraId;
-                return;
-            }
-        } catch (CameraAccessException e) {
-            e.printStackTrace();
-        } catch (NullPointerException e){
-            Toast.makeText(Main.this,"Camera2 API not supported on this device", Toast.LENGTH_LONG).show();
-        }
-    }
-
-     */
-
+    
     private void setUpCameraOutputs(int width, int height){
         CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
         try{
