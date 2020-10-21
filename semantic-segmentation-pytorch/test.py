@@ -18,6 +18,10 @@ from PIL import Image
 from tqdm import tqdm
 from mit_semseg.config import cfg
 
+#Personal imports
+from process_image import calculate_window
+from pre_process_image import resize_images
+
 colors = loadmat('data/color150.mat')['colors']
 names = {}
 with open('data/object150_info.csv') as f:
@@ -49,7 +53,10 @@ def visualize_result(data, pred, cfg):
 
     img_name = info.split('/')[-1]
     Image.fromarray(im_vis).save(
-        os.path.join(cfg.TEST.result, img_name.replace('.jpg', '.png')))
+        os.path.join(cfg.TEST.result, "result_images/" + img_name.replace('.jpg', '.png')))
+
+    #Output the window percentage and both original and processed image
+    calculate_window("result_images/" + img_name.replace('.jpg', '.png'))
 
 
 def test(segmentation_module, loader, gpu):
@@ -68,6 +75,8 @@ def test(segmentation_module, loader, gpu):
             scores = async_copy_to(scores, gpu)
 
             for img in img_resized_list:
+                #width, height = img.size
+                #img = img.resize(width/10, height/10)
                 feed_dict = batch_data.copy()
                 feed_dict['img_data'] = img
                 del feed_dict['img_ori']
@@ -109,6 +118,9 @@ def main(cfg, gpu):
     crit = nn.NLLLoss(ignore_index=-1)
 
     segmentation_module = SegmentationModule(net_encoder, net_decoder, crit)
+
+    #Check if images need to be resized
+    resize_images(cfg.list_test)
 
     # Dataset and Loader
     dataset_test = TestDataset(
