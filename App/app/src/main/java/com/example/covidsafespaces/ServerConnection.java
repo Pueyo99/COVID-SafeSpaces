@@ -95,6 +95,7 @@ public class ServerConnection {
                     @Override
                     public void onFailure(@NotNull Call call, @NotNull IOException e) {
                         call.cancel();
+                        e.printStackTrace();
                         Log.i("prueba", "Ha fallado la conexión");
                     }
 
