@@ -4,6 +4,7 @@ import base64
 from io import BytesIO
 import datetime
 import os
+import time
 
 app = Flask(__name__)
 
@@ -31,8 +32,11 @@ def read_image():
 	# Run test.py
 	os.system("python3 -u test.py --imgs test_images/" +filename+ ".jpg --gpu 0 --cfg config/ade20k-resnet50dilated-ppm_deepsup.yaml")
 	
-	return jsonify({'prueba':'Imagen guardada'})
+	#time.sleep(10)
+	#json_file = open("json_results/"+filename+".json")
+	#return json_file
+	return jsonify({"Outcome": "Success"})
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5902)
+    app.run(debug=True, host='0.0.0.0', port=8999)

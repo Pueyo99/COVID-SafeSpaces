@@ -44,11 +44,8 @@ import okhttp3.Response;
 
 
 public class ServerConnection {
-    //private final String serverURL = "http://paeaccenture.pagekite.me/";
-    //private final String serverURL = "http://98972deb0cc1.eu.ngrok.io/";
-    //private final String serverURL = "http://192.168.1.202:5000/";
-    private final String serverURL = "http://147.83.50.15:5902/";
 
+    private final String serverURL = "http://147.83.50.15:8999/";
 
     public void postImage(final byte[] image, final String filename, final int rotation){
         new Thread(new Runnable() {
@@ -98,6 +95,7 @@ public class ServerConnection {
                     @Override
                     public void onFailure(@NotNull Call call, @NotNull IOException e) {
                         call.cancel();
+                        e.printStackTrace();
                         Log.i("prueba", "Ha fallado la conexión");
                     }
 
