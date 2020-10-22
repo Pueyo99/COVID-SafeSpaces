@@ -20,10 +20,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".Register"></activity>
+        <activity android:name=".Main"></activity>
+
         <uses-library
             android:name="com.google.android.wearable"
             android:required="true" />
-
         <!--
                Set to true if your app is Standalone, that is, it does not require the handheld
                app to run.
@@ -33,19 +35,10 @@
             android:value="true" />
 
         <activity
-            android:name=".Register"
-            android:label="@string/title_activity_register">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".Main"
+            android:name=".Login"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.LOGIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
