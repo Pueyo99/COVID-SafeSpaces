@@ -1,13 +1,23 @@
 package com.example.covidsafespaces;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.os.Looper;
 import android.provider.SyncStateContract;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -34,8 +44,8 @@ import okhttp3.Response;
 
 
 public class ServerConnection {
-    private final String serverURL = "http://192.168.1.202:5000/";
 
+    private final String serverURL = "http://147.83.50.15:8999/";
 
     public void postImage(final byte[] image, final String filename, final int rotation){
         new Thread(new Runnable() {
@@ -59,12 +69,14 @@ public class ServerConnection {
                     @Override
                     public void onFailure(@NotNull Call call, @NotNull IOException e) {
                         call.cancel();
+                        Log.i("prueba", e.toString());
                         Log.i("prueba", "Ha fallado la conexión");
                     }
 
                     @Override
                     public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                        Log.i("prueba", response.body().string());
+                        //Log.i("prueba", response.body().string());
+                        Log.i("prueba", "Imagen guardada en el servidor");
                     }
                 });
             }
@@ -72,36 +84,31 @@ public class ServerConnection {
     }
 
     public void getCapacity(final String capacity, final Listener listener){
+
         new Thread(new Runnable() {
             @Override
             public void run() {
-                HttpURLConnection connection = null;
-                BufferedReader reader = null;
+                OkHttpClient client = new OkHttpClient();
+                Request request = new Request.Builder().url(serverURL+capacity).get().build();
 
-                try {
-                    URL url = new URL(serverURL);
-                    connection = (HttpURLConnection) new URL(serverURL+capacity).openConnection();
-                    connection.connect();
-
-                    reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                    StringBuffer buffer = new StringBuffer();
-                    String line = "";
-
-                    while ((line = reader.readLine()) != null){
-                        buffer.append(line);
+                client.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                        call.cancel();
+                        Log.i("prueba", "Ha fallado la conexión");
                     }
 
-                    reader.close();
-                    connection.disconnect();
-                    listener.receiveMessage(new JSONObject(buffer.toString()));
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
+                    @Override
+                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                        String data = response.body().string();
+                        Log.i("prueba", data);
+                        try {
+                            listener.receiveMessage(new JSONObject(data));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             }
         }).start();
     }

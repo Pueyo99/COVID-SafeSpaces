@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class Prueba extends AppCompatActivity {
+public class Login extends AppCompatActivity {
 
     Button entrar;
     Button registrar;
@@ -28,7 +28,7 @@ public class Prueba extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent entrar = new Intent(Prueba.this, Main.class);
+                Intent entrar = new Intent(Login.this, Main.class);
                 startActivity(entrar);
             }
         });
@@ -36,7 +36,7 @@ public class Prueba extends AppCompatActivity {
         registrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent registrar = new Intent(Prueba.this, Main.class);
+                Intent registrar = new Intent(Login.this, Register.class);
                 startActivity(registrar);
             }
         });

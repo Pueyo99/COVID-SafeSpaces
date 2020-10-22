@@ -1,12 +1,17 @@
 package com.example.covidsafespaces;
 
+import data.DBAccess;
+
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.Point;
@@ -26,22 +31,36 @@ import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.media.Image;
 import android.media.ImageReader;
+import android.os.Build;
 import android.os.Bundle;
 
 import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.provider.Settings;
 import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.OrientationEventListener;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -49,6 +68,15 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.tasks.OnSuccessListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -62,15 +90,17 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
-//prueba
-public class Main extends AppCompatActivity{
+
+public class Main extends AppCompatActivity implements Listener {
 
     private static final int MAX_PREVIEW_WIDTH = 1920;
     private static final int MAX_PREVIEW_HEIGHT = 1080;
     private static final int REQUEST_CAMERA_PERMISSION = 1;
     //private static final int REQUEST_STORAGE_PERMISSION = 2;
+    private final int REQUEST_GPS_LOCATION = 3;
     private static final int STATE_PREVIEW = 0;
     private static final int STATE_WAIT_LOCK = 1;
 
@@ -91,7 +121,12 @@ public class Main extends AppCompatActivity{
      */
 
     private int mCaptureState = STATE_PREVIEW;
+
+    private AlertDialog alertDialog;
+    private FusedLocationProviderClient mFusedLocationClient;
+    private String countryName;
     private Button captureButton;
+    private Button endButton;
     private String mCameraId;
     private AutoFitTextureView mTextureView;
     private int mSensorOrientation;
@@ -99,15 +134,15 @@ public class Main extends AppCompatActivity{
     private CameraCaptureSession mPreviewCaptureSession;
     private CameraCaptureSession.CaptureCallback mPreviewCaptureCallback = new
             CameraCaptureSession.CaptureCallback() {
-                private void process(CaptureResult captureResult){
-                    switch (mCaptureState){
+                private void process(CaptureResult captureResult) {
+                    switch (mCaptureState) {
                         case STATE_PREVIEW:
                             //Do nothing
                             break;
                         case STATE_WAIT_LOCK:
                             mCaptureState = STATE_PREVIEW;
                             Integer afState = captureResult.get(CaptureResult.CONTROL_AF_STATE);
-                            if(afState == CaptureResult.CONTROL_AF_STATE_FOCUSED_LOCKED || afState == CaptureResult.CONTROL_AF_STATE_NOT_FOCUSED_LOCKED){
+                            if (afState == CaptureResult.CONTROL_AF_STATE_FOCUSED_LOCKED || afState == CaptureResult.CONTROL_AF_STATE_NOT_FOCUSED_LOCKED) {
                                 startStillCaptureRequest();
                             }
                             break;
@@ -135,10 +170,11 @@ public class Main extends AppCompatActivity{
                     mBackgroundHandler.post(new ImageSaver(reader.acquireLatestImage()));
                 }
             };
-    private class ImageSaver implements Runnable{
+
+    private class ImageSaver implements Runnable {
         private final Image mImage;
 
-        public ImageSaver(Image image){
+        public ImageSaver(Image image) {
             mImage = image;
         }
 
@@ -167,6 +203,7 @@ public class Main extends AppCompatActivity{
             }*/
         }
     }
+
     private CaptureRequest.Builder mPreviewRequestBuilder;
     private CaptureRequest mPreviewRequest;
     private Semaphore mCameraOpenCloseLock = new Semaphore(1);
@@ -174,12 +211,12 @@ public class Main extends AppCompatActivity{
     private final TextureView.SurfaceTextureListener mSurfaceTextureListener = new TextureView.SurfaceTextureListener() {
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-            openCamera(width,height);      //when TextureView is available we open the camera
+            openCamera(width, height);      //when TextureView is available we open the camera
         }
 
         @Override
         public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-            configureTransform(width,height);
+            configureTransform(width, height);
         }
 
         @Override
@@ -205,14 +242,14 @@ public class Main extends AppCompatActivity{
         public void onDisconnected(@NonNull CameraDevice camera) {
             mCameraOpenCloseLock.release();
             camera.close();
-            mCameraDevice=null;
+            mCameraDevice = null;
         }
 
         @Override
         public void onError(@NonNull CameraDevice camera, int error) {
             mCameraOpenCloseLock.release();
             camera.close();
-            mCameraDevice=null;
+            mCameraDevice = null;
             finish();
         }
     };
@@ -224,7 +261,6 @@ public class Main extends AppCompatActivity{
 
         //createImageFolder();
         addOrientationListener();
-
         mTextureView = (AutoFitTextureView) findViewById(R.id.texture);
 
         captureButton = findViewById(R.id.captureButton);
@@ -232,14 +268,194 @@ public class Main extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 lockFocus();
+                Toast.makeText(getApplicationContext(), "Image captured", Toast.LENGTH_SHORT).show();
             }
         });
+
+        endButton = findViewById(R.id.endButton);
+        endButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setProgressDialog();
+
+                //new ServerConnection().getCapacity("275.0", Main.this);
+            }
+        });
+
+    }
+
+    public void getLocation() {
+
+        /*if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestUbicationPermission();
+            return;
+        }
+
+         */
+
+        /*if(!isLocationEnabled()){
+            showSettingsAlert();
+            return;
+        }
+
+         */
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        mFusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, null).addOnSuccessListener(this, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                Log.i("prueba", "Ha habido exito");
+                if(location != null){
+                    getCountryName(location.getLatitude(), location.getLongitude());
+                }
+            }
+        });
+    }
+
+    public void showSettingsAlert(){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(Main.this);
+
+        // Setting Dialog Title
+        alertDialog.setTitle("GPS is settings");
+
+        // Setting Dialog Message
+        alertDialog.setMessage("GPS is not enabled. Do you want to go to settings menu?");
+
+        // On pressing the Settings button.
+        alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int which) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                Main.this.startActivity(intent);
+            }
+        });
+
+        // On pressing the cancel button
+        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                finish();
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.create().show();
+    }
+
+    public boolean isLocationEnabled()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+// This is new method provided in API 28
+            LocationManager lm = (LocationManager) Main.this.getSystemService(Context.LOCATION_SERVICE);
+            return lm.isLocationEnabled();
+        } else {
+// This is Deprecated in API 28
+            int mode = Settings.Secure.getInt(getContentResolver(), Settings.Secure.LOCATION_MODE,
+                    Settings.Secure.LOCATION_MODE_OFF);
+            return  (mode != Settings.Secure.LOCATION_MODE_OFF);
+
+        }
+    }
+
+    public void getCountryName(double latitude, double longitude){
+        Log.i("prueba", "He entrado a pillar el nombre");
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        List<Address> addresses = null;
+        try{
+            addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            Address result;
+
+            if (addresses != null && !addresses.isEmpty()){
+                countryName = addresses.get(0).getCountryCode();
+                //countryName = addresses.get(0).getCountryName();
+                //Toast.makeText(Main.this, "Your country is\n"+countryName,Toast.LENGTH_LONG).show();
+                Log.i("prueba", countryName);
+                Log.i("prueba", "Latitud: "+latitude+"\nLongitud: "+longitude);
+                DBAccess database = new DBAccess(this);
+                database.open();
+                double distance = database.getDistance(countryName);
+                database.close();
+                Log.i("prueba", String.valueOf(distance));
+                Toast.makeText(Main.this, "Security distance: "+distance, Toast.LENGTH_LONG).show();
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setProgressDialog() {
+
+        LayoutInflater inflater = LayoutInflater.from(Main.this);
+        View v = inflater.inflate(R.layout.alert_dialog, null, false);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+        builder.setView(v);
+
+        alertDialog = builder.create();
+        alertDialog.show();
+        Window window = alertDialog.getWindow();
+        if (window != null) {
+            WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+            layoutParams.copyFrom(alertDialog.getWindow().getAttributes());
+            layoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT;
+            layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+            alertDialog.getWindow().setAttributes(layoutParams);
+        }
+    }
+
+    @Override
+    public void receiveMessage(JSONObject data) {
+        try {
+            alertDialog.dismiss();
+            String capacity = data.getString("max_cap");
+            showCapacity(capacity);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showCapacity(String capacity){
+        LayoutInflater inflater = LayoutInflater.from(this);
+        final View v = inflater.inflate(R.layout.show_capacity, null,false);
+
+        ((TextView)v.findViewById(R.id.capacidad)).setText("This room can accommodate "+capacity+" people");
+
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+
+        final PopupWindow popupWindow = new PopupWindow(v,width,height,true);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                popupWindow.showAtLocation(v, Gravity.CENTER, 0 ,0);
+            }
+        });
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         startBackgroundThread();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestUbicationPermission();
+            return;
+        }
+        if(!isLocationEnabled()){
+            showSettingsAlert();
+            return;
+        }
+
+        mBackgroundHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                getLocation();
+            }
+        });
 
         if(mTextureView.isAvailable()){
             openCamera(mTextureView.getWidth(), mTextureView.getHeight());  //If it's available, we open the camera
@@ -310,6 +526,7 @@ public class Main extends AppCompatActivity{
             if(mCameraDevice!=null){
                 mCameraDevice.close();
                 mCameraDevice=null;
+                Log.i("prueba", "Camera closed");
             }
             if(mImageReader != null){
                 mImageReader.close();
@@ -319,64 +536,10 @@ public class Main extends AppCompatActivity{
             throw new RuntimeException("Interrupted while trying to lock camera closing",e);
         } finally {
             mCameraOpenCloseLock.release();
+
         }
     }
-
-
-    /*private void setUpCameraOutputs(int width, int height){
-        CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
-        try{
-            for(String cameraId : manager.getCameraIdList()){
-                CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);
-                //We don't want to use front camera
-                Integer front = characteristics.get(CameraCharacteristics.LENS_FACING);
-                if(front != null && front == CameraCharacteristics.LENS_FACING_FRONT){
-                    continue;  //we skip the front camera loop, we only do the setup for the rear camera
-                }
-
-                StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
-                if(map == null){
-                    continue;
-                }
-                Size largest = Collections.max(Arrays.asList(map.getOutputSizes(ImageFormat.JPEG)), //we get all the possible choices from an Image
-                        new CompareSizesByArea());
-
-                Point displaySize = new Point();
-                getWindowManager().getDefaultDisplay().getSize(displaySize);
-                int rotatedPreviewWidth = width;
-                int rotatedPreviewHeight = height;
-                int maxPreviewWidth = displaySize.x;
-                int maxPreviewHeight = displaySize.y;
-
-                if(maxPreviewWidth > MAX_PREVIEW_WIDTH){
-                    maxPreviewWidth = MAX_PREVIEW_WIDTH;
-                }
-                if(maxPreviewHeight > MAX_PREVIEW_HEIGHT){
-                    maxPreviewHeight = MAX_PREVIEW_HEIGHT;
-                }
-
-
-
-                mPreviewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class),  //we get all the possible choices of the preview
-                        rotatedPreviewWidth, rotatedPreviewHeight,maxPreviewWidth,maxPreviewHeight,largest);
-
-                mImageSize = largest;
-                mImageReader = ImageReader.newInstance(mImageSize.getWidth(),mImageSize.getHeight(),
-                        ImageFormat.JPEG,2);
-                mImageReader.setOnImageAvailableListener(mOnImageAvailableListener, mBackgroundHandler);
-
-                mCameraId = cameraId;
-                return;
-            }
-        } catch (CameraAccessException e) {
-            e.printStackTrace();
-        } catch (NullPointerException e){
-            Toast.makeText(Main.this,"Camera2 API not supported on this device", Toast.LENGTH_LONG).show();
-        }
-    }
-
-     */
-
+    
     private void setUpCameraOutputs(int width, int height){
         CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
         try{
@@ -590,6 +753,16 @@ public class Main extends AppCompatActivity{
         }else{
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+
+        if(requestCode == REQUEST_GPS_LOCATION){
+            if(grantResults.length != 1 || grantResults[0] != PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(Main.this, "ERROR: Ubication permissions not granted",
+                        Toast.LENGTH_LONG).show();
+            }
+        }else{
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
         /*if(requestCode == REQUEST_STORAGE_PERMISSION){
             if(grantResults.length != 1 || grantResults[0] != PackageManager.PERMISSION_GRANTED){
                 Toast.makeText(Main.this, "ERROR: Storage writing permissions not granted",
@@ -678,6 +851,27 @@ public class Main extends AppCompatActivity{
         }
     }
 
+    private void requestUbicationPermission(){
+        if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_FINE_LOCATION)){
+            new AlertDialog.Builder(Main.this).setMessage("R string request permission")
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions(Main.this,
+                                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_GPS_LOCATION);
+                        }
+                    }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            }).create();
+        } else{
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_GPS_LOCATION);
+        }
+    }
+
     /*
     private void createImageFolder(){
         File imageFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
@@ -703,6 +897,7 @@ public class Main extends AppCompatActivity{
     private String createFileName(){
         return new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
     }
+
 
     /*
     private void requestStoragePermission(){

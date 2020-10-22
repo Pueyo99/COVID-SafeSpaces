@@ -2,10 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.covidsafespaces">
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <uses-feature android:name="android.hardware.type.watch" />
+
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -16,17 +20,25 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".Register"></activity>
         <activity android:name=".Main"></activity>
+
+        <uses-library
+            android:name="com.google.android.wearable"
+            android:required="true" />
         <!--
-        <service android:name="">
-            android:foregroundServiceType="location"
-        </service>
+               Set to true if your app is Standalone, that is, it does not require the handheld
+               app to run.
         -->
+        <meta-data
+            android:name="com.google.android.wearable.standalone"
+            android:value="true" />
+
         <activity
-            android:name=".Prueba"
+            android:name=".Login"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.LOGIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
