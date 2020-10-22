@@ -5,5 +5,11 @@
     <string name="height">Height</string>
     <string name="people">People</string>
     <string name="ventilation">Ventilation</string>
+    <string name="title_activity_register">Register</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
 
 </resources>
