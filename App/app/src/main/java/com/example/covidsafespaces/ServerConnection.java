@@ -45,7 +45,8 @@ import okhttp3.Response;
 
 public class ServerConnection {
 
-    private final String serverURL = "http://147.83.50.15:8999/";
+    //private final String serverURL = "http://147.83.50.15:8999/";
+    private final String serverURL = "http://192.168.1.202:5000/";
 
     public void postImage(final byte[] image, final String filename, final int rotation){
         new Thread(new Runnable() {
@@ -83,13 +84,13 @@ public class ServerConnection {
         }).start();
     }
 
-    public void getCapacity(final String capacity, final Listener listener){
+    public void get(final String data, final Listener listener){
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 OkHttpClient client = new OkHttpClient();
-                Request request = new Request.Builder().url(serverURL+capacity).get().build();
+                Request request = new Request.Builder().url(serverURL+data).get().build();
 
                 client.newCall(request).enqueue(new Callback() {
                     @Override
@@ -113,5 +114,6 @@ public class ServerConnection {
             }
         }).start();
     }
+
 
 }

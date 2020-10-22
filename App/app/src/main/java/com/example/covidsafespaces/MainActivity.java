@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements Listener{
         TextView ventilation = findViewById(R.id.ventilation);
 
 
-        new ServerConnection().getCapacity(surface.getText().toString(), this);
+        new ServerConnection().get(surface.getText().toString(), this);
         Log.i("received", "conexion creada");
     }
 

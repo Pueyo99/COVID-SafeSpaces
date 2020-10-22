@@ -277,7 +277,7 @@ public class Main extends AppCompatActivity implements Listener {
             @Override
             public void onClick(View v) {
                 setProgressDialog();
-                new ServerConnection().getCapacity("275.0", Main.this);
+                new ServerConnection().get("275.0", Main.this);
             }
         });
 
