@@ -115,5 +115,40 @@ public class ServerConnection {
         }).start();
     }
 
+    public void register(final String username, final String password){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                OkHttpClient client = new OkHttpClient();
+
+                JSONObject data = new JSONObject();
+                try {
+                    data.put("username",username);
+                    data.put("password", password);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                RequestBody body = RequestBody.create(data.toString(),MediaType.parse("application/json"));
+                Request request = new Request.Builder().url(serverURL+"register").post(body).build();
+
+                client.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                        call.cancel();
+                        Log.i("prueba", e.toString());
+                        Log.i("prueba", "Ha fallado la conexión");
+                    }
+
+                    @Override
+                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                        //Log.i("prueba", response.body().string());
+                        Log.i("prueba", "Registro realizado con éxito");
+                    }
+                });
+            }
+        }).start();
+    }
+
 
 }

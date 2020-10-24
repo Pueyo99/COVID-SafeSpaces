@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -76,9 +77,12 @@ public class Login extends AppCompatActivity implements Listener{
     private void showHidePassword(){
         if(passwordVisible){
             password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
+            password.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_lock, 0, R.drawable.ic_visible, 0);
             passwordVisible = false;
         } else{
             password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            password.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_lock, 0, R.drawable.ic_novisible, 0);
             passwordVisible = true;
         }
     }
@@ -92,7 +96,6 @@ public class Login extends AppCompatActivity implements Listener{
                 startActivity(i);
             } else{
                 showMessage();
-                username.setText("");
                 password.setText("");
             }
         } catch (JSONException e) {
