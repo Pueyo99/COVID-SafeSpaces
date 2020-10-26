@@ -5,10 +5,15 @@ from io import BytesIO
 import datetime
 import time
 #import database
+from OpenSSL import SSL
 
 SQR_M_PERSON = 4.0
 
 app = Flask(__name__)
+
+context = SSL.Context(SSL.PROTOCOL_TLSV1_2)
+context.use_privatekey_file('ssl/server.key')
+context.use_certificate_file('ssl/server.crt')
 
 @app.route('/<float:room_dim>', methods = ['GET'])
 def max_cap(room_dim):
@@ -59,4 +64,4 @@ def register():
 """
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0', ssl_context = context)
