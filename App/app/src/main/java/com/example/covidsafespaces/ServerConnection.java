@@ -15,6 +15,7 @@ import android.view.Gravity;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.textclassifier.ConversationActions;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -34,6 +35,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -41,18 +45,24 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.internal.tls.OkHostnameVerifier;
 
 
 public class ServerConnection {
 
     //private final String serverURL = "http://147.83.50.15:8999/";
-    private final String serverURL = "http://192.168.1.202:5000/";
+    private final String serverURL = "https://192.168.1.202:5000/";
 
     public void postImage(final byte[] image, final String filename, final int rotation){
         new Thread(new Runnable() {
             @Override
             public void run() {
-                OkHttpClient client = new OkHttpClient();
+                OkHttpClient client = new OkHttpClient.Builder().hostnameVerifier(new HostnameVerifier() {
+                    @Override
+                    public boolean verify(String hostname, SSLSession session) {
+                        return true;
+                    }
+                }).build();
 
                 JSONObject data = new JSONObject();
                 try {
@@ -89,7 +99,12 @@ public class ServerConnection {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                OkHttpClient client = new OkHttpClient();
+                OkHttpClient client = new OkHttpClient.Builder().hostnameVerifier(new HostnameVerifier() {
+                    @Override
+                    public boolean verify(String hostname, SSLSession session) {
+                        return true;
+                    }
+                }).build();
                 Request request = new Request.Builder().url(serverURL+data).get().build();
 
                 client.newCall(request).enqueue(new Callback() {
@@ -119,7 +134,12 @@ public class ServerConnection {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                OkHttpClient client = new OkHttpClient();
+                OkHttpClient client = new OkHttpClient.Builder().hostnameVerifier(new HostnameVerifier() {
+                    @Override
+                    public boolean verify(String hostname, SSLSession session) {
+                        return true;
+                    }
+                }).build();
 
                 JSONObject data = new JSONObject();
                 try {

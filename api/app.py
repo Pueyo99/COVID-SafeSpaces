@@ -10,6 +10,8 @@ SQR_M_PERSON = 4.0
 
 app = Flask(__name__)
 
+
+
 @app.route('/<float:room_dim>', methods = ['GET'])
 def max_cap(room_dim):
 
@@ -56,4 +58,4 @@ def register():
 	return jsonify({'register':'successful register'})
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0', ssl_context = ('ssl/cert.pem', 'ssl/key.pem'))
