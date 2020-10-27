@@ -68,7 +68,7 @@ public class Login extends AppCompatActivity implements Listener{
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent register = new Intent(Login.this, Register.class);
+                Intent register = new Intent(Login.this, TermsOfUse.class);
                 startActivity(register);
             }
         });

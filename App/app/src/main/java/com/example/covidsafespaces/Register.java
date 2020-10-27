@@ -125,7 +125,7 @@ public class Register extends AppCompatActivity {
         LayoutInflater inflater = LayoutInflater.from(this);
         final View v = inflater.inflate(R.layout.show_capacity, null,false);
 
-        ((TextView)v.findViewById(R.id.capacidad)).setText("Las contraseñas introducidas no son iguales");
+        ((TextView)v.findViewById(R.id.capacidad)).setText("The passwords entered are not the same");
 
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
