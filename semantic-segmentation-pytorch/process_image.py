@@ -20,7 +20,9 @@ def calculate_window(img_name):
 			percentage = 0
 		
 	img_name.replace('result_images', 'json_results')
+	print(img_name)
 	with open(img_name.replace('.png','.json'), "w+") as json_file:
+		print(img_name)
 		json.dump({ "Window percentage" : percentage }, json_file)
 	
 	img_original.show()
