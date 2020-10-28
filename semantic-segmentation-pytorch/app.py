@@ -35,7 +35,7 @@ def read_image():
 	
 	while not os.path.exists("json_results/"+filename+".json"):
 		time.sleep(5)
-	json_file = json.loads(open("json_results/"+filename+".json"))
+	json_file = json.loads(open("json_results/"+filename+".json").read())
 	return jsonify(json_file)
 
 
