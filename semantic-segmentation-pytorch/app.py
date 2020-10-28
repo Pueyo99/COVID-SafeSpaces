@@ -6,6 +6,7 @@ import datetime
 import os
 import time
 import json
+from pre_process_image import resize_image
 
 app = Flask(__name__)
 
@@ -28,6 +29,8 @@ def read_image():
 	rotation = r['rotation']
 	print(rotation)
 	image = Image.open(BytesIO(content)).rotate((rotation*90 -90), expand=True)
+	image = resize_image(image)
+
 	image.save("test_images/"+filename+".jpg")
 
 	# Run test.py

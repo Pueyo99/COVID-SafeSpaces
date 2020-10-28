@@ -120,7 +120,7 @@ def main(cfg, gpu):
     segmentation_module = SegmentationModule(net_encoder, net_decoder, crit)
 
     #Check if images need to be resized
-    resize_images(cfg.list_test)
+    #resize_images(cfg.list_test)
 
     # Dataset and Loader
     dataset_test = TestDataset(
