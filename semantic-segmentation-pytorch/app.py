@@ -5,6 +5,7 @@ from io import BytesIO
 import datetime
 import os
 import time
+import json
 
 app = Flask(__name__)
 
@@ -34,7 +35,7 @@ def read_image():
 	
 	while not os.path.exists("json_results/"+filename+".json"):
 		time.sleep(5)
-	json_file = load(open("json_results/"+filename+".json", "r"))
+	json_file = json.load(open("json_results/"+filename+".json", "r"))
 	return json_file
 
 
