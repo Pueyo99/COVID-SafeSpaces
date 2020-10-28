@@ -22,10 +22,10 @@ def max_cap(room_dim):
 
 @app.route('/image', methods = ['POST'])
 def read_image():
-	json = request.json
-	content = base64.b64decode(json['image'])
-	filename = json['filename']
-	rotation = json['rotation']
+	r = request.json
+	content = base64.b64decode(r['image'])
+	filename = r['filename']
+	rotation = r['rotation']
 	print(rotation)
 	image = Image.open(BytesIO(content)).rotate((rotation*90 -90), expand=True)
 	image.save("test_images/"+filename+".jpg")
