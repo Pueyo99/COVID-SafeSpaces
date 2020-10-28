@@ -32,10 +32,10 @@ def read_image():
 	# Run test.py
 	os.system("python3 -u test.py --imgs test_images/" +filename+ ".jpg --gpu 0 --cfg config/ade20k-resnet50dilated-ppm_deepsup.yaml")
 	
-	#time.sleep(10)
-	#json_file = open("json_results/"+filename+".json")
-	#return json_file
-	return jsonify({"Outcome": "Success"})
+	while not os.path.exists("json_results/"+filename+".json"):
+		time.sleep(5)
+	json_file = open("json_results/"+filename+".json", "r")
+	return json_file
 
 
 if __name__ == '__main__':
