@@ -58,4 +58,4 @@ def register():
 	return jsonify({'register':'successful register'})
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', ssl_context = ('ssl/cert.pem', 'ssl/key.pem'))
+    app.run(debug=True, host='0.0.0.0', ssl_context = ('ssl/cert2.pem', 'ssl/key2.pem'))

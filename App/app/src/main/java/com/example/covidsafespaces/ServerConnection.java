@@ -51,7 +51,8 @@ import okhttp3.internal.tls.OkHostnameVerifier;
 public class ServerConnection {
 
     //private final String serverURL = "http://147.83.50.15:8999/";
-    private final String serverURL = "https://192.168.1.202:5000/";
+    //private final String serverURL = "https://192.168.1.202:5000/";
+    private final String serverURL = "https://192.168.43.201:5000/";
 
     public void postImage(final byte[] image, final String filename, final int rotation){
         new Thread(new Runnable() {
