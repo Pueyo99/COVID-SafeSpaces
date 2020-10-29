@@ -18,6 +18,7 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".Register"></activity>
         <activity android:name=".Main"></activity>
+        <activity android:name=".TermsOfUse"></activity>
 
         <activity
             android:name=".Login"

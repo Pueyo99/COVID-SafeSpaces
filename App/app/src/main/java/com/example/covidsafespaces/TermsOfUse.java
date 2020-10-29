@@ -34,7 +34,7 @@ public class TermsOfUse extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(check.isChecked()==true){
-                    startActivity(new Intent(TermsOfUse.this, Register.class));
+                    startActivity(new Intent(TermsOfUse.this, Main.class));
                 }else{
                     String reply ="You didn't accept the terms uf use and conditions";
                     Toast.makeText(getApplicationContext(),reply,Toast.LENGTH_SHORT).show();
