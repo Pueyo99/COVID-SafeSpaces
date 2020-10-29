@@ -45,3 +45,4 @@ public class TermsOfUse extends AppCompatActivity {
 
     }
 }
+
