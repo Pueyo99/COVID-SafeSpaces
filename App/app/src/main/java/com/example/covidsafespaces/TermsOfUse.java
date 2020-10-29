@@ -40,6 +40,8 @@ public class TermsOfUse extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),reply,Toast.LENGTH_SHORT).show();
                 }
 
+
+
             }
         });
 
