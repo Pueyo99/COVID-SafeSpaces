@@ -5,6 +5,8 @@ from io import BytesIO
 import datetime
 import os
 import time
+import json
+from pre_process_image import resize_image
 
 app = Flask(__name__)
 
@@ -21,21 +23,23 @@ def max_cap(room_dim):
 
 @app.route('/image', methods = ['POST'])
 def read_image():
-	json = request.json
-	content = base64.b64decode(json['image'])
-	filename = json['filename']
-	rotation = json['rotation']
+	r = request.json
+	content = base64.b64decode(r['image'])
+	filename = r['filename']
+	rotation = r['rotation']
 	print(rotation)
 	image = Image.open(BytesIO(content)).rotate((rotation*90 -90), expand=True)
+	image = resize_image(image)
+
 	image.save("test_images/"+filename+".jpg")
 
 	# Run test.py
 	os.system("python3 -u test.py --imgs test_images/" +filename+ ".jpg --gpu 0 --cfg config/ade20k-resnet50dilated-ppm_deepsup.yaml")
 	
-	#time.sleep(10)
-	#json_file = open("json_results/"+filename+".json")
-	#return json_file
-	return jsonify({"Outcome": "Success"})
+	while not os.path.exists("json_results/"+filename+".json"):
+		time.sleep(5)
+	json_file = json.loads(open("json_results/"+filename+".json").read())
+	return jsonify(json_file)
 
 
 if __name__ == '__main__':

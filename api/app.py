@@ -6,14 +6,15 @@ import datetime
 import time
 #import database
 from OpenSSL import SSL
+import os
 
 SQR_M_PERSON = 4.0
 
 app = Flask(__name__)
 
-context = SSL.Context(SSL.PROTOCOL_TLSV1_2)
-context.use_privatekey_file('ssl/server.key')
-context.use_certificate_file('ssl/server.crt')
+cer = os.path.join(os.path.dirname(__file__), 'ssl/server.crt')
+key = os.path.join(os.path.dirname(__file__), 'ssl/server.key')
+context = (cer, key)
 
 @app.route('/<float:room_dim>', methods = ['GET'])
 def max_cap(room_dim):
@@ -64,4 +65,4 @@ def register():
 """
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', ssl_context = context)
+    app.run(debug=True, host='0.0.0.0', port=8999, ssl_context = context)
