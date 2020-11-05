@@ -16,12 +16,19 @@ public class TermsOfUse extends AppCompatActivity {
     private TextView accept;
     private Button acceptButton;
     private CheckBox check;
+    private String username;
+
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_termsofuse);
+
+        Bundle datos = getIntent().getExtras();
+        username = datos.getString("username");
+
         acceptButton = findViewById(R.id.Accept);
         accept = findViewById(R.id.Text);
         check = (CheckBox) findViewById(R.id.chec);
+
         accept.setText("PRIVACY POLICY \n\n" +"This Privacy Policy establishes the terms in which COVD_SAFE_SPACES uses and protects the information that is provided by its users when using its website. This company is committed to the security of its users' data. When we ask you to fill in the fields of personal information with which you can be identified, we do so ensuring that it will only be used in accordance with the terms of this document. However, this Privacy Policy may change over time or be updated, so we recommend and emphasize that you continually review this page to ensure that you agree with said changes.\n\n"+
                 "INFORMATION THAT IS COLLECTED\n\n"+"Our website may collect personal information such as: Name, contact information such as your email address and demographic information. Likewise, when necessary, specific information may be required to process an order or make a delivery or billing.\n\n"+
                 "USE OF THE INFORMATION COLLECTED\n\n"+"Our website uses the information in order to provide the best possible service, particularly to keep a record of users, orders if applicable, and improve our products and services. It is possible that emails will be sent periodically through our site with special offers, new products and other advertising information that we consider relevant to you or that may provide you with some benefit, these emails will be sent to the address you provide and may be canceled anytime.\n"+
@@ -34,9 +41,11 @@ public class TermsOfUse extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(check.isChecked()==true){
-                    startActivity(new Intent(TermsOfUse.this, Main.class));
+                    Intent i = new Intent(TermsOfUse.this, Main.class);
+                    i.putExtra("username", username);
+                    startActivity(i);
                 }else{
-                    String reply ="You didn't accept the terms uf use and conditions";
+                    String reply ="You must accept the terms uf use and conditions";
                     Toast.makeText(getApplicationContext(),reply,Toast.LENGTH_SHORT).show();
                 }
 

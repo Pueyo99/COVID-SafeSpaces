@@ -87,7 +87,10 @@ public class Register extends AppCompatActivity {
     private void register(){
         if(password1.getText().toString().trim().equals(password2.getText().toString().trim())){
             new ServerConnection().register(username.getText().toString().trim(), password1.getText().toString().trim());
-            startActivity(new Intent(Register.this, TermsOfUse.class));
+            Intent i = new Intent(this, TermsOfUse.class);
+            i.putExtra("username",username.getText().toString());
+            startActivity(i);
+            finish();
         } else{
             password1.setText("");
             password2.setText("");

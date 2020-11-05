@@ -92,14 +92,33 @@ public class Login extends AppCompatActivity implements Listener{
         try {
             String receivedPassword = data.getString("password");
             if(password.getText().toString().trim().equals(receivedPassword)){
-                Intent i = new Intent(this, Main.class);
+                //Intent i = new Intent(this, Main.class);
+                Intent i = new Intent(this, Selection.class);
+                i.putExtra("username", username.getText().toString());
                 startActivity(i);
+                finish();
             } else{
-                showMessage();
-                password.setText("");
+                //showMessage();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((TextView) findViewById(R.id.wrongPassword)).setVisibility(View.VISIBLE);
+                        ((TextView) findViewById(R.id.wrongUsername)).setVisibility(View.GONE);
+                        password.setText("");
+                    }
+                });
+
             }
         } catch (JSONException e) {
-            e.printStackTrace();
+            //If json doesn't have password key, username is wrong
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ((TextView) findViewById(R.id.wrongUsername)).setVisibility(View.VISIBLE);
+                    ((TextView) findViewById(R.id.wrongPassword)).setVisibility(View.GONE);
+                }
+            });
+
         }
     }
 

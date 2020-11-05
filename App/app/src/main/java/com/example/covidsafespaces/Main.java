@@ -49,6 +49,8 @@ import android.util.Size;
 import android.util.SparseIntArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.OrientationEventListener;
 import android.view.Surface;
 import android.view.TextureView;
@@ -124,6 +126,8 @@ public class Main extends AppCompatActivity implements Listener {
 
     private AlertDialog alertDialog;
     private FusedLocationProviderClient mFusedLocationClient;
+    private String path;
+    private String username;
     private String countryName;
     private Button captureButton;
     private Button endButton;
@@ -183,7 +187,7 @@ public class Main extends AppCompatActivity implements Listener {
             ByteBuffer byteBuffer = mImage.getPlanes()[0].getBuffer();
             byte[] bytes = new byte[byteBuffer.remaining()];
             byteBuffer.get(bytes);
-            new ServerConnection().postImage(bytes, createFileName(), mDisplayRotation);
+            new ServerConnection().postImage(bytes, createFileName(), mDisplayRotation, username,path,Main.this);
             mImage.close();
             /*FileOutputStream fileOutputStream = null;
             try {
@@ -258,6 +262,12 @@ public class Main extends AppCompatActivity implements Listener {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+
+        Bundle datos = getIntent().getExtras();
+        if(datos != null){
+            username = datos.getString("username");
+        }
+        path = "window";
 
         //createImageFolder();
         addOrientationListener();
@@ -407,11 +417,27 @@ public class Main extends AppCompatActivity implements Listener {
     }
 
     @Override
-    public void receiveMessage(JSONObject data) {
+    public void receiveMessage(final JSONObject data) {
         try {
-            alertDialog.dismiss();
-            String capacity = data.getString("max_cap");
-            showCapacity(capacity);
+            switch (data.getString("function")){
+                case "post":
+                    //final String percentage = data.getString("Window percentage");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(Main.this,data.toString(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+                    break;
+
+                case "get":
+                    alertDialog.dismiss();
+                    String capacity = data.getString("max_cap");
+                    showCapacity(capacity);
+                    break;
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -471,6 +497,46 @@ public class Main extends AppCompatActivity implements Listener {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.exit:
+                startActivity(new Intent(this, Login.class));
+                finish();
+                break;
+            case R.id.window:
+                path = "window";
+                if(item.isChecked()){
+                    item.setChecked(false);
+                }else{
+                    item.setChecked(true);
+                }
+                break;
+            case R.id.mask:
+                path="mask";
+                if(item.isChecked()){
+                    item.setChecked(false);
+                }else{
+                    item.setChecked(true);
+                }
+                break;
+        }
+
+        return true;
+    }
+
     private void addOrientationListener()
     {
         OrientationEventListener listener=new OrientationEventListener(this, SensorManager.SENSOR_DELAY_NORMAL)
@@ -491,7 +557,6 @@ public class Main extends AppCompatActivity implements Listener {
         if(listener.canDetectOrientation())
             listener.enable();
     }
-
 
 
     private void openCamera(int width, int height){
