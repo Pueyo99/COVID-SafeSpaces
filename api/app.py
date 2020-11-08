@@ -25,45 +25,51 @@ def max_cap(room_dim):
         )
 
 
-@app.route('/<string:username>', methods = ['GET'])
-def login(username):
-	if (username != "favicon.ico"):
-		try:
-			db = database.Database()
-			password = db.selectUser(username)
-			db.close()
-			return jsonify({'password':password})
-		except Exception:
-			return jsonify({'error':'Not such username'})
-	else:
-		return jsonify({'error':'favicon'})
+@app.route('/login', methods = ['GET'])
+def login():
+	username = request.args.get('username')
+	print(username)
+	try:
+		db = database.Database()
+		password = db.selectUser(username)
+		db.close()
+		return jsonify({'password':password})
+	except Exception:
+		return jsonify({'error':'Not such username'})
+
 
 @app.route('/building', methods = ['GET'])
 def getBuilding():
+	username = request.args.get('username')
 	try:
 		db = database.Database()
-		buildings = db.getBuildings()
+		buildings = db.getBuildings(username)
 		db.close()
 		return buildings
 	except Exception:
 		return jsonify({'error':''})
 
 
-@app.route('/room/<string:building>', methods = ['GET'])
-def getRoom(building):
+@app.route('/room', methods = ['GET'])
+def getRoom():
+	username = request.args.get('username')
+	building = request.args.get('building')
 	try:
 		db = database.Database()
-		rooms = db.getRooms(building)
+		rooms = db.getRooms(username, building)
 		db.close()
 		return rooms
 	except Exception:
 		return jsonify({'error':''})
 
-@app.route('/capacity/<string:building>/<string:room>', methods = ['GET'])
-def getCapacity(building, room):
+@app.route('/capacity', methods = ['GET'])
+def getCapacity():
+	username = request.args.get('username')
+	building = request.args.get('building')
+	room = request.args.get('room')
 	try:
 		db = database.Database()
-		capacity = db.getCapacity(building, room)
+		capacity = db.getCapacity(username, building, room)
 		db.close()
 		return capacity
 	except Exception:
@@ -90,8 +96,9 @@ def register():
 	json = request.json
 	username = json['username']
 	password = json['password']
+	mail = json['mail']
 	db = database.Database()
-	db.registerUser(username, password)
+	db.registerUser(username, password,mail)
 	db.close()
 	return jsonify({'register':'successful register'})
 

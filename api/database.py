@@ -9,7 +9,7 @@ class Database:
 		print("Conexión establecida")
 
 	def selectUser(self, username):
-		sql = 'SELECT PASSWORD FROM USERS WHERE USER = ?'
+		sql = 'SELECT PASSWORD FROM USERS WHERE USERNAME = ?'
 		try:
 			self.cursor.execute(sql,(username,))
 			users = self.cursor.fetchone()  #Returns a tuple with the user info
@@ -17,19 +17,19 @@ class Database:
 		except Exception as ex:
 			raise
 
-	def registerUser(self,username,password):
-		values=(username,password)
-		sql = 'INSERT INTO USERS VALUES (?,?)'
+	def registerUser(self,username,password, mail):
+		values=(username,password,mail)
+		sql = 'INSERT INTO USERS VALUES (?,?,?)'
 		try:
 			self.cursor.execute(sql, values)
 			self.connection.commit()
 		except Exception as ex:
 			raise
 
-	def getBuildings(self):
-		sql = 'SELECT DISTINCT BUILDING FROM MEASURES ORDER BY BUILDING'
+	def getBuildings(self, username):
+		sql = 'SELECT DISTINCT BUILDING FROM MEASURES WHERE USERNAME=? ORDER BY BUILDING'
 		try:
-			self.cursor.execute(sql)
+			self.cursor.execute(sql,(username,))
 			columns = [column[0] for column in self.cursor.description]
 			buildings = []
 			for row in self.cursor.fetchall():
@@ -38,10 +38,10 @@ class Database:
 		except Exception as ex:
 			raise
 
-	def getRooms(self, building):
-		sql = 'SELECT ROOM FROM MEASURES WHERE BUILDING=? ORDER BY ROOM'
+	def getRooms(self, username, building):
+		sql = 'SELECT ROOM FROM MEASURES WHERE USERNAME=? AND BUILDING=? ORDER BY ROOM'
 		try:
-			self.cursor.execute(sql,(building,))
+			self.cursor.execute(sql,(username,building))
 			columns = [column[0] for column in self.cursor.description]
 			rooms = []
 			for row in self.cursor.fetchall():
@@ -50,10 +50,10 @@ class Database:
 		except Exception as ex:
 			raise
 
-	def getCapacity(self, building, room):
-		sql = 'SELECT CAPACITY FROM MEASURES WHERE BUILDING=? AND ROOM=?'
+	def getCapacity(self, username, building, room):
+		sql = 'SELECT CAPACITY FROM MEASURES WHERE USERNAME=? AND BUILDING=? AND ROOM=?'
 		try:
-			self.cursor.execute(sql,(building,room))
+			self.cursor.execute(sql,(username,building,room))
 			columns = [column[0] for column in self.cursor.description]
 			capacity = []
 			for row in self.cursor.fetchall():
@@ -68,5 +68,5 @@ class Database:
 
 if __name__ =="__main__":
 	database = Database()
-	print(database.getCapacity("A1","101"))
+	print(database.selectUser("aleix.clemens"))
 	database.close()
