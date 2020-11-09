@@ -27,6 +27,18 @@
             android:textSize="20sp" />
 
         <EditText
+            android:id="@+id/registerMail"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/login_edittext"
+            android:drawableLeft="@drawable/ic_mail"
+            android:gravity="center"
+            android:hint="Mail"
+            android:inputType="textEmailSubject"
+            android:textSize="20sp" />
+
+        <EditText
             android:id="@+id/registerPassword"
             android:layout_width="300dp"
             android:layout_height="wrap_content"

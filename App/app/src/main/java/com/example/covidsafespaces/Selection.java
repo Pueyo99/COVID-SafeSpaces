@@ -61,9 +61,9 @@ public class Selection extends AppCompatActivity implements SelectionListener, L
                         public void run() {
                             Toast.makeText(Selection.this, selectedBuilding, Toast.LENGTH_LONG).show();
                             setProgressDialog();
-                            new ServerConnection().getBuilding(Selection.this, "room/"+selectedBuilding);
                         }
                     });
+                    new ServerConnection().getRoom(Selection.this,selectedBuilding, username);
                 }
             }
 
@@ -98,17 +98,19 @@ public class Selection extends AppCompatActivity implements SelectionListener, L
             }
         });
 
-        new ServerConnection().getBuilding(this, "building");
+        new ServerConnection().getBuilding(this, username);
         setProgressDialog();
-
-
-
     }
 
     @Override
-    public void receiveMessage(final JSONArray data, String path) {
+    public void onBackPressed() {
+        moveTaskToBack(true);
+    }
+
+    @Override
+    public void receiveMessage(final JSONArray data, final String path) {
         alertDialog.dismiss();
-        switch (path.split("/")[0]){
+        switch (path){
             case "building":
                 runOnUiThread(new Runnable() {
                     @Override
@@ -153,8 +155,7 @@ public class Selection extends AppCompatActivity implements SelectionListener, L
     }
 
     public void getCapacity(View v){
-        String path = "capacity/"+selectedBuilding+"/"+selectedRoom;
-        new ServerConnection().getCapacity(this,path);
+        new ServerConnection().getCapacity(this,username, selectedBuilding,selectedRoom);
 
     }
 

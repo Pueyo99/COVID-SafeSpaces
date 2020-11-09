@@ -61,7 +61,7 @@ public class Login extends AppCompatActivity implements Listener{
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new ServerConnection().get(username.getText().toString().trim(), Login.this);
+                new ServerConnection().login(Login.this, username.getText().toString().trim());
             }
         });
 
@@ -120,6 +120,10 @@ public class Login extends AppCompatActivity implements Listener{
             });
 
         }
+    }
+
+    public void recoverPassword(View v){
+        new ServerConnection().recover(username.getText().toString().trim());
     }
 
     public void showMessage(){

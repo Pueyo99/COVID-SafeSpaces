@@ -16,6 +16,7 @@ import javax.net.ssl.SSLSession;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -119,7 +120,89 @@ public class ServerConnection {
 
     }
 
-    public void register(final String username, final String password){
+    public void login(final Listener listener, final String username){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                OkHttpClient client = new OkHttpClient.Builder().hostnameVerifier(new HostnameVerifier() {
+                    @Override
+                    public boolean verify(String hostname, SSLSession session) {
+                        return true;
+                    }
+                }).build();
+
+                HttpUrl.Builder urlBuilder = HttpUrl.parse(serverURL+"login").newBuilder();
+                urlBuilder.addQueryParameter("username", username);
+
+                Request request = new Request.Builder().url(urlBuilder.build()).get().build();
+
+                client.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                        call.cancel();
+                        e.printStackTrace();
+                        Log.i("prueba", "Ha fallado la conexión");
+                    }
+
+                    @Override
+                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                        String body = response.body().string();
+                        Log.i("prueba", body);
+                        try {
+                            JSONObject data = new JSONObject(body);
+                            data.put("function", "get");
+                            listener.receiveMessage(data);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        }).start();
+    }
+
+    public void recover(final String username){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                OkHttpClient client = new OkHttpClient.Builder().hostnameVerifier(new HostnameVerifier() {
+                    @Override
+                    public boolean verify(String hostname, SSLSession session) {
+                        return true;
+                    }
+                }).build();
+
+                HttpUrl.Builder urlBuilder = HttpUrl.parse(serverURL+"recover").newBuilder();
+                urlBuilder.addQueryParameter("username", username);
+
+                Request request = new Request.Builder().url(urlBuilder.build()).get().build();
+
+                client.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                        call.cancel();
+                        e.printStackTrace();
+                        Log.i("prueba", "Ha fallado la conexión");
+                    }
+
+                    @Override
+                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                        String body = response.body().string();
+                        Log.i("prueba", body);
+                        try {
+                            JSONObject data = new JSONObject(body);
+                            data.put("function", "get");
+                            //listener.receiveMessage(data);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        }).start();
+    }
+
+    public void register(final String username, final String mail, final String password){
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -133,6 +216,7 @@ public class ServerConnection {
                 JSONObject data = new JSONObject();
                 try {
                     data.put("username",username);
+                    data.put("mail", mail);
                     data.put("password", password);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -159,7 +243,7 @@ public class ServerConnection {
         }).start();
     }
 
-    public void getBuilding(final SelectionListener listener, final String path){
+    public void getBuilding(final SelectionListener listener, final String username){
 
         new Thread(new Runnable() {
             @Override
@@ -170,7 +254,11 @@ public class ServerConnection {
                         return true;
                     }
                 }).build();
-                Request request = new Request.Builder().url(serverURL+path).get().build();
+
+                HttpUrl.Builder urlBuilder = HttpUrl.parse(serverURL+"building").newBuilder();
+                urlBuilder.addQueryParameter("username", username);
+
+                Request request = new Request.Builder().url(urlBuilder.build()).get().build();
 
                 client.newCall(request).enqueue(new Callback() {
                     @Override
@@ -186,7 +274,7 @@ public class ServerConnection {
                         Log.i("prueba", body);
                         try {
                             JSONArray data = new JSONArray(body);
-                            listener.receiveMessage(data, path);
+                            listener.receiveMessage(data, "building");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -196,7 +284,48 @@ public class ServerConnection {
         }).start();
     }
 
-    public void getCapacity (final Listener listener, final String path){
+    public void getRoom(final SelectionListener listener, final String building, final String username){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                OkHttpClient client = new OkHttpClient.Builder().hostnameVerifier(new HostnameVerifier() {
+                    @Override
+                    public boolean verify(String hostname, SSLSession session) {
+                        return true;
+                    }
+                }).build();
+
+                HttpUrl.Builder urlBuilder = HttpUrl.parse(serverURL+"room").newBuilder();
+                urlBuilder.addQueryParameter("username", username);
+                urlBuilder.addQueryParameter("building",building);
+
+                Request request = new Request.Builder().url(urlBuilder.build()).get().build();
+
+                client.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                        call.cancel();
+                        e.printStackTrace();
+                        Log.i("prueba", "Ha fallado la conexión");
+                    }
+
+                    @Override
+                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                        String body = response.body().string();
+                        Log.i("prueba", body);
+                        try {
+                            JSONArray data = new JSONArray(body);
+                            listener.receiveMessage(data, "room");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        }).start();
+    }
+
+    public void getCapacity (final Listener listener, final String username, final String building, final String room){
 
         new Thread(new Runnable() {
             @Override
@@ -207,7 +336,13 @@ public class ServerConnection {
                         return true;
                     }
                 }).build();
-                Request request = new Request.Builder().url(serverURL+path).get().build();
+
+                HttpUrl.Builder urlBuilder = HttpUrl.parse(serverURL+"capacity").newBuilder();
+                urlBuilder.addQueryParameter("username", username);
+                urlBuilder.addQueryParameter("building",building);
+                urlBuilder.addQueryParameter("room", room);
+
+                Request request = new Request.Builder().url(urlBuilder.build()).get().build();
 
                 client.newCall(request).enqueue(new Callback() {
                     @Override
