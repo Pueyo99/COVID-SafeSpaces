@@ -17,7 +17,7 @@ class Mail():
 
 
 	def writeMessage(self, name,password):
-		str = "Your password is: "+passwords
+		str = "Your password is: "+password
 		return str
 		
 

@@ -150,7 +150,7 @@ public class ServerConnection {
                         Log.i("prueba", body);
                         try {
                             JSONObject data = new JSONObject(body);
-                            data.put("function", "get");
+                            data.put("function", "login");
                             listener.receiveMessage(data);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -161,7 +161,7 @@ public class ServerConnection {
         }).start();
     }
 
-    public void recover(final String username){
+    public void recover(final Listener listener,final String username){
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -191,8 +191,8 @@ public class ServerConnection {
                         Log.i("prueba", body);
                         try {
                             JSONObject data = new JSONObject(body);
-                            data.put("function", "get");
-                            //listener.receiveMessage(data);
+                            data.put("function", "recover");
+                            listener.receiveMessage(data);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
