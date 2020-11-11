@@ -7,6 +7,7 @@ import threading
 class Mail():
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	def __init__(self, sender, password, receiver, userPassword):
 		self.msg = MIMEMultipart()
 		self.msg['From'] = sender
@@ -26,6 +27,8 @@ class Mail():
 		return str
 
 =======
+=======
+>>>>>>> 35ee40196c47fadc73d59299e6a991329d4bf5e8
 	def __init__(self, sender, password, receiver, name):
 		self.msg = MIMEMultipart()
 		self.msg['From'] = sender
@@ -40,6 +43,9 @@ class Mail():
 		str = "Your password is: "+password
 		return str
 		
+<<<<<<< HEAD
+>>>>>>> 35ee40196c47fadc73d59299e6a991329d4bf5e8
+=======
 >>>>>>> 35ee40196c47fadc73d59299e6a991329d4bf5e8
 
 	def sendMessage(self):

@@ -6,7 +6,10 @@ import datetime
 import time
 import os
 import database
+<<<<<<< HEAD
 import mail
+=======
+>>>>>>> 35ee40196c47fadc73d59299e6a991329d4bf5e8
 
 SQR_M_PERSON = 4.0
 
@@ -103,6 +106,7 @@ def register():
 	db.close()
 	return jsonify({'register':'successful register'})
 
+<<<<<<< HEAD
 @app.route('/recover',methods = ['GET'])
 def recoverPassword():
 	username = request.args.get('username')
@@ -120,3 +124,7 @@ def recoverPassword():
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8999, ssl_context = ('ssl/certpae.pem', 'ssl/keypae.pem'))
+=======
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', ssl_context = ('ssl/certpae.pem', 'ssl/keypae.pem'))
+>>>>>>> 35ee40196c47fadc73d59299e6a991329d4bf5e8
