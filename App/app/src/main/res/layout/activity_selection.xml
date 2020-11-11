@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:padding="5dp"
+    android:orientation="vertical"
+    android:gravity="center">
+
+
+    <Spinner
+        android:id="@+id/buildings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@android:drawable/btn_dropdown"/>
+
+    <Spinner
+        android:id="@+id/rooms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@android:drawable/btn_dropdown"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Get capacity"
+        android:onClick="getCapacity"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="12dp"
+            android:background="@android:color/black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:background="@android:color/white"
+            android:layout_centerHorizontal="true"
+            android:text="or" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/newBuilding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:hint="Building"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"/>
+
+    <TextView
+        android:id="@+id/newRoom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:hint="Room" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="New Measure"
+        android:onClick="newMeasure"/>
+
+</LinearLayout>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config>
+        <domain includeSubdomains="true">192.168.1.202</domain>
+    </domain-config>
+    <base-config>
+        <trust-anchors>
+            <certificates src="@raw/certpae"/>
+            <certificates src="system"/>
+        </trust-anchors>
+    </base-config>
+</network-security-config>

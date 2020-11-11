@@ -19,6 +19,7 @@ import android.widget.TextView;
 public class Register extends AppCompatActivity {
 
     private TextView username;
+    private TextView mail;
     private TextView password1;
     private TextView password2;
     private Button registerButton;
@@ -32,6 +33,7 @@ public class Register extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         username = findViewById(R.id.registerUsername);
+        mail = findViewById(R.id.registerMail);
         password1 = findViewById(R.id.registerPassword);
         password2 = findViewById(R.id.registerpassword2);
         registerButton = findViewById(R.id.registerButton);
@@ -86,8 +88,12 @@ public class Register extends AppCompatActivity {
 
     private void register(){
         if(password1.getText().toString().trim().equals(password2.getText().toString().trim())){
-            new ServerConnection().register(username.getText().toString().trim(), password1.getText().toString().trim());
-            startActivity(new Intent(Register.this, Main.class));
+            new ServerConnection().register(username.getText().toString().trim(), mail.getText().toString().trim(),
+                    password1.getText().toString().trim());
+            Intent i = new Intent(this, TermsOfUse.class);
+            i.putExtra("username",username.getText().toString());
+            startActivity(i);
+            finish();
         } else{
             password1.setText("");
             password2.setText("");
@@ -125,7 +131,7 @@ public class Register extends AppCompatActivity {
         LayoutInflater inflater = LayoutInflater.from(this);
         final View v = inflater.inflate(R.layout.show_capacity, null,false);
 
-        ((TextView)v.findViewById(R.id.capacidad)).setText("Las contraseñas introducidas no son iguales");
+        ((TextView)v.findViewById(R.id.capacidad)).setText("The passwords entered are not the same");
 
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;

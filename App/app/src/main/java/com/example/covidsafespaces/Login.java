@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,7 +62,7 @@ public class Login extends AppCompatActivity implements Listener{
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new ServerConnection().get(username.getText().toString().trim(), Login.this);
+                new ServerConnection().login(Login.this, username.getText().toString().trim());
             }
         });
 
@@ -90,35 +91,106 @@ public class Login extends AppCompatActivity implements Listener{
     @Override
     public void receiveMessage(JSONObject data) {
         try {
-            String receivedPassword = data.getString("password");
-            if(password.getText().toString().trim().equals(receivedPassword)){
-                Intent i = new Intent(this, Main.class);
-                startActivity(i);
-            } else{
-                showMessage();
-                password.setText("");
+            switch (data.getString("function")){
+                case "login":
+                    if(data.has("password")){
+                        String receivedPassword = data.getString("password");
+                        if(password.getText().toString().trim().equals(receivedPassword)){
+                            //Intent i = new Intent(this, Main.class);
+                            Intent i = new Intent(this, Selection.class);
+                            i.putExtra("username", username.getText().toString());
+                            startActivity(i);
+                            finish();
+                        } else{
+                            //showMessage();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ((TextView) findViewById(R.id.wrongPassword)).setVisibility(View.VISIBLE);
+                                    ((TextView) findViewById(R.id.wrongUsername)).setVisibility(View.GONE);
+                                    password.setText("");
+                                }
+                            });
+
+                        }
+                    } else{
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ((TextView) findViewById(R.id.wrongUsername)).setVisibility(View.VISIBLE);
+                                ((TextView) findViewById(R.id.wrongPassword)).setVisibility(View.GONE);
+                            }
+                        });
+                    }
+                    break;
+                case "recover":
+                    if(data.has("error")){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ((TextView) findViewById(R.id.wrongUsername)).setVisibility(View.VISIBLE);
+                                ((TextView) findViewById(R.id.wrongPassword)).setVisibility(View.GONE);
+                            }
+                        });
+                    } else{
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String str = "Password sended to email";
+                                Toast.makeText(Login.this, str, Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+                    break;
+
+
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    public void showMessage(){
-        LayoutInflater inflater = LayoutInflater.from(this);
-        final View v = inflater.inflate(R.layout.show_capacity, null,false);
+    /*
+    @Override
+    public void receiveMessage(JSONObject data) {
+        try {
+            String receivedPassword = data.getString("password");
+            if(password.getText().toString().trim().equals(receivedPassword)){
+                //Intent i = new Intent(this, Main.class);
+                Intent i = new Intent(this, Selection.class);
+                i.putExtra("username", username.getText().toString());
+                startActivity(i);
+                finish();
+            } else{
+                //showMessage();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((TextView) findViewById(R.id.wrongPassword)).setVisibility(View.VISIBLE);
+                        ((TextView) findViewById(R.id.wrongUsername)).setVisibility(View.GONE);
+                        password.setText("");
+                    }
+                });
 
-        ((TextView)v.findViewById(R.id.capacidad)).setText("Contraseña incorrecta");
-
-        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-
-        final PopupWindow popupWindow = new PopupWindow(v,width,height,true);
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                popupWindow.showAtLocation(v, Gravity.CENTER, 0 ,0);
             }
-        });
+        } catch (JSONException e) {
+            //If json doesn't have password key, username is wrong
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ((TextView) findViewById(R.id.wrongUsername)).setVisibility(View.VISIBLE);
+                    ((TextView) findViewById(R.id.wrongPassword)).setVisibility(View.GONE);
+                }
+            });
 
+        }
     }
+
+     */
+
+    public void recoverPassword(View v){
+        new ServerConnection().recover(this, username.getText().toString().trim());
+    }
+
+
 }

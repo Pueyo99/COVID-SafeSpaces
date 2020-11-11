@@ -6,6 +6,7 @@ import datetime
 import os
 import time
 import json
+from pre_process_image import resize_image
 
 app = Flask(__name__)
 
@@ -20,14 +21,16 @@ def max_cap(room_dim):
         )
 
 
-@app.route('/image', methods = ['POST'])
-def read_image():
+@app.route('/window', methods = ['POST'])
+def compute_window():
 	r = request.json
 	content = base64.b64decode(r['image'])
 	filename = r['filename']
 	rotation = r['rotation']
 	print(rotation)
 	image = Image.open(BytesIO(content)).rotate((rotation*90 -90), expand=True)
+	image = resize_image(image)
+
 	image.save("test_images/"+filename+".jpg")
 
 	# Run test.py
@@ -38,6 +41,22 @@ def read_image():
 	json_file = json.loads(open("json_results/"+filename+".json").read())
 	return jsonify(json_file)
 
+@app.route('/mask', methods = ['POST'])
+def compute_mask():
+	r = request.json
+	content = base64.b64decode(r['image'])
+	filename = r['filename']
+	rotation = r['rotation']
+	print(rotation)
+	image = Image.open(BytesIO(content)).rotate((rotation*90 - 90), expand=True)
+	image = resize_image(image)
+
+	image.save("mask_detection/images/"+filename+".jpg")
+
+	#Run demo.py
+	os.system("python3 mask_detection/demo.py -n prn -i mask_detection/images/"+filename+".jpg")
+	
+	return jsonify(message="Todo bien")
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8999)
