@@ -513,7 +513,7 @@ public class Main extends AppCompatActivity implements Listener {
 
         switch (item.getItemId()){
             case R.id.exit:
-                startActivity(new Intent(this, Login.class));
+                startActivity(new Intent(this, Drawer.class));
                 finish();
                 break;
             case R.id.window:

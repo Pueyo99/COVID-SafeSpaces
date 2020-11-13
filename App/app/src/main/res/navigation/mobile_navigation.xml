@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.covidsafespaces.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.example.covidsafespaces.ProfileFragment"
+        android:label="My profile"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/nav_exit"
+        android:name="com.example.covidsafespaces.SlideshowFragment"
+        android:label="Exit"
+        tools:layout="@layout/fragment_exit" />
+    <fragment
+        android:id="@+id/nav_logout"
+        android:name="com.example.covidsafespaces.LogoutFragment"
+        android:label="Logout"
+        tools:layout="@layout/fragment_logout" />
+    <fragment
+        android:id="@+id/nav_help"
+        android:name="com.example.covidsafespaces.HelpFragment"
+        android:label="Help"
+        tools:layout="@layout/fragment_help" />
+    <fragment
+        android:id="@+id/nav_contact"
+        android:name="com.example.covidsafespaces.ContactFragment"
+        android:label="Contact us"
+        tools:layout="@layout/fragment_contact" />
+    <fragment
+        android:id="@+id/nav_AR"
+        android:name="com.example.covidsafespaces.ARFragment"
+        android:label="AR"
+        tools:layout="@layout/fragment_a_r" />
+    <fragment
+        android:id="@+id/nav_picture"
+        android:name="com.example.covidsafespaces.PictureFragment"
+        android:label="Picture"
+        tools:layout="@layout/fragment_picture" />
+</navigation>

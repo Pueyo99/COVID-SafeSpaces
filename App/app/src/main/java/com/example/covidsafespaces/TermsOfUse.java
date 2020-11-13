@@ -1,6 +1,5 @@
 package com.example.covidsafespaces;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -41,8 +40,7 @@ public class TermsOfUse extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(check.isChecked()==true){
-                    Intent i = new Intent(TermsOfUse.this, Main.class);
-                    i.putExtra("username", username);
+                    Intent i = new Intent(TermsOfUse.this, Drawer.class);
                     startActivity(i);
                 }else{
                     String reply ="You must accept the terms uf use and conditions";

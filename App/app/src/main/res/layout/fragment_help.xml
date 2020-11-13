@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HelpFragment"
+    tools:layout_anchorGravity="center">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="122dp"
+        android:text="STEPS TO FOLLOW"
+        android:textSize="15dp"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="match_parent"
+        android:layout_height="122dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="16sp"
+        android:layout_marginLeft="16sp"/>
+
+    <ImageView
+        android:layout_width="339dp"
+        android:layout_height="225dp"
+        android:layout_below="@+id/text1"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="-60dp"
+        android:layout_marginEnd="33dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/hab3d" />
+
+    <TextView
+        android:id="@+id/text2"
+        android:layout_width="match_parent"
+        android:layout_height="122dp"
+        android:layout_alignTop="@+id/text1"
+        android:layout_marginLeft="16sp"
+        android:layout_marginTop="307dp"
+        android:layout_marginRight="16sp" />
+
+
+</RelativeLayout>
