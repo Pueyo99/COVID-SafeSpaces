@@ -17,7 +17,6 @@ class Database:
 		except Exception as ex:
 			raise
 
-<<<<<<< HEAD
 	def recover(self,username):
 		sql = 'SELECT EMAIL,PASSWORD FROM USERS WHERE USERNAME = ?'
 		try:
@@ -27,8 +26,7 @@ class Database:
 		except Exception as ex:
 			raise
 
-=======
->>>>>>> 35ee40196c47fadc73d59299e6a991329d4bf5e8
+
 	def registerUser(self,username,password, mail):
 		values=(username,password,mail)
 		sql = 'INSERT INTO USERS VALUES (?,?,?)'
@@ -73,6 +71,14 @@ class Database:
 			return json.dumps(capacity[0])
 		except Exception as ex:
 			raise
+
+	def updatePassword(self,username, password):
+		sql = 'UPDATE USERS SET PASSWORD=? WHERE USERNAME=?'
+		try:
+			self.cursor.execute(sql,(password,username))
+			self.connection.commit()
+		except Exception as ex:
+			raise
 	
 	def close(self):
 		self.connection.close()
@@ -80,9 +86,6 @@ class Database:
 
 if __name__ =="__main__":
 	database = Database()
-<<<<<<< HEAD
-	print(database.recover("aleix.clemens"))
-=======
+	#print(database.updatePassword("aleix.clemens","Clemens_7"))
 	print(database.selectUser("aleix.clemens"))
->>>>>>> 35ee40196c47fadc73d59299e6a991329d4bf5e8
 	database.close()
