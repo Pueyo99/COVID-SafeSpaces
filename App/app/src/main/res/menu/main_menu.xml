@@ -24,6 +24,10 @@
                     android:id="@+id/mask"
                     android:title="Mask"
                     />
+
+                <item
+                    android:id="@+id/people"
+                    android:title="People"/>
             </group>
         </menu>
 

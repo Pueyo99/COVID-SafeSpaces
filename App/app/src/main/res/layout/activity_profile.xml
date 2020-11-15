@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:padding="10dp"
+        android:drawableLeft="@drawable/ic_profile"
+        android:textSize="25sp"
+        android:gravity="center"
+        android:text=""/>
+
+    <TextView
+        android:id="@+id/mail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:padding="10dp"
+        android:drawableLeft="@drawable/ic_mail"
+        android:textSize="25sp"
+        android:gravity="center"
+        android:text=""/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:drawableLeft="@drawable/ic_lock"
+        android:text="change password"
+        android:onClick="changePassword"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/changePasswordLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:src="@drawable/candado"/>
+
+            <EditText
+                android:id="@+id/currentPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:padding="10dp"
+                android:drawableLeft="@drawable/ic_lock"
+                android:drawableRight="@drawable/ic_visible"
+                android:textSize="25sp"
+                android:gravity="center"
+                android:hint="Current Password"
+                android:inputType="textPassword"/>
+
+            <TextView
+                android:id="@+id/wrongCurrentPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:background="@android:color/transparent"
+                android:visibility="gone"
+                android:text="Incorrect password"
+                android:textSize="15sp"
+                android:textColor="#F00"
+                />
+
+            <EditText
+                android:id="@+id/password1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:padding="10dp"
+                android:drawableLeft="@drawable/ic_lock"
+                android:drawableRight="@drawable/ic_visible"
+                android:textSize="25sp"
+                android:gravity="center"
+                android:hint="New Password"
+                android:inputType="textPassword"/>
+
+            <EditText
+                android:id="@+id/password2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:padding="10dp"
+                android:drawableLeft="@drawable/ic_lock"
+                android:drawableRight="@drawable/ic_visible"
+                android:textSize="25sp"
+                android:gravity="center"
+                android:hint="New Password"
+                android:inputType="textPassword"/>
+
+            <TextView
+                android:id="@+id/wrongNewPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:background="@android:color/transparent"
+                android:visibility="gone"
+                android:text=""
+                android:textSize="15sp"
+                android:textColor="#F00"
+                />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="update password"
+                android:onClick="updatePassword"/>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+</LinearLayout>

@@ -27,6 +27,7 @@ import okhttp3.Response;
 public class ServerConnection {
 
     private final String serverURL = "https://147.83.50.15:8999/";
+    //private final String serverURL = "http://147.83.50.15:8999/";
     //private final String serverURL = "https://192.168.1.202:5000/";
     //private final String serverURL = "https://192.168.43.201:5000/";
 
@@ -362,6 +363,86 @@ public class ServerConnection {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                    }
+                });
+            }
+        }).start();
+    }
+
+    public void getProfileInfo(final Listener listener, final String username){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                OkHttpClient client = new OkHttpClient.Builder().hostnameVerifier(new HostnameVerifier() {
+                    @Override
+                    public boolean verify(String hostname, SSLSession session) {
+                        return true;
+                    }
+                }).build();
+
+                HttpUrl.Builder urlBuilder = HttpUrl.parse(serverURL+"profile").newBuilder();
+                urlBuilder.addQueryParameter("username", username);
+
+                Request request = new Request.Builder().url(urlBuilder.build()).get().build();
+
+                client.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                        call.cancel();
+                        e.printStackTrace();
+                        Log.i("prueba", "Ha fallado la conexión");
+                    }
+
+                    @Override
+                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                        String body = response.body().string();
+                        Log.i("prueba", body);
+                        try {
+                            JSONObject data = new JSONObject(body);
+                            data.put("function","profile");
+                            listener.receiveMessage(data);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        }).start();
+    }
+
+    public void updatePassword(final String username, final String password){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                OkHttpClient client = new OkHttpClient.Builder().hostnameVerifier(new HostnameVerifier() {
+                    @Override
+                    public boolean verify(String hostname, SSLSession session) {
+                        return true;
+                    }
+                }).build();
+
+                JSONObject data = new JSONObject();
+                try {
+                    data.put("username", username);
+                    data.put("password", password);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                RequestBody body = RequestBody.create(data.toString(), MediaType.parse("application/json"));
+                Request request = new Request.Builder().url(serverURL + "update").post(body).build();
+
+                client.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                        call.cancel();
+                        e.printStackTrace();
+                        Log.i("prueba", "Ha fallado la conexión");
+                    }
+
+                    @Override
+                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                        Log.i("prueba", "Contraseña actualizada");
                     }
                 });
             }

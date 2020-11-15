@@ -1,12 +1,18 @@
 package com.example.covidsafespaces;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -17,13 +23,20 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.navigation.NavigationView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class Selection extends AppCompatActivity implements SelectionListener, Listener {
+public class Selection extends AppCompatActivity implements SelectionListener, Listener, NavigationView.OnNavigationItemSelectedListener {
+
+    private Toolbar mToolbar;
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mActionBarDrawerToggle;
+    private NavigationView mNavigationView;
 
     private Spinner buildings;
     private Adapter buildingAdapter;
@@ -42,6 +55,19 @@ public class Selection extends AppCompatActivity implements SelectionListener, L
 
         Bundle datos = getIntent().getExtras();
         username = datos.getString("username");
+
+        mToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+
+        mActionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open,
+                R.string.drawe_close);
+        mDrawerLayout.addDrawerListener(mActionBarDrawerToggle);
+        mActionBarDrawerToggle.syncState();
+
+        mNavigationView = findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
 
         selectedBuilding = "--Select building--";
         selectedRoom = "--Select room--";
@@ -104,7 +130,11 @@ public class Selection extends AppCompatActivity implements SelectionListener, L
 
     @Override
     public void onBackPressed() {
-        moveTaskToBack(true);
+        if(mDrawerLayout.isDrawerOpen(GravityCompat.START)){
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        } else{
+            moveTaskToBack(true);
+        }
     }
 
     @Override
@@ -208,4 +238,38 @@ public class Selection extends AppCompatActivity implements SelectionListener, L
     }
 
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.nav_home:
+
+                break;
+            case R.id.nav_picture:
+
+                break;
+            case R.id.nav_AR:
+
+                break;
+            case R.id.nav_profile:
+                //Toast.makeText(this, "Navigate to profile", Toast.LENGTH_LONG).show();
+                Intent i = new Intent(this, Profile.class);
+                i.putExtra("username", username);
+                startActivity(i);
+                break;
+            case R.id.nav_contact:
+
+                break;
+            case R.id.nav_help:
+
+                break;
+            case R.id.nav_logout:
+                startActivity(new Intent(this, Login.class));
+                break;
+            case R.id.nav_exit:
+                moveTaskToBack(true);
+                break;
+        }
+
+        return true;
+    }
 }

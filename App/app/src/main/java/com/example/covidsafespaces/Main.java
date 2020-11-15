@@ -532,6 +532,14 @@ public class Main extends AppCompatActivity implements Listener {
                     item.setChecked(true);
                 }
                 break;
+            case R.id.people:
+                path="people";
+                if(item.isChecked()){
+                    item.setChecked(false);
+                }else{
+                    item.setChecked(true);
+                }
+                break;
         }
 
         return true;

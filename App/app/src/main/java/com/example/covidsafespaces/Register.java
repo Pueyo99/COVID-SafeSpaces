@@ -15,13 +15,22 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.w3c.dom.Text;
+
+import java.util.regex.Pattern;
 
 public class Register extends AppCompatActivity {
+
+    private final String PASSWORDTEXT = "La contraseña debe conterner una minúscula, una mayúscula, un número y un carácter especial";
+    private final String REGEXP = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[\\-\\._$@$!%*?&])([A-Za-z\\d$@$!%*?&]|[^ ]){8,15}$";
 
     private TextView username;
     private TextView mail;
     private TextView password1;
     private TextView password2;
+    private TextView alertText;
     private Button registerButton;
     private boolean password1Visible = false;
     private boolean password2Visible = false;
@@ -36,6 +45,7 @@ public class Register extends AppCompatActivity {
         mail = findViewById(R.id.registerMail);
         password1 = findViewById(R.id.registerPassword);
         password2 = findViewById(R.id.registerpassword2);
+        alertText = findViewById(R.id.wrongPassword);
         registerButton = findViewById(R.id.registerButton);
 
         password1.setOnTouchListener(new View.OnTouchListener() {
@@ -88,16 +98,26 @@ public class Register extends AppCompatActivity {
 
     private void register(){
         if(password1.getText().toString().trim().equals(password2.getText().toString().trim())){
-            new ServerConnection().register(username.getText().toString().trim(), mail.getText().toString().trim(),
-                    password1.getText().toString().trim());
-            Intent i = new Intent(this, TermsOfUse.class);
-            i.putExtra("username",username.getText().toString());
-            startActivity(i);
-            finish();
+            if(Pattern.matches(REGEXP, password1.getText().toString().trim())){
+                /*new ServerConnection().register(username.getText().toString().trim(), mail.getText().toString().trim(),
+                        password1.getText().toString().trim());
+                Intent i = new Intent(this, TermsOfUse.class);
+                i.putExtra("username",username.getText().toString());
+                startActivity(i);
+                finish();
+
+                 */
+                Toast.makeText(this, "Me registro", Toast.LENGTH_LONG).show();
+            }else{
+                alertText.setText(PASSWORDTEXT);
+                alertText.setVisibility(View.VISIBLE);
+            }
+
         } else{
             password1.setText("");
             password2.setText("");
-            showMessage();
+            alertText.setText("Las contraseñas introducidas no coinciden");
+            alertText.setVisibility(View.VISIBLE);
         }
     }
 

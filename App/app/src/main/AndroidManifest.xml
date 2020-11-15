@@ -17,15 +17,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="false">
+        <activity android:name=".Profile"></activity>
         <activity
             android:name=".ChangePassword"
             android:label="@string/title_activity_change_password"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Drawer"
             android:label="@string/title_activity_my_drawer"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Selection" />
+        <activity
+            android:name=".Selection"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Register" />
         <activity android:name=".Main" />
         <activity android:name=".TermsOfUse" />
