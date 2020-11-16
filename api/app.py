@@ -7,7 +7,8 @@ import time
 import os
 import database
 import mail
-
+import random
+import string
 
 SQR_M_PERSON = 4.0
 
@@ -120,16 +121,25 @@ def updatePassword():
 def recoverPassword():
 	username = request.args.get('username')
 	print(username)
+	password = getRandomPassword()
+	print(password)
 	try:
 		db =  database.Database()
-		data = db.recover(username)
-		print(data)
+		db.updatePassword(username, password)
+		email = db.recover(username)[0]
+		print(mail)
 		db.close()
-		mailSender = mail.Mail('paeaccenture@gmail.com','PAEAccenture-1',data[0],data[1])
+		mailSender = mail.Mail('paeaccenture@gmail.com','PAEAccenture-1',email,password)
 		return jsonify({'recover':'Password sended'})
 	except Exception as ex:
 		print(ex)
+		traceback.print_exc()
 		return  jsonify({'error':'Non-existent username'})
+
+def getRandomPassword():
+	password_characters = string.ascii_letters + string.digits + string.punctuation
+	password = ''.join(random.choice(password_characters) for i in range(15))
+	return password
 
 @app.route('/profile',methods = ['GET'])
 def getProfileInfo():
