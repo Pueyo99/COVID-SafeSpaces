@@ -67,15 +67,20 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -96,7 +101,7 @@ import java.util.Locale;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
-public class Main extends AppCompatActivity implements Listener {
+public class Main extends AppCompatActivity implements Listener,NavigationView.OnNavigationItemSelectedListener {
 
     private static final int MAX_PREVIEW_WIDTH = 1920;
     private static final int MAX_PREVIEW_HEIGHT = 1080;
@@ -123,6 +128,11 @@ public class Main extends AppCompatActivity implements Listener {
      */
 
     private int mCaptureState = STATE_PREVIEW;
+
+    private Toolbar mToolbar;
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mActionBarDrawerToggle;
+    private NavigationView mNavigationView;
 
     private AlertDialog alertDialog;
     private FusedLocationProviderClient mFusedLocationClient;
@@ -268,6 +278,19 @@ public class Main extends AppCompatActivity implements Listener {
             username = datos.getString("username");
         }
         path = "window";
+
+        mToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+
+        mActionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open,
+                R.string.drawe_close);
+        mDrawerLayout.addDrawerListener(mActionBarDrawerToggle);
+        mActionBarDrawerToggle.syncState();
+
+        mNavigationView = findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
 
         //createImageFolder();
         addOrientationListener();
@@ -499,7 +522,47 @@ public class Main extends AppCompatActivity implements Listener {
 
     @Override
     public void onBackPressed() {
-        moveTaskToBack(true);
+        if(mDrawerLayout.isDrawerOpen(GravityCompat.START)){
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        } else{
+            moveTaskToBack(true);
+        }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.nav_home:
+
+                break;
+            case R.id.nav_picture:
+
+                break;
+            case R.id.nav_AR:
+
+                break;
+            case R.id.nav_profile:
+                //Toast.makeText(this, "Navigate to profile", Toast.LENGTH_LONG).show();
+                mDrawerLayout.closeDrawer(GravityCompat.START);
+                Intent i = new Intent(this, Profile.class);
+                i.putExtra("username", username);
+                startActivity(i);
+                break;
+            case R.id.nav_contact:
+
+                break;
+            case R.id.nav_help:
+
+                break;
+            case R.id.nav_logout:
+                startActivity(new Intent(this, Login.class));
+                break;
+            case R.id.nav_exit:
+                moveTaskToBack(true);
+                break;
+        }
+
+        return true;
     }
 
     @Override
@@ -512,11 +575,8 @@ public class Main extends AppCompatActivity implements Listener {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()){
-            case R.id.exit:
-                startActivity(new Intent(this, Drawer.class));
-                finish();
-                break;
             case R.id.window:
+                Toast.makeText(this,"Window pressed",Toast.LENGTH_LONG).show();
                 path = "window";
                 if(item.isChecked()){
                     item.setChecked(false);
@@ -525,6 +585,7 @@ public class Main extends AppCompatActivity implements Listener {
                 }
                 break;
             case R.id.mask:
+                Toast.makeText(this,"Mask pressed",Toast.LENGTH_LONG).show();
                 path="mask";
                 if(item.isChecked()){
                     item.setChecked(false);

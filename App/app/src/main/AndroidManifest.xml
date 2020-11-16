@@ -30,7 +30,8 @@
             android:name=".Selection"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Register" />
-        <activity android:name=".Main" />
+        <activity android:name=".Main"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".TermsOfUse" />
         <activity
             android:name=".Login"

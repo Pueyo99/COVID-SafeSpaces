@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -252,6 +253,7 @@ public class Selection extends AppCompatActivity implements SelectionListener, L
                 break;
             case R.id.nav_profile:
                 //Toast.makeText(this, "Navigate to profile", Toast.LENGTH_LONG).show();
+                mDrawerLayout.closeDrawer(GravityCompat.START);
                 Intent i = new Intent(this, Profile.class);
                 i.putExtra("username", username);
                 startActivity(i);

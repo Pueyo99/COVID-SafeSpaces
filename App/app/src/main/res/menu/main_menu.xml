@@ -3,12 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/exit"
-        android:icon="@drawable/ic_exit"
-        android:title="Exit"
-        app:showAsAction="always"/>
-
-    <item
         android:id="@+id/options"
         android:title="Options">
 
