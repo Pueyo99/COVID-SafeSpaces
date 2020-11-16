@@ -93,16 +93,30 @@ def read_image():
 	image.save("images/"+username+"/"+filename+".jpeg")
 	return jsonify({'prueba':'Imagen guardada'})
 
+@app.route('/verify',methods = ['GET'])
+def verify():
+	username = request.args.get('username')
+	try:
+		db = database.Database()
+		output = db.selectUnverified(username)
+		print(output)
+		db.close()
+		return jsonify(output)
+	except Exception:
+		return jsonify({'verification':'user not verified'})
 
 @app.route('/register', methods = ['POST'])
 def register():
 	json = request.json
 	username = json['username']
 	password = json['password']
-	mail = json['mail']
+	email = json['mail']
 	db = database.Database()
-	db.registerUser(username, password,mail)
+	db.registerUnverified(username, password,email)
 	db.close()
+	mailSender = mail.Mail('paeaccenture@gmail.com','PAEAccenture-1',email,password)
+	mailSender.writeVerification(username)
+	mailSender.send()
 	return jsonify({'register':'successful register'})
 
 @app.route('/update', methods = ['POST'])
@@ -130,6 +144,8 @@ def recoverPassword():
 		print(mail)
 		db.close()
 		mailSender = mail.Mail('paeaccenture@gmail.com','PAEAccenture-1',email,password)
+		mailSender.writeRecovery()
+		mailSender.send()
 		return jsonify({'recover':'Password sended'})
 	except Exception as ex:
 		print(ex)
