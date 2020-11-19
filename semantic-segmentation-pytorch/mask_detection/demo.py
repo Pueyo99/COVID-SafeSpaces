@@ -99,5 +99,4 @@ for file in files:
     cv2.imshow('image', mat)
     cv2.waitKey(0)
 
-print("AVG Confidence: %s Count: %s" % (round(conf_sum / detection_count, 2), detection_count))
 
