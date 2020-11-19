@@ -80,6 +80,7 @@ def people_masks():
 	image = resize_image(image)
 
 	image.save("object_counter/images/"+filename+".jpg")
+	image.save("mask_detection/images/"+filename+".jpg")
 
 	#t_people = threading.Thread(target=count_people, args=filename, daemon=True)
 	#t_masks = threading.Thread(target=detect_masks, args=filename, daemon=True)
