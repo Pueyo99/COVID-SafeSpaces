@@ -91,6 +91,7 @@ def people_masks():
 	while not os.path.exists("object_counter/json_results/"+filename+".json") or not os.path.exists("mask_detection/json_results/"+filename+".json"):
 		time.sleep(2)
 		print("Esperando al fichero: "+filename+".json")
+		
 	num_people = json.loads(open("object_counter/json_results/"+filename+".json").read())
 	masks_found = json.loads(open("mask_detection/json_results/"+filename+".json").read())
 	print(num_people, masks_found, sep='\n')
