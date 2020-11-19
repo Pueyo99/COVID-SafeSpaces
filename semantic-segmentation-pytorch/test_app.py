@@ -12,7 +12,7 @@ from pre_process_image import resize_image
 app = Flask(__name__)
 
 def count_people(filename):
-	os.system("python3 mask_detection/demo.py -n prn -i mask_detection/images/"+filename+".jpg")
+	os.system("python3 object_counter/images.py --images object_counter/images/"+filename+".jpg")
 
 def detect_masks(filename):
 	os.system("python3 mask_detection/demo.py -n prn -i mask_detection/images/"+filename+".jpg")
@@ -84,7 +84,7 @@ def people_masks():
 	#t_people = threading.Thread(target=count_people, args=filename, daemon=True)
 	#t_masks = threading.Thread(target=detect_masks, args=filename, daemon=True)
 
-	os.system("python3 mask_detection/demo.py -n prn -i mask_detection/images/"+filename+".jpg")
+	os.system("python3 object_counter/images.py --images object_counter/images/"+filename+".jpg")
 	os.system("python3 mask_detection/demo.py -n prn -i mask_detection/images/"+filename+".jpg")
 
 	while not os.path.exists("object_counter/json_results/"+filename+".json") and not os.path.exists("mask_detection/json_results/"+filename+".json"):
