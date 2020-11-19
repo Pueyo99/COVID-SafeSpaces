@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 
 public class Register extends AppCompatActivity {
 
-    private final String PASSWORDTEXT = "The password must contain a lowercase, an uppercase, a number and a special character";
+    private final String PASSWORDTEXT = "La contraseña debe conterner una minúscula, una mayúscula, un número y un carácter especial";
     private final String REGEXP = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[\\-\\._$@$!%*?&])([A-Za-z\\d$@$!%*?&]|[^ ]){8,15}$";
 
     private TextView username;
@@ -99,15 +99,13 @@ public class Register extends AppCompatActivity {
     private void register(){
         if(password1.getText().toString().trim().equals(password2.getText().toString().trim())){
             if(Pattern.matches(REGEXP, password1.getText().toString().trim())){
-                /*new ServerConnection().register(username.getText().toString().trim(), mail.getText().toString().trim(),
+                new ServerConnection().register(username.getText().toString().trim(), mail.getText().toString().trim(),
                         password1.getText().toString().trim());
                 Intent i = new Intent(this, TermsOfUse.class);
-                i.putExtra("username",username.getText().toString());
+                //i.putExtra("username",username.getText().toString());
                 startActivity(i);
                 finish();
 
-                 */
-                Toast.makeText(this, "Registered", Toast.LENGTH_LONG).show();
             }else{
                 alertText.setText(PASSWORDTEXT);
                 alertText.setVisibility(View.VISIBLE);
@@ -116,7 +114,7 @@ public class Register extends AppCompatActivity {
         } else{
             password1.setText("");
             password2.setText("");
-            alertText.setText("\n The entered passwords do not match");
+            alertText.setText("Las contraseñas introducidas no coinciden");
             alertText.setVisibility(View.VISIBLE);
         }
     }
@@ -151,7 +149,7 @@ public class Register extends AppCompatActivity {
         LayoutInflater inflater = LayoutInflater.from(this);
         final View v = inflater.inflate(R.layout.show_capacity, null,false);
 
-        ((TextView)v.findViewById(R.id.capacidad)).setText("The entered passwords do not match");
+        ((TextView)v.findViewById(R.id.capacidad)).setText("The passwords entered are not the same");
 
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
