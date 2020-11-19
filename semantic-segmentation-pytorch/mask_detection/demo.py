@@ -96,6 +96,7 @@ for file in files:
 
 
     # show the output image
-    cv2.imshow('image', mat)
+    #cv2.imshow('image', mat)
+    #cv2.waitKey(0)
 
 
