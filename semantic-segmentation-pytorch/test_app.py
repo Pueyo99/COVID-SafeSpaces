@@ -6,9 +6,16 @@ import datetime
 import os
 import time
 import json
+import threading
 from pre_process_image import resize_image
 
 app = Flask(__name__)
+
+def count_people(filename):
+	os.system("python3 object_counter/images.py --images object_counter/images/"+filename+".jpg")
+
+def detect_masks(filename):
+	os.system("python3 mask_detection/demo.py -n prn -i mask_detection/images/"+filename+".jpg")
 
 @app.route('/<float:room_dim>', methods = ['GET'])
 def max_cap(room_dim):
@@ -63,7 +70,7 @@ def compute_mask():
 	return jsonify(json_file)
 
 @app.route('/people', methods = ['POST'])
-def count_people():
+def people_masks():
 	r = request.json
 	content = base64.b64decode(r['image'])
 	filename = r['filename']
@@ -73,16 +80,23 @@ def count_people():
 	image = resize_image(image)
 
 	image.save("object_counter/images/"+filename+".jpg")
+	image.save("mask_detection/images/"+filename+".jpg")
 
-	#Run images.py
+	#t_people = threading.Thread(target=count_people, args=filename, daemon=True)
+	#t_masks = threading.Thread(target=detect_masks, args=filename, daemon=True)
+
 	os.system("python3 object_counter/images.py --images object_counter/images/"+filename+".jpg")
+	os.system("python3 mask_detection/demo.py -n prn -i mask_detection/images/"+filename+".jpg")
 
-	while not os.path.exists("object_counter/json_results/"+filename+".json"):
-		time.sleep(5)
+	while not os.path.exists("object_counter/json_results/"+filename+".json") or not os.path.exists("mask_detection/json_results/"+filename+".json"):
+		time.sleep(2)
 		print("Esperando al fichero: "+filename+".json")
-	json_file = json.loads(open("object_counter/json_results/"+filename+".json").read())
 
-	return jsonify(json_file)
+	num_people = json.loads(open("object_counter/json_results/"+filename+".json").read())
+	masks_found = json.loads(open("mask_detection/json_results/"+filename+".json").read())
+	print(num_people, masks_found, sep='\n')
+
+	return jsonify(num_people.update(masks_found))
      
 
 if __name__ == '__main__':
