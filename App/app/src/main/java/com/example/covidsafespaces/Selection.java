@@ -249,14 +249,16 @@ public class Selection extends AppCompatActivity implements SelectionListener, L
 
                 break;
             case R.id.nav_AR:
-
+                mDrawerLayout.closeDrawer(GravityCompat.START);
+                Intent arcore = new Intent(this, ARCore.class);
+                startActivity(arcore);
                 break;
             case R.id.nav_profile:
                 //Toast.makeText(this, "Navigate to profile", Toast.LENGTH_LONG).show();
                 mDrawerLayout.closeDrawer(GravityCompat.START);
-                Intent i = new Intent(this, Profile.class);
-                i.putExtra("username", username);
-                startActivity(i);
+                Intent profile = new Intent(this, Profile.class);
+                profile.putExtra("username", username);
+                startActivity(profile);
                 break;
             case R.id.nav_contact:
 
