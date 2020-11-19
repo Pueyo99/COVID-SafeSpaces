@@ -87,7 +87,7 @@ def people_masks():
 	os.system("python3 object_counter/images.py --images object_counter/images/"+filename+".jpg")
 	os.system("python3 mask_detection/demo.py -n prn -i mask_detection/images/"+filename+".jpg")
 
-	while not os.path.exists("object_counter/json_results/"+filename+".json") and not os.path.exists("mask_detection/json_results/"+filename+".json"):
+	while not os.path.exists("object_counter/json_results/"+filename+".json") or not os.path.exists("mask_detection/json_results/"+filename+".json"):
 		time.sleep(2)
 		print("Esperando al fichero: "+filename+".json")
 	num_people = json.loads(open("object_counter/json_results/"+filename+".json").read())
