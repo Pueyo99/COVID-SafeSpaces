@@ -95,7 +95,7 @@ def people_masks():
 	num_people = json.loads(open("object_counter/json_results/"+filename+".json").read())
 	masks_found = json.loads(open("mask_detection/json_results/"+filename+".json").read())
 	num_people.update(masks_found)
-	print(num_people, masks_found, sep='\n')
+	print(num_people)
 
 	return jsonify(num_people)
      
