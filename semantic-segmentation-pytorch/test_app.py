@@ -81,8 +81,11 @@ def people_masks():
 
 	image.save("object_counter/images/"+filename+".jpg")
 
-	t_people = threading.Thread(target=count_people, args=filename, daemon=True)
-	t_masks = threading.Thread(target=detect_masks, args=filename, daemon=True)
+	#t_people = threading.Thread(target=count_people, args=filename, daemon=True)
+	#t_masks = threading.Thread(target=detect_masks, args=filename, daemon=True)
+
+	os.system("python3 mask_detection/demo.py -n prn -i mask_detection/images/"+filename+".jpg")
+	os.system("python3 mask_detection/demo.py -n prn -i mask_detection/images/"+filename+".jpg")
 
 	while not os.path.exists("object_counter/json_results/"+filename+".json") and not os.path.exists("mask_detection/json_results/"+filename+".json"):
 		time.sleep(2)
