@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 
 public class Register extends AppCompatActivity {
 
-    private final String PASSWORDTEXT = "La contraseña debe conterner una minúscula, una mayúscula, un número y un carácter especial";
+    private final String PASSWORDTEXT = "The password must contain a lowercase, an uppercase, a number and a special character";
     private final String REGEXP = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[\\-\\._$@$!%*?&])([A-Za-z\\d$@$!%*?&]|[^ ]){8,15}$";
 
     private TextView username;
@@ -107,7 +107,7 @@ public class Register extends AppCompatActivity {
                 finish();
 
                  */
-                Toast.makeText(this, "Me registro", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Registered", Toast.LENGTH_LONG).show();
             }else{
                 alertText.setText(PASSWORDTEXT);
                 alertText.setVisibility(View.VISIBLE);
@@ -116,7 +116,7 @@ public class Register extends AppCompatActivity {
         } else{
             password1.setText("");
             password2.setText("");
-            alertText.setText("Las contraseñas introducidas no coinciden");
+            alertText.setText("\n The entered passwords do not match");
             alertText.setVisibility(View.VISIBLE);
         }
     }
@@ -151,7 +151,7 @@ public class Register extends AppCompatActivity {
         LayoutInflater inflater = LayoutInflater.from(this);
         final View v = inflater.inflate(R.layout.show_capacity, null,false);
 
-        ((TextView)v.findViewById(R.id.capacidad)).setText("The passwords entered are not the same");
+        ((TextView)v.findViewById(R.id.capacidad)).setText("The entered passwords do not match");
 
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
