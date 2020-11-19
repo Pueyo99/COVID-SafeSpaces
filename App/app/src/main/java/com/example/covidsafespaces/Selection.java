@@ -246,7 +246,10 @@ public class Selection extends AppCompatActivity implements SelectionListener, L
 
                 break;
             case R.id.nav_picture:
-
+                mDrawerLayout.closeDrawer(GravityCompat.START);
+                Intent picture = new Intent(this, Main.class);
+                picture.putExtra("username", username);
+                startActivity(picture);
                 break;
             case R.id.nav_AR:
                 mDrawerLayout.closeDrawer(GravityCompat.START);
