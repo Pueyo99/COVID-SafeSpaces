@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 
 public class Register extends AppCompatActivity {
 
-    private final String PASSWORDTEXT = "La contraseña debe conterner una minúscula, una mayúscula, un número y un carácter especial";
+    private final String PASSWORDTEXT = "Password must contain an upper case, a lower case, a number and a special character";
     private final String REGEXP = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[\\-\\._$@$!%*?&])([A-Za-z\\d$@$!%*?&]|[^ ]){8,15}$";
 
     private TextView username;
@@ -106,6 +106,8 @@ public class Register extends AppCompatActivity {
                 startActivity(i);
                 finish();
 
+                Toast.makeText(this, "Verification email sended", Toast.LENGTH_LONG).show();
+
             }else{
                 alertText.setText(PASSWORDTEXT);
                 alertText.setVisibility(View.VISIBLE);
@@ -114,7 +116,7 @@ public class Register extends AppCompatActivity {
         } else{
             password1.setText("");
             password2.setText("");
-            alertText.setText("Las contraseñas introducidas no coinciden");
+            alertText.setText("Passwords do not match");
             alertText.setVisibility(View.VISIBLE);
         }
     }
