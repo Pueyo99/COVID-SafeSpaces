@@ -1,6 +1,7 @@
 import argparse
 import glob
 import os
+import json
 
 import cv2
 
@@ -43,12 +44,14 @@ else:
 
 conf_sum = 0
 detection_count = 0
+warning = False
 
 index=0
 
 for file in files:
     index += 1 
     print(file)
+    
     mat = cv2.imread(file)
 
     width, height, inference_time, results = yolo.inference(mat)
@@ -68,20 +71,33 @@ for file in files:
 
         conf_sum += confidence
         detection_count += 1
+	
+        if name is "none":
+            warning = True
 
         # draw a bounding box rectangle and label on the image
         color = colors[id]
         cv2.rectangle(mat, (x, y), (x + w, y + h), color, 2)
         text = "%s (%s)" % (name, round(confidence, 2))
-        cv2.putText(mat, text, (x, y - 5), cv2.FONT_HERSHEY_DUPLEX,
-                    0.5, color, 1)
+        cv2.putText(mat, text, (x, y - 5), cv2.FONT_HERSHEY_DUPLEX, 0.5, color, 1)
 
         print("%s with %s confidence" % (name, round(confidence, 2)))
+        
 
-    cv2.imwrite("mask_detection/results/export"+str(index)+".jpg", mat)
+    cv2.imwrite(file.replace("images","results"), mat)
+    filename = file.replace("images","json_results")
+    filename = filename.replace(".jpg",".json")
+
+    with open(filename, "w+") as json_file:
+        if warning:
+            json.dump({"Message": "Warning, someone is not using a mask!"}, json_file)
+        else:
+            json.dump({"Message": "Everyone is wearing a mask"}, json_file)
+
 
     # show the output image
     cv2.imshow('image', mat)
     cv2.waitKey(0)
 
 print("AVG Confidence: %s Count: %s" % (round(conf_sum / detection_count, 2), detection_count))
+
