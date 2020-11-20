@@ -10,7 +10,7 @@ class Mail():
 		self.msg = MIMEMultipart()
 		self.msg['From'] = sender
 		self.msg['To'] = receiver
-		self.msg['Subject'] = "Password recovery"
+		#self.msg['Subject'] = "Password recovery"
 		self.password = password
 		self.userPassword = userPassword
 		#self.message = self.writeMessage(userPassword)
@@ -18,11 +18,13 @@ class Mail():
 
 
 	def writeRecovery(self):
+		self.msg['Subject'] = "Password recovery"
 		str = "Your password is: "+self.userPassword
 		self.msg.attach(MIMEText(str,'plain'))
 
 
 	def writeVerification(self,username):
+		self.msg['Subject'] = "Account Verification"
 		str = "Your account has been created. To activate it, press the following link: "
 		self.msg.attach(MIMEText(str,'plain'))
 		str1 = "<a href=https://147.83.50.15:8999/verify?username="+username+">Verifiy your account</a>"
