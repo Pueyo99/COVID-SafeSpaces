@@ -7,6 +7,7 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +41,8 @@ public class ARCore extends AppCompatActivity implements Scene.OnUpdateListener 
     private float[] modelMatrixAnt = new float[16];
     int aux = 1;
     float distance;
+    float finaldistance;
+    float distance2;
 
     private ArFragment arFragment;
     private AnchorNode currentAnchorNode;
@@ -65,6 +68,7 @@ public class ARCore extends AppCompatActivity implements Scene.OnUpdateListener 
         initModel();
 
         arFragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
+            Toast.makeText(this, "Anchor creado", Toast.LENGTH_LONG).show();
             if (cubeRenderable == null)
                 return;
 
@@ -151,17 +155,22 @@ public class ARCore extends AppCompatActivity implements Scene.OnUpdateListener 
                     Log.i("key2", aux + "st Anchor" );
                     //Log.i("key3", "pose1 =" + pose1.toString());
                     //Log.i("key6", modelMatrix[13] + "modelMatrix[13]" );
-                    aux=aux+1;
+                    aux++;
                 } else if (aux == 2) {
                     //2nd Anchor --- Calculate+Show distance on screen
                     Log.i("key2", aux + "º Anchor" );
                     distance = distance2Points(modelMatrix, modelMatrixAnt);
+                    showDistance(distance);
+
+
                     //distance = 10;
-                    String distanceString = String.valueOf(distance);
+                    /*String distanceString = String.valueOf(distance);
                     Log.i("key4", "distance = " + distanceString);
                     tvDistance.setText("Distance: " + distanceString + " m.");
                     //aux=0;
                     System.arraycopy(modelMatrix, 0, modelMatrixAnt, 0, 16);
+
+                     */
                 }
             }
             /*
@@ -182,6 +191,16 @@ public class ARCore extends AppCompatActivity implements Scene.OnUpdateListener 
                 totalDistanceSquared += distance_vector[i] * distance_vector[i];*/
         }
     }
+
+    private void showDistance(float distance){
+        finaldistance = distance;
+        tvDistance.setText("Distance: " + distance + " m.");
+    }
+
+    public void onButtonClick(View v){
+        Toast.makeText(this, "1: "+distance+"\n2: "+distance2, Toast.LENGTH_LONG).show();
+    }
+
     //Calculate distancia between 2 points on same frame
     private float distance2Points(float[] array1, float[] array2) {
         float distx1 = array1[13];

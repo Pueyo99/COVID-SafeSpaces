@@ -31,6 +31,8 @@
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:screenOrientation="locked"
             android:exported="true"/>
+
+
         <activity android:name=".Profile" />
         <activity
             android:name=".ChangePassword"
