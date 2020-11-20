@@ -143,8 +143,9 @@ class Database:
 if __name__ =="__main__":
 	database = Database()
 	#print(database.updatePassword("aleix.clemens","Clemens_7"))
-	#print(database.selectUser("aleix.clemens"))
-	print(database.showUnverifiedUsers())
-	database.deleteUser("clemens")
+	#database.deleteUser("")
+	#print(database.selectUser(""))
+	#print(database.showUnverifiedUsers())
+	#database.deleteUser("clemens")
 	database.close()
 
