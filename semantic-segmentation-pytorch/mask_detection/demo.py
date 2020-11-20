@@ -61,8 +61,8 @@ for file in files:
 
     output = []
 
-    cv2.namedWindow('image', cv2.WINDOW_NORMAL)
-    cv2.resizeWindow('image', 848, 640)
+    #cv2.namedWindow('image', cv2.WINDOW_NORMAL)
+    #cv2.resizeWindow('image', 848, 640)
 
     for detection in results:
         id, name, confidence, x, y, w, h = detection
@@ -76,13 +76,14 @@ for file in files:
             warning = True
 
         # draw a bounding box rectangle and label on the image
+        """
         color = colors[id]
         cv2.rectangle(mat, (x, y), (x + w, y + h), color, 2)
         text = "%s (%s)" % (name, round(confidence, 2))
         cv2.putText(mat, text, (x, y - 5), cv2.FONT_HERSHEY_DUPLEX, 0.5, color, 1)
 
         print("%s with %s confidence" % (name, round(confidence, 2)))
-        
+        """
 
     cv2.imwrite(file.replace("images","results"), mat)
     filename = file.replace("images","json_results")
