@@ -418,6 +418,29 @@ public class Main extends AppCompatActivity implements Listener,NavigationView.O
         }
     }
 
+    public void setResultDialog(String warning, String message){
+        LayoutInflater inflater = LayoutInflater.from(Main.this);
+        View v = inflater.inflate(R.layout.result_dialog, null, false);
+
+        ((TextView)v.findViewById(R.id.people)).setText(message);
+        ((TextView)v.findViewById(R.id.warning)).setText(warning);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setView(v);
+
+        AlertDialog resultDialog = builder.create();
+        resultDialog.show();
+        Window window = resultDialog.getWindow();
+        if (window != null) {
+            WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+            layoutParams.copyFrom(resultDialog.getWindow().getAttributes());
+            layoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT;
+            layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+            resultDialog.getWindow().setAttributes(layoutParams);
+        }
+    }
+
     public void setProgressDialog() {
 
         LayoutInflater inflater = LayoutInflater.from(Main.this);
@@ -453,7 +476,24 @@ public class Main extends AppCompatActivity implements Listener,NavigationView.O
                     });
 
                     break;
-
+                case "window":
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(Main.this,data.toString(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    break;
+                case "people":
+                    String warning = "People: "+data.getString("Número de personas");
+                    String message = data.getString("Message");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            setResultDialog(warning,message);
+                        }
+                    });
+                    break;
                 case "get":
                     alertDialog.dismiss();
                     String capacity = data.getString("max_cap");
@@ -533,13 +573,21 @@ public class Main extends AppCompatActivity implements Listener,NavigationView.O
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.nav_home:
-
+                mDrawerLayout.closeDrawer(GravityCompat.START);
+                Intent home = new Intent(this, Selection.class);
+                home.putExtra("username", username);
+                startActivity(home);
                 break;
             case R.id.nav_picture:
-
+                mDrawerLayout.closeDrawer(GravityCompat.START);
+                Intent picture = new Intent(this, Main.class);
+                picture.putExtra("username", username);
+                startActivity(picture);
                 break;
             case R.id.nav_AR:
-
+                mDrawerLayout.closeDrawer(GravityCompat.START);
+                Intent arcore = new Intent(this, ARCore.class);
+                startActivity(arcore);
                 break;
             case R.id.nav_profile:
                 //Toast.makeText(this, "Navigate to profile", Toast.LENGTH_LONG).show();

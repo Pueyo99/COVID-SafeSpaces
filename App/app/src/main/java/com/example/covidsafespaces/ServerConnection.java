@@ -53,7 +53,7 @@ public class ServerConnection {
                 }
 
                 RequestBody body = RequestBody.create(data.toString(),MediaType.parse("application/json"));
-                Request request = new Request.Builder().url(serverURL+"image").post(body).build();
+                Request request = new Request.Builder().url(serverURL+path).post(body).build();
 
                 Log.i("prueba", path);
 
@@ -69,7 +69,8 @@ public class ServerConnection {
                     public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                         try {
                             JSONObject data = new JSONObject(response.body().string());
-                            data.put("function", "post");
+                            Log.i("prueba", data.toString());
+                            data.put("function", path);
                             listener.receiveMessage(data);
                         } catch (JSONException e) {
                             e.printStackTrace();
