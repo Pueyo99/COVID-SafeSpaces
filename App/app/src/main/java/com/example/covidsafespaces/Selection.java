@@ -253,7 +253,7 @@ public class Selection extends AppCompatActivity implements SelectionListener, L
                 break;
             case R.id.nav_AR:
                 mDrawerLayout.closeDrawer(GravityCompat.START);
-                Intent arcore = new Intent(this, ARCore.class);
+                Intent arcore = new Intent(this, ARCore2.class);
                 startActivity(arcore);
                 break;
             case R.id.nav_profile:

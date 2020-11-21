@@ -25,13 +25,13 @@ import com.google.ar.sceneform.rendering.ShapeFactory;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
 import static java.lang.Math.pow;
 
-public class ARCore extends AppCompatActivity implements Scene.OnUpdateListener {
-
+public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener{
 
     private static final double MIN_OPENGL_VERSION = 3.0;
     private static final String TAG = ARCore.class.getSimpleName();
@@ -39,10 +39,13 @@ public class ARCore extends AppCompatActivity implements Scene.OnUpdateListener 
     //private final SnackbarHelper messageSnackbarHelper = new SnackbarHelper();
     private final float[] modelMatrix = new float[16];
     private float[] modelMatrixAnt = new float[16];
-    int aux = 1;
+    private ArrayList<float[]> poses = new ArrayList<>();
+    int nAnchors = 0;
     float distance;
     float finaldistance;
     float distance2;
+    private ArrayList<Float> distances = new ArrayList<>();
+    private boolean updateDistance;
 
     private ArFragment arFragment;
     private AnchorNode currentAnchorNode;
@@ -68,7 +71,7 @@ public class ARCore extends AppCompatActivity implements Scene.OnUpdateListener 
         initModel();
 
         arFragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
-            Toast.makeText(this, "Anchor creado", Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "Anchor creado", Toast.LENGTH_LONG).show();
             if (cubeRenderable == null)
                 return;
 
@@ -81,6 +84,8 @@ public class ARCore extends AppCompatActivity implements Scene.OnUpdateListener 
 
             currentAnchor = anchor;
             currentAnchorNode = anchorNode;
+            nAnchors++;
+            updateDistance=true;
 
 
             TransformableNode node = new TransformableNode(arFragment.getTransformationSystem());
@@ -142,38 +147,61 @@ public class ARCore extends AppCompatActivity implements Scene.OnUpdateListener 
 
         if (currentAnchorNode != null) {
             Pose objectPose = currentAnchor.getPose();
-            Pose cameraPose = frame.getCamera().getPose();
+            //Pose cameraPose = frame.getCamera().getPose();
             ///////////////////////////////
             objectPose.toMatrix(modelMatrix, 0);
-            if (!areSame(modelMatrix,modelMatrixAnt)) {
-                if (aux == 1) {
-                    //1rst Anchor --- Save current modelMatrix as modelMatrixAnt
-                    //Log.i("key2", "modelMatrix = " + Arrays.toString(modelMatrixAnt));
-                    System.arraycopy(modelMatrix, 0, modelMatrixAnt, 0, 16);
-                    Log.i("key1", "modelMatrix = " + Arrays.toString(modelMatrix));
-                    Log.i("key3", "pose = " + objectPose.toString());
-                    Log.i("key2", aux + "st Anchor" );
-                    //Log.i("key3", "pose1 =" + pose1.toString());
-                    //Log.i("key6", modelMatrix[13] + "modelMatrix[13]" );
-                    aux++;
-                } else if (aux == 2) {
-                    //2nd Anchor --- Calculate+Show distance on screen
-                    Log.i("key2", aux + "º Anchor" );
-                    distance = distance2Points(modelMatrix, modelMatrixAnt);
-                    showDistance(distance);
-                    System.arraycopy(modelMatrix, 0, modelMatrixAnt, 0, 16);
 
-
-                    //distance = 10;
-                    /*String distanceString = String.valueOf(distance);
-                    Log.i("key4", "distance = " + distanceString);
-                    tvDistance.setText("Distance: " + distanceString + " m.");
-                    //aux=0;
+            if (nAnchors == 1) {
+                //1rst Anchor --- Save current modelMatrix as modelMatrixAnt
+                //System.arraycopy(modelMatrix, 0, modelMatrixAnt, 0, 16);
+                if(updateDistance){
                     System.arraycopy(modelMatrix, 0, modelMatrixAnt, 0, 16);
+                    //poses.add(modelMatrix);
+                    /*Toast.makeText(this, "x: "+modelMatrix[13]+"\ny: "+modelMatrix[14]
+                    +"\nz: "+modelMatrix[15], Toast.LENGTH_LONG).show();
 
                      */
+                    updateDistance = false;
+                }
+                //aux++;
+            } else if (nAnchors == 2) {
+                //2nd Anchor --- Calculate+Show distance on screen
+                if(updateDistance){
+                    //poses.add(modelMatrix);
+                    /*Toast.makeText(this, "x: "+modelMatrix[13]+"\ny: "+modelMatrix[14]
+                            +"\nz: "+modelMatrix[15], Toast.LENGTH_LONG).show();
+
+                     */
+                    updateDistance = false;
+                    //distance = distance2Points(poses.get(1), poses.get(0));
+                    distance = distance2Points(modelMatrix,modelMatrixAnt);
+                    showDistance(distance);
+                    distances.add(distance);
+                    System.arraycopy(modelMatrix, 0, modelMatrixAnt, 0, 16);
+                }
+
+                //distance = 10;
+                /*String distanceString = String.valueOf(distance);
+                tvDistance.setText("Distance: " + distanceString + " m.");
+                //aux=0;
+                System.arraycopy(modelMatrix, 0, modelMatrixAnt, 0, 16);
+
+                 */
+            }else if(nAnchors==3){
+                if(updateDistance){
+                    //poses.add(modelMatrix);
+                    /*Toast.makeText(this, "x: "+modelMatrix[13]+"\ny: "+modelMatrix[14]
+                            +"\nz: "+modelMatrix[15], Toast.LENGTH_LONG).show();
+
+                     */
+                    updateDistance = false;
+                    //distance = distance2Points(poses.get(1), poses.get(0));
+                    distance = distance2Points(modelMatrix,modelMatrixAnt);
+                    distances.add(distance);
+                    showDistance(distance);
                 }
             }
+
             /*
             ///////////////////////////////////
             float dx = objectPose.tx() - cameraPose.tx();
@@ -199,11 +227,17 @@ public class ARCore extends AppCompatActivity implements Scene.OnUpdateListener 
     }
 
     public void onButtonClick(View v){
-        Toast.makeText(this, "1: "+distance+"\n2: "+distance2, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "1: "+distances.get(0)+"\n2: "+distances.get(1), Toast.LENGTH_LONG).show();
     }
 
     //Calculate distancia between 2 points on same frame
     private float distance2Points(float[] array1, float[] array2) {
+
+        Toast.makeText(this, "x: "+array1[13]+"\ny: "+array1[14]
+                +"\nz: "+array1[15], Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "x: "+array2[13]+"\ny: "+array2[14]
+                +"\nz: "+array2[15], Toast.LENGTH_LONG).show();
+
         float distx1 = array1[13];
         float disty1 = array1[14];
         float distz1 = array1[15];
@@ -211,8 +245,7 @@ public class ARCore extends AppCompatActivity implements Scene.OnUpdateListener 
         float disty2 = array2[14];
         float distz2 = array2[15];
 
-        float distance = (float) Math.sqrt(pow(distx1 - distx2, 2) + pow(disty1 - disty2, 2) + pow(distz1 - distz2, 2));
-        return distance;
+        return (float) Math.sqrt(pow(distx1 - distx2, 2) + pow(disty1 - disty2, 2) + pow(distz1 - distz2, 2));
     }
 
     //Compare Matrix
