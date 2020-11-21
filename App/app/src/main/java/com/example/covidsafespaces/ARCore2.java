@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -226,8 +227,15 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
         tvDistance.setText("Distance: " + distance + " m.");
     }
 
-    public void onButtonClick(View v){
-        Toast.makeText(this, "1: "+distances.get(0)+"\n2: "+distances.get(1), Toast.LENGTH_LONG).show();
+    public void onButtonClick(View v) {
+        //Toast.makeText(this, "1: " + distances.get(0) + "\n2: " + distances.get(1), Toast.LENGTH_LONG).show();
+        ArrayList<Float> areas = new ArrayList<>();
+        for (Float distance : distances) {
+            areas.add((float) (distance * 3.0));
+        }
+        Intent i = new Intent(this, Main.class);
+        i.putExtra("areas", areas);
+        startActivity(i);
     }
 
     //Calculate distancia between 2 points on same frame

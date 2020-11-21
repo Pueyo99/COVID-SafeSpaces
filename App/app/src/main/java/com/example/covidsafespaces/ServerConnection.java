@@ -31,7 +31,8 @@ public class ServerConnection {
     //private final String serverURL = "https://192.168.1.202:5000/";
     //private final String serverURL = "https://192.168.43.201:5000/";
 
-    public void postImage(final byte[] image, final String filename, final int rotation, final String username, final String path, final Listener listener){
+    public void postImage(final byte[] image, final String filename, final int rotation, final String username, final String path,
+                          final float area,final Listener listener){
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -48,6 +49,7 @@ public class ServerConnection {
                     data.put("filename", filename);
                     data.put("rotation", rotation);
                     data.put("username", username);
+                    data.put("area", area);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

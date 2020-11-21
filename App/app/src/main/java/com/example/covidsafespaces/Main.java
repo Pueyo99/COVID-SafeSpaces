@@ -136,6 +136,8 @@ public class Main extends AppCompatActivity implements Listener,NavigationView.O
 
     private AlertDialog alertDialog;
     private FusedLocationProviderClient mFusedLocationClient;
+    private ArrayList<Float> areas;
+    private int areaIndex;
     private String path;
     private String username;
     private String countryName;
@@ -197,7 +199,8 @@ public class Main extends AppCompatActivity implements Listener,NavigationView.O
             ByteBuffer byteBuffer = mImage.getPlanes()[0].getBuffer();
             byte[] bytes = new byte[byteBuffer.remaining()];
             byteBuffer.get(bytes);
-            new ServerConnection().postImage(bytes, createFileName(), mDisplayRotation, username,path,Main.this);
+            new ServerConnection().postImage(bytes, createFileName(), mDisplayRotation, username,path,
+                    areas.get(areaIndex),Main.this);
             mImage.close();
             /*FileOutputStream fileOutputStream = null;
             try {
@@ -276,8 +279,11 @@ public class Main extends AppCompatActivity implements Listener,NavigationView.O
         Bundle datos = getIntent().getExtras();
         if(datos != null){
             username = datos.getString("username");
+            areas = (ArrayList<Float>) datos.getSerializable("areas");
         }
+
         path = "window";
+        areaIndex = 0;
 
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -624,7 +630,6 @@ public class Main extends AppCompatActivity implements Listener,NavigationView.O
 
         switch (item.getItemId()){
             case R.id.window:
-                Toast.makeText(this,"Window pressed",Toast.LENGTH_LONG).show();
                 path = "window";
                 if(item.isChecked()){
                     item.setChecked(false);
@@ -633,7 +638,6 @@ public class Main extends AppCompatActivity implements Listener,NavigationView.O
                 }
                 break;
             case R.id.mask:
-                Toast.makeText(this,"Mask pressed",Toast.LENGTH_LONG).show();
                 path="mask";
                 if(item.isChecked()){
                     item.setChecked(false);
@@ -643,6 +647,23 @@ public class Main extends AppCompatActivity implements Listener,NavigationView.O
                 break;
             case R.id.people:
                 path="people";
+                if(item.isChecked()){
+                    item.setChecked(false);
+                }else{
+                    item.setChecked(true);
+                }
+                break;
+
+            case R.id.big:
+                areaIndex = 0;
+                if(item.isChecked()){
+                    item.setChecked(false);
+                }else{
+                    item.setChecked(true);
+                }
+                break;
+            case R.id.small:
+                areaIndex = 1;
                 if(item.isChecked()){
                     item.setChecked(false);
                 }else{

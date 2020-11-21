@@ -27,4 +27,27 @@
 
     </item>
 
+    <item
+        android:id="@+id/windowSelection"
+        android:title="Window">
+
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/big"
+                    android:title="Big"
+                    android:checked="true"
+                    />
+
+                <item
+                    android:id="@+id/small"
+                    android:title="Small"
+                    />
+
+
+            </group>
+        </menu>
+
+    </item>
+
 </menu>
