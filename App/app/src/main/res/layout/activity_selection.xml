@@ -76,7 +76,7 @@
                     android:text="or" />
             </RelativeLayout>
 
-            <TextView
+            <EditText
                 android:id="@+id/newBuilding"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -86,13 +86,23 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"/>
 
-            <TextView
+            <EditText
                 android:id="@+id/newRoom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textSize="20sp"
                 android:hint="Room" />
+
+            <TextView
+                android:id="@+id/newMeasureWarning"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="15sp"
+                android:textColor="#F00"
+                android:visibility="gone"
+                />
 
             <Button
                 android:layout_width="match_parent"

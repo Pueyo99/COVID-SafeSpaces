@@ -13,8 +13,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.ar.core.Anchor;
+import com.google.ar.core.CameraConfig;
+import com.google.ar.core.Config;
 import com.google.ar.core.Frame;
 import com.google.ar.core.Pose;
+import com.google.ar.core.Session;
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.FrameTime;
 import com.google.ar.sceneform.Scene;
@@ -36,6 +39,10 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
 
     private static final double MIN_OPENGL_VERSION = 3.0;
     private static final String TAG = ARCore.class.getSimpleName();
+
+    private String username;
+    private String building;
+    private String room;
 
     //private final SnackbarHelper messageSnackbarHelper = new SnackbarHelper();
     private final float[] modelMatrix = new float[16];
@@ -65,9 +72,13 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
 
         setContentView(R.layout.activity_a_r_core);
 
+        Bundle extras = getIntent().getExtras();
+        username = extras.getString("username");
+        building = extras.getString("building");
+        room = extras.getString("room");
+
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
         tvDistance = findViewById(R.id.tvDistance);
-
 
         initModel();
 
@@ -179,6 +190,7 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
                     showDistance(distance);
                     distances.add(distance);
                     System.arraycopy(modelMatrix, 0, modelMatrixAnt, 0, 16);
+                    nAnchors = 0;
                 }
 
                 //distance = 10;
@@ -188,23 +200,10 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
                 System.arraycopy(modelMatrix, 0, modelMatrixAnt, 0, 16);
 
                  */
-            }else if(nAnchors==3){
-                if(updateDistance){
-                    //poses.add(modelMatrix);
-                    /*Toast.makeText(this, "x: "+modelMatrix[13]+"\ny: "+modelMatrix[14]
-                            +"\nz: "+modelMatrix[15], Toast.LENGTH_LONG).show();
-
-                     */
-                    updateDistance = false;
-                    //distance = distance2Points(poses.get(1), poses.get(0));
-                    distance = distance2Points(modelMatrix,modelMatrixAnt);
-                    distances.add(distance);
-                    showDistance(distance);
-                }
             }
 
             /*
-            ///////////////////////////////////
+
             float dx = objectPose.tx() - cameraPose.tx();
             float dy = objectPose.ty() - cameraPose.ty();
             float dz = objectPose.tz() - cameraPose.tz();
@@ -234,8 +233,13 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
             areas.add((float) (distance * 3.0));
         }
         Intent i = new Intent(this, Main.class);
+        i.putExtra("username", username);
+        i.putExtra("building",building);
+        i.putExtra("room",room);
         i.putExtra("areas", areas);
         startActivity(i);
+        new ServerConnection().insertCapacity(username,building,room,
+                (int) Math.floor((distances.get(0)*distances.get(1))/4));
     }
 
     //Calculate distancia between 2 points on same frame

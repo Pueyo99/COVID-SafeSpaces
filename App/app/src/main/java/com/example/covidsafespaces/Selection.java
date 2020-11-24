@@ -179,7 +179,8 @@ public class Selection extends AppCompatActivity implements SelectionListener, L
     public void receiveMessage(JSONObject data) {
         try {
             String capacity = data.getString("CAPACITY");
-            showCapacity(capacity);
+            Double windowSurface = data.getDouble("WINDOWSURFACE");
+            showCapacity(capacity, windowSurface);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -190,11 +191,13 @@ public class Selection extends AppCompatActivity implements SelectionListener, L
 
     }
 
-    public void showCapacity(String capacity){
+    public void showCapacity(String capacity, Double windowSurface){
         LayoutInflater inflater = LayoutInflater.from(this);
         final View v = inflater.inflate(R.layout.show_capacity, null,false);
 
-        ((TextView)v.findViewById(R.id.capacidad)).setText("This room can accommodate "+capacity+" people");
+        String str = "This room can accommodate "+capacity+" people and has "+windowSurface+ " m2 of ventilation";
+        str += ", enough for "+ (int) Math.floor(windowSurface/0.125)+" people";
+        ((TextView)v.findViewById(R.id.capacidad)).setText(str);
 
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
@@ -210,11 +213,20 @@ public class Selection extends AppCompatActivity implements SelectionListener, L
     }
 
     public void newMeasure(View v){
-        TextView newBuilding = findViewById(R.id.newBuilding);
-        TextView newRoom = findViewById(R.id.newRoom);
-        Intent i = new Intent(this, Main.class);
-        i.putExtra("username",username);
-        startActivity(i);
+        String newBuilding = ((TextView)findViewById(R.id.newBuilding)).getText().toString().trim();
+        String newRoom = ((TextView)findViewById(R.id.newRoom)).getText().toString().trim();
+        if(newBuilding.equals("") || newRoom.equals("")){
+            TextView newMeasureWarning = findViewById(R.id.newMeasureWarning);
+            newMeasureWarning.setText("Fields must be filled");
+            newMeasureWarning.setVisibility(View.VISIBLE);
+        }else{
+            Intent i = new Intent(this, ARCore2.class);
+            i.putExtra("username",username);
+            i.putExtra("building", newBuilding);
+            i.putExtra("room", newRoom);
+            startActivity(i);
+        }
+
     }
 
     public void setProgressDialog() {

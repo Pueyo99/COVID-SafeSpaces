@@ -134,12 +134,18 @@ public class Main extends AppCompatActivity implements Listener,NavigationView.O
     private ActionBarDrawerToggle mActionBarDrawerToggle;
     private NavigationView mNavigationView;
 
+    private int imagesSended;
+    private int imagesReceived;
+    private boolean endPressed;
+
     private AlertDialog alertDialog;
     private FusedLocationProviderClient mFusedLocationClient;
     private ArrayList<Float> areas;
     private int areaIndex;
     private String path;
     private String username;
+    private String building;
+    private String room;
     private String countryName;
     private Button captureButton;
     private Button endButton;
@@ -200,8 +206,10 @@ public class Main extends AppCompatActivity implements Listener,NavigationView.O
             byte[] bytes = new byte[byteBuffer.remaining()];
             byteBuffer.get(bytes);
             new ServerConnection().postImage(bytes, createFileName(), mDisplayRotation, username,path,
-                    areas.get(areaIndex),Main.this);
+                    building,room,areas.get(areaIndex),Main.this);
             mImage.close();
+            imagesSended++;
+            Toast.makeText(Main.this, "Sended: "+imagesSended,Toast.LENGTH_LONG).show();
             /*FileOutputStream fileOutputStream = null;
             try {
                 fileOutputStream = new FileOutputStream(mImageFileName);
@@ -279,6 +287,8 @@ public class Main extends AppCompatActivity implements Listener,NavigationView.O
         Bundle datos = getIntent().getExtras();
         if(datos != null){
             username = datos.getString("username");
+            building = datos.getString("building");
+            room = datos.getString("room");
             areas = (ArrayList<Float>) datos.getSerializable("areas");
         }
 
@@ -315,8 +325,19 @@ public class Main extends AppCompatActivity implements Listener,NavigationView.O
         endButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setProgressDialog();
+                if(imagesSended==imagesReceived){
+                    setProgressDialog();
+                    new ServerConnection().getCapacity(Main.this,username,building,room);
+                }else{
+                    setProgressDialog();
+                    endPressed=true;
+                }
+
+
+                /*setProgressDialog();
                 new ServerConnection().get("275.0", Main.this);
+
+                 */
             }
         });
 
@@ -483,12 +504,17 @@ public class Main extends AppCompatActivity implements Listener,NavigationView.O
 
                     break;
                 case "window":
+                    imagesReceived++;
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            Toast.makeText(Main.this,"Received: "+imagesReceived,Toast.LENGTH_LONG).show();
                             Toast.makeText(Main.this,data.toString(), Toast.LENGTH_LONG).show();
                         }
                     });
+                    if(imagesReceived==imagesSended && endPressed){
+                        new ServerConnection().getCapacity(Main.this, username,building,room);
+                    }
                     break;
                 case "people":
                     String warning = "People: "+data.getString("Número de personas");
@@ -502,8 +528,9 @@ public class Main extends AppCompatActivity implements Listener,NavigationView.O
                     break;
                 case "get":
                     alertDialog.dismiss();
-                    String capacity = data.getString("max_cap");
-                    showCapacity(capacity);
+                    String capacity = data.getString("CAPACITY");
+                    Double windowSurface = data.getDouble("WINDOWSURFACE");
+                    showCapacity(capacity,windowSurface);
                     break;
             }
 
@@ -512,11 +539,13 @@ public class Main extends AppCompatActivity implements Listener,NavigationView.O
         }
     }
 
-    public void showCapacity(String capacity){
+    public void showCapacity(String capacity,Double windowSurface){
         LayoutInflater inflater = LayoutInflater.from(this);
         final View v = inflater.inflate(R.layout.show_capacity, null,false);
 
-        ((TextView)v.findViewById(R.id.capacidad)).setText("This room can accommodate "+capacity+" people");
+        String str = "This room can accommodate "+capacity+" people and has "+windowSurface+ " m2 of ventilation";
+        str += ", enough for "+ (int) Math.floor(windowSurface/0.125)+" people";
+        ((TextView)v.findViewById(R.id.capacidad)).setText(str);
 
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
@@ -631,14 +660,6 @@ public class Main extends AppCompatActivity implements Listener,NavigationView.O
         switch (item.getItemId()){
             case R.id.window:
                 path = "window";
-                if(item.isChecked()){
-                    item.setChecked(false);
-                }else{
-                    item.setChecked(true);
-                }
-                break;
-            case R.id.mask:
-                path="mask";
                 if(item.isChecked()){
                     item.setChecked(false);
                 }else{
