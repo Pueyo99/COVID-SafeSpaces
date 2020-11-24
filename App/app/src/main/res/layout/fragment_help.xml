@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HelpFragment"
-    tools:layout_anchorGravity="center">
+    tools:layout_anchorGravity="center"
+    android:background="#D1C4E9">
 
     <TextView
         android:layout_width="match_parent"

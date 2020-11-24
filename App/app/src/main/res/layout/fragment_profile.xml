@@ -4,14 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProfileFragment">
+    tools:context=".ProfileFragment"
+    android:background="#D1C4E9">
     <TextView
         android:id="@+id/text_profile_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50sp"
         android:text=" Username:"
-        android:drawableLeft="@drawable/ic_profile"/>
+        android:drawableLeft="@drawable/ic_profile"
+        android:background="@drawable/borde"/>
 
     <TextView
         android:id="@+id/text_profile_email"
@@ -19,7 +21,8 @@
         android:layout_height="wrap_content"
         android:text=" Email:"
         android:layout_marginTop="100sp"
-        android:drawableLeft="@drawable/ic_mail"/>
+        android:drawableLeft="@drawable/ic_mail"
+        android:background="@drawable/borde"/>
 
     <Button
         android:id="@+id/ch_pw"

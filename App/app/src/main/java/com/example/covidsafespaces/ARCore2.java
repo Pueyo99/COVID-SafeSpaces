@@ -4,11 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,12 +65,13 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
     private TextView tvDistance;
     ModelRenderable cubeRenderable;
     private Anchor currentAnchor = null;
-
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        context =this;
+        new Help_arWindow(context);
         if (!checkIsSupportedDeviceOrFinish(this)) {
             Toast.makeText(getApplicationContext(), "Device not supported", Toast.LENGTH_LONG).show();
         }
@@ -267,5 +273,29 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
             if (A[i] != B[i])
                 return false;
         return true;
+    }
+    public class Help_arWindow {
+        public Help_arWindow(Context context){
+            final Dialog dialog = new Dialog(context);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setCancelable(false);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            dialog.setContentView(R.layout.help_dialogwindow);
+            final TextView text =(TextView) dialog.findViewById(R.id.textwindow);
+            text.setText("STEPS TO FOLLOW\n\nYou will have three markers available to place in three corners of your ground\n" +
+                    "1.Place two markers on two corners of the room to mesure the width of the room. You will see on ths screen the distance between them\n" +
+                    "2.Place a third marker on the thrid corner to measure the length, you will also see the distance between this marker and the second one.\nHaving all these measures we " +
+                    "proceed to calculate area of the ground");
+            text.setMovementMethod(new ScrollingMovementMethod());
+            Button ok = (Button) dialog.findViewById(R.id.okbutton);
+            ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+
+        }
     }
 }

@@ -6,6 +6,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.RectF;
 import android.graphics.SurfaceTexture;
+import android.graphics.drawable.ColorDrawable;
 import android.hardware.Camera;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -44,6 +46,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.provider.Settings;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
@@ -102,7 +105,7 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 public class Main extends AppCompatActivity implements Listener,NavigationView.OnNavigationItemSelectedListener {
-
+    Context context;
     private static final int MAX_PREVIEW_WIDTH = 1920;
     private static final int MAX_PREVIEW_HEIGHT = 1080;
     private static final int REQUEST_CAMERA_PERMISSION = 1;
@@ -283,7 +286,8 @@ public class Main extends AppCompatActivity implements Listener,NavigationView.O
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-
+        context =this;
+        new Help_dialogWindow(context);
         Bundle datos = getIntent().getExtras();
         if(datos != null){
             username = datos.getString("username");
@@ -1145,4 +1149,30 @@ public class Main extends AppCompatActivity implements Listener,NavigationView.O
     }
 
      */
+    public class Help_dialogWindow {
+        public Help_dialogWindow(Context context){
+            final Dialog dialog = new Dialog(context);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setCancelable(false);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.setContentView(R.layout.help_dialogwindow);
+            final TextView text =(TextView) dialog.findViewById(R.id.textwindow);
+            text.setText("INSTRUCTIONS\n\nYou have three functions available :\n-Window detection\nPeople \n"+
+                    "Now you are in Window Detection, if you want to change it press then button up to the right and select the function you want\n\n" +
+                    "WINDOW DETECTION:\n\n1.Take pictures of each window of the room\n2.When you have captured all the windows available, " +
+                    "press the button 'end' and wait the response of the server\n\nPEOPLE:\n\nYou have to take a photo from an angle that shows all the " +
+                    "separate people and their respective faces." +
+                    "we can see all the faces of each person and");
+            text.setMovementMethod(new ScrollingMovementMethod());
+            Button ok = (Button) dialog.findViewById(R.id.okbutton);
+            ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+
+        }
+    }
 }

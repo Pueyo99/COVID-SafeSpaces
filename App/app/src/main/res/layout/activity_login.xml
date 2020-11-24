@@ -5,7 +5,9 @@
     android:orientation="vertical"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:gravity="center">
+    android:gravity="center"
+    android:background="#D1C4E9"
+    >
 
     <LinearLayout
         android:orientation="vertical"
@@ -13,7 +15,14 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         tools:context=".Login">
-
+        <ImageView
+            android:layout_width="149dp"
+            android:layout_height="109dp"
+            android:layout_below="@+id/text1"
+            android:layout_margin="30dp"
+            android:gravity="center"
+            android:scaleType="fitCenter"
+            android:src="@drawable/logo3" />
         <EditText
             android:id="@+id/username"
             android:layout_width="300dp"
