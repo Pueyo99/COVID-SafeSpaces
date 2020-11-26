@@ -8,14 +8,6 @@
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_home"
             android:title="@string/menu_home" />
-        <item
-        android:id="@+id/nav_picture"
-        android:icon="@drawable/ic_menu_camera"
-        android:title="Picture" />
-        <item
-            android:id="@+id/nav_AR"
-            android:icon="@drawable/ic_ar"
-            android:title="AR" />
 
         <item
             android:id="@+id/nav_profile"

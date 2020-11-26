@@ -1,24 +1,38 @@
 package com.example.covidsafespaces;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
+
+import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.regex.Pattern;
 
-public class Profile extends AppCompatActivity implements Listener{
+public class Profile extends AppCompatActivity implements Listener, NavigationView.OnNavigationItemSelectedListener {
 
-    private final String PASSWORDTEXT = "La contraseña debe conterner una minúscula, una mayúscula, un número y un carácter especial";
+    private final String PASSWORDTEXT = "Password must contain an upper case, a lower case, a number and a special character";
     private final String REGEXP = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[\\-\\._$@$!%*?&])([A-Za-z\\d$@$!%*?&]|[^ ]){8,15}$";
+
+    private Toolbar mToolbar;
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mActionBarDrawerToggle;
+    private NavigationView mNavigationView;
 
     private String mUsername;
     private String mMail;
@@ -39,6 +53,19 @@ public class Profile extends AppCompatActivity implements Listener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        mToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+
+        mActionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open,
+                R.string.drawe_close);
+        mDrawerLayout.addDrawerListener(mActionBarDrawerToggle);
+        mActionBarDrawerToggle.syncState();
+
+        mNavigationView = findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
 
         Bundle datos = getIntent().getExtras();
         mUsername = datos.getString("username");
@@ -188,5 +215,44 @@ public class Profile extends AppCompatActivity implements Listener{
             password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
             password.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_lock, 0, R.drawable.ic_novisible, 0);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(mDrawerLayout.isDrawerOpen(GravityCompat.START)){
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        } else{
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.nav_home:
+                mDrawerLayout.closeDrawer(GravityCompat.START);
+                Intent home = new Intent(Profile.this, Selection.class);
+                home.putExtra("username", mUsername);
+                startActivity(home);
+                break;
+            case R.id.nav_profile:
+                mDrawerLayout.closeDrawer(GravityCompat.START);
+                break;
+            case R.id.nav_contact:
+
+                break;
+            case R.id.nav_help:
+
+                break;
+            case R.id.nav_logout:
+                startActivity(new Intent(this, Login.class));
+                break;
+            case R.id.nav_exit:
+                mDrawerLayout.closeDrawer(GravityCompat.START);
+                moveTaskToBack(true);
+                break;
+        }
+
+        return true;
     }
 }

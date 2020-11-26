@@ -1,6 +1,8 @@
 package com.example.covidsafespaces;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -11,6 +13,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -45,12 +49,15 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
     private static final double MIN_OPENGL_VERSION = 3.0;
     private static final String TAG = ARCore.class.getSimpleName();
 
+    private Toolbar mToolbar;
+
     private String username;
     private String building;
     private String room;
 
     //private final SnackbarHelper messageSnackbarHelper = new SnackbarHelper();
-    private final float[] modelMatrix = new float[16];
+    //private final float[] modelMatrix = new float[16];
+    private float[] modelMatrix = new float[16];
     private float[] modelMatrixAnt = new float[16];
     private ArrayList<float[]> poses = new ArrayList<>();
     int nAnchors = 0;
@@ -59,6 +66,7 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
     float distance2;
     private ArrayList<Float> distances = new ArrayList<>();
     private boolean updateDistance;
+    private int rate=0;
 
     private ArFragment arFragment;
     private AnchorNode currentAnchorNode;
@@ -71,21 +79,39 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context =this;
-        new Help_arWindow(context);
         if (!checkIsSupportedDeviceOrFinish(this)) {
             Toast.makeText(getApplicationContext(), "Device not supported", Toast.LENGTH_LONG).show();
         }
 
         setContentView(R.layout.activity_a_r_core);
 
-        Bundle extras = getIntent().getExtras();
-        username = extras.getString("username");
-        building = extras.getString("building");
-        room = extras.getString("room");
+        mToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
 
-        arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
         tvDistance = findViewById(R.id.tvDistance);
 
+        Bundle extras = getIntent().getExtras();
+        if(extras!=null){
+            username = extras.getString("username");
+            building = extras.getString("building");
+            room = extras.getString("room");
+            if(extras.containsKey("distances")){
+                distances = (ArrayList<Float>) extras.getSerializable("distances");
+                if(distances.size()>0){
+                    tvDistance.setText("Distance: " + distances.get(0) + " m.");
+                }
+            }else{
+                showHelp();
+            }
+        }
+
+
+
+        initAR();
+    }
+
+    public void initAR(){
+        arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
         initModel();
 
         arFragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
@@ -115,8 +141,6 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
 
 
         });
-
-
     }
 
     public boolean checkIsSupportedDeviceOrFinish(final Activity activity) {
@@ -166,7 +190,6 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
         if (currentAnchorNode != null) {
             Pose objectPose = currentAnchor.getPose();
             //Pose cameraPose = frame.getCamera().getPose();
-            ///////////////////////////////
             objectPose.toMatrix(modelMatrix, 0);
 
             if (nAnchors == 1) {
@@ -197,6 +220,22 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
                     distances.add(distance);
                     System.arraycopy(modelMatrix, 0, modelMatrixAnt, 0, 16);
                     nAnchors = 0;
+
+
+
+                    /*modelMatrix = new float[16];
+                    modelMatrixAnt = new float[16];
+                    clearAnchor();
+
+                     */
+                    /*getIntent().putExtra("distances",distances);
+                    recreate();
+
+                     */
+
+
+
+
                 }
 
                 //distance = 10;
@@ -246,6 +285,7 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
         startActivity(i);
         new ServerConnection().insertCapacity(username,building,room,
                 (int) Math.floor((distances.get(0)*distances.get(1))/4));
+
     }
 
     //Calculate distancia between 2 points on same frame
@@ -274,28 +314,56 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
                 return false;
         return true;
     }
-    public class Help_arWindow {
-        public Help_arWindow(Context context){
-            final Dialog dialog = new Dialog(context);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setCancelable(false);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-            dialog.setContentView(R.layout.help_dialogwindow);
-            final TextView text =(TextView) dialog.findViewById(R.id.textwindow);
-            text.setText("STEPS TO FOLLOW\n\nYou will have three markers available to place in three corners of your ground\n" +
-                    "1.Place two markers on two corners of the room to mesure the width of the room. You will see on ths screen the distance between them\n" +
-                    "2.Place a third marker on the thrid corner to measure the length, you will also see the distance between this marker and the second one.\nHaving all these measures we " +
-                    "proceed to calculate area of the ground");
-            text.setMovementMethod(new ScrollingMovementMethod());
-            Button ok = (Button) dialog.findViewById(R.id.okbutton);
-            ok.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    dialog.dismiss();
-                }
-            });
-            dialog.show();
 
+    private void showHelp(){
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.help_dialogwindow);
+        final TextView text = dialog.findViewById(R.id.textwindow);
+        text.setText("STEPS TO FOLLOW\n\nYou will have three markers available to place in three corners of your ground\n" +
+                "1.Place two markers on two corners of the room to mesure the width of the room. You will see on ths screen the distance between them\n" +
+                "2.Place a third marker on the thrid corner to measure the length, you will also see the distance between this marker and the second one.\nHaving all these measures we " +
+                "proceed to calculate area of the ground");
+        text.setMovementMethod(new ScrollingMovementMethod());
+        Button ok = (Button) dialog.findViewById(R.id.okbutton);
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_ar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.help:
+                showHelp();
+                break;
+            case R.id.add:
+                getIntent().putExtra("distances",distances);
+                recreate();
+                break;
+            case R.id.restart:
+
+                break;
         }
+
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
     }
 }

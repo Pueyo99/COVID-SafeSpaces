@@ -4,7 +4,7 @@
     android:layout_width="300dp"
     android:layout_height="400dp"
     android:orientation="vertical"
-    android:background="@color/emergingBackground"
+    android:background="#572364"
     android:layout_gravity="center"
     android:gravity="center">
 
@@ -12,6 +12,7 @@
         android:id="@+id/capacidad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#FFF"
         android:textSize="32sp"
         android:gravity="center"
         />

@@ -40,7 +40,7 @@ public class TermsOfUse extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(check.isChecked()==true){
-                    Intent i = new Intent(TermsOfUse.this, Drawer.class);
+                    Intent i = new Intent(TermsOfUse.this, Login.class);
                     startActivity(i);
                 }else{
                     String reply ="You must accept the terms uf use and conditions";

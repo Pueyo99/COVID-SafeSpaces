@@ -101,12 +101,15 @@ public class Register extends AppCompatActivity {
             if(Pattern.matches(REGEXP, password1.getText().toString().trim())){
                 new ServerConnection().register(username.getText().toString().trim(), mail.getText().toString().trim(),
                         password1.getText().toString().trim());
-                Intent i = new Intent(this, TermsOfUse.class);
+                onBackPressed();
+                /*Intent i = new Intent(this, Login.class);
                 //i.putExtra("username",username.getText().toString());
                 startActivity(i);
                 finish();
 
-                Toast.makeText(this, "Verification email sended", Toast.LENGTH_LONG).show();
+                 */
+
+                //Toast.makeText(this, "Verification email sended", Toast.LENGTH_LONG).show();
 
             }else{
                 alertText.setText(PASSWORDTEXT);

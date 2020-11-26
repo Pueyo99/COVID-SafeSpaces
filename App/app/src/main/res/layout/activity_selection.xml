@@ -7,12 +7,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+
     >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="#D1C4E9">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
@@ -23,7 +25,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:title="Measures">
+                app:title="Home">
 
             </androidx.appcompat.widget.Toolbar>
 
@@ -59,19 +61,21 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="#D1C4E9">
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_margin="12dp"
-                    android:background="@android:color/black" />
+                    android:background="@android:color/black"
+                    />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="2dp"
-                    android:background="@android:color/white"
+                    android:background="#D1C4E9"
                     android:layout_centerHorizontal="true"
                     android:text="or" />
             </RelativeLayout>
@@ -81,18 +85,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:inputType="text"
+                android:maxLines="1"
                 android:textSize="20sp"
                 android:hint="Building"
                 android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"/>
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/borde"/>
 
             <EditText
                 android:id="@+id/newRoom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:inputType="text"
+                android:maxLines="1"
                 android:textSize="20sp"
-                android:hint="Room" />
+                android:hint="Room"
+                android:background="@drawable/borde"/>
 
             <TextView
                 android:id="@+id/newMeasureWarning"

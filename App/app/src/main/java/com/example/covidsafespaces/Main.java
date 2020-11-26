@@ -104,13 +104,12 @@ import java.util.Locale;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
-public class Main extends AppCompatActivity implements Listener,NavigationView.OnNavigationItemSelectedListener {
+public class Main extends AppCompatActivity implements Listener {
     Context context;
     private static final int MAX_PREVIEW_WIDTH = 1920;
     private static final int MAX_PREVIEW_HEIGHT = 1080;
     private static final int REQUEST_CAMERA_PERMISSION = 1;
     //private static final int REQUEST_STORAGE_PERMISSION = 2;
-    private final int REQUEST_GPS_LOCATION = 3;
     private static final int STATE_PREVIEW = 0;
     private static final int STATE_WAIT_LOCK = 1;
 
@@ -133,23 +132,18 @@ public class Main extends AppCompatActivity implements Listener,NavigationView.O
     private int mCaptureState = STATE_PREVIEW;
 
     private Toolbar mToolbar;
-    private DrawerLayout mDrawerLayout;
-    private ActionBarDrawerToggle mActionBarDrawerToggle;
-    private NavigationView mNavigationView;
 
     private int imagesSended;
     private int imagesReceived;
     private boolean endPressed;
 
     private AlertDialog alertDialog;
-    private FusedLocationProviderClient mFusedLocationClient;
     private ArrayList<Float> areas;
     private int areaIndex;
     private String path;
     private String username;
     private String building;
     private String room;
-    private String countryName;
     private Button captureButton;
     private Button endButton;
     private String mCameraId;
@@ -211,7 +205,12 @@ public class Main extends AppCompatActivity implements Listener,NavigationView.O
             new ServerConnection().postImage(bytes, createFileName(), mDisplayRotation, username,path,
                     building,room,areas.get(areaIndex),Main.this);
             mImage.close();
-            imagesSended++;
+            if (path=="people"){
+                setProgressDialog();
+            }
+            if(path=="window"){
+                imagesSended++;
+            }
             Toast.makeText(Main.this, "Sended: "+imagesSended,Toast.LENGTH_LONG).show();
             /*FileOutputStream fileOutputStream = null;
             try {
@@ -287,7 +286,7 @@ public class Main extends AppCompatActivity implements Listener,NavigationView.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         context =this;
-        new Help_dialogWindow(context);
+        showHelp();
         Bundle datos = getIntent().getExtras();
         if(datos != null){
             username = datos.getString("username");
@@ -301,16 +300,6 @@ public class Main extends AppCompatActivity implements Listener,NavigationView.O
 
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-
-        mDrawerLayout = findViewById(R.id.drawer_layout);
-
-        mActionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open,
-                R.string.drawe_close);
-        mDrawerLayout.addDrawerListener(mActionBarDrawerToggle);
-        mActionBarDrawerToggle.syncState();
-
-        mNavigationView = findViewById(R.id.nav_view);
-        mNavigationView.setNavigationItemSelectedListener(this);
 
         //createImageFolder();
         addOrientationListener();
@@ -347,107 +336,6 @@ public class Main extends AppCompatActivity implements Listener,NavigationView.O
 
     }
 
-    public void getLocation() {
-
-        /*if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestUbicationPermission();
-            return;
-        }
-
-         */
-
-        /*if(!isLocationEnabled()){
-            showSettingsAlert();
-            return;
-        }
-
-         */
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        mFusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, null).addOnSuccessListener(this, new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                Log.i("prueba", "Ha habido exito");
-                if(location != null){
-                    getCountryName(location.getLatitude(), location.getLongitude());
-                }
-            }
-        });
-    }
-
-    public void showSettingsAlert(){
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(Main.this);
-
-        // Setting Dialog Title
-        alertDialog.setTitle("GPS is settings");
-
-        // Setting Dialog Message
-        alertDialog.setMessage("GPS is not enabled. Do you want to go to settings menu?");
-
-        // On pressing the Settings button.
-        alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog,int which) {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                Main.this.startActivity(intent);
-            }
-        });
-
-        // On pressing the cancel button
-        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-                finish();
-            }
-        });
-
-        // Showing Alert Message
-        alertDialog.create().show();
-    }
-
-    public boolean isLocationEnabled()
-    {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-// This is new method provided in API 28
-            LocationManager lm = (LocationManager) Main.this.getSystemService(Context.LOCATION_SERVICE);
-            return lm.isLocationEnabled();
-        } else {
-// This is Deprecated in API 28
-            int mode = Settings.Secure.getInt(getContentResolver(), Settings.Secure.LOCATION_MODE,
-                    Settings.Secure.LOCATION_MODE_OFF);
-            return  (mode != Settings.Secure.LOCATION_MODE_OFF);
-
-        }
-    }
-
-    public void getCountryName(double latitude, double longitude){
-        Log.i("prueba", "He entrado a pillar el nombre");
-        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-        List<Address> addresses = null;
-        try{
-            addresses = geocoder.getFromLocation(latitude, longitude, 1);
-            Address result;
-
-            if (addresses != null && !addresses.isEmpty()){
-                countryName = addresses.get(0).getCountryCode();
-                //countryName = addresses.get(0).getCountryName();
-                //Toast.makeText(Main.this, "Your country is\n"+countryName,Toast.LENGTH_LONG).show();
-                Log.i("prueba", countryName);
-                Log.i("prueba", "Latitud: "+latitude+"\nLongitud: "+longitude);
-                DBAccess database = new DBAccess(this);
-                database.open();
-                double distance = database.getDistance(countryName);
-                database.close();
-                Log.i("prueba", String.valueOf(distance));
-                Toast.makeText(Main.this, "Security distance: "+distance, Toast.LENGTH_LONG).show();
-
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void setResultDialog(String warning, String message){
         LayoutInflater inflater = LayoutInflater.from(Main.this);
@@ -521,6 +409,7 @@ public class Main extends AppCompatActivity implements Listener,NavigationView.O
                     }
                     break;
                 case "people":
+                    alertDialog.dismiss();
                     String warning = "People: "+data.getString("Número de personas");
                     String message = data.getString("Message");
                     runOnUiThread(new Runnable() {
@@ -568,22 +457,6 @@ public class Main extends AppCompatActivity implements Listener,NavigationView.O
     protected void onResume() {
         super.onResume();
         startBackgroundThread();
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestUbicationPermission();
-            return;
-        }
-        if(!isLocationEnabled()){
-            showSettingsAlert();
-            return;
-        }
-
-        mBackgroundHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                getLocation();
-            }
-        });
-
         if(mTextureView.isAvailable()){
             openCamera(mTextureView.getWidth(), mTextureView.getHeight());  //If it's available, we open the camera
         }else{
@@ -601,56 +474,10 @@ public class Main extends AppCompatActivity implements Listener,NavigationView.O
 
     @Override
     public void onBackPressed() {
-        if(mDrawerLayout.isDrawerOpen(GravityCompat.START)){
-            mDrawerLayout.closeDrawer(GravityCompat.START);
-        } else{
-            moveTaskToBack(true);
-        }
+        moveTaskToBack(true);
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.nav_home:
-                mDrawerLayout.closeDrawer(GravityCompat.START);
-                Intent home = new Intent(this, Selection.class);
-                home.putExtra("username", username);
-                startActivity(home);
-                break;
-            case R.id.nav_picture:
-                mDrawerLayout.closeDrawer(GravityCompat.START);
-                Intent picture = new Intent(this, Main.class);
-                picture.putExtra("username", username);
-                startActivity(picture);
-                break;
-            case R.id.nav_AR:
-                mDrawerLayout.closeDrawer(GravityCompat.START);
-                Intent arcore = new Intent(this, ARCore.class);
-                startActivity(arcore);
-                break;
-            case R.id.nav_profile:
-                //Toast.makeText(this, "Navigate to profile", Toast.LENGTH_LONG).show();
-                mDrawerLayout.closeDrawer(GravityCompat.START);
-                Intent i = new Intent(this, Profile.class);
-                i.putExtra("username", username);
-                startActivity(i);
-                break;
-            case R.id.nav_contact:
 
-                break;
-            case R.id.nav_help:
-
-                break;
-            case R.id.nav_logout:
-                startActivity(new Intent(this, Login.class));
-                break;
-            case R.id.nav_exit:
-                moveTaskToBack(true);
-                break;
-        }
-
-        return true;
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -662,6 +489,15 @@ public class Main extends AppCompatActivity implements Listener,NavigationView.O
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()){
+            case R.id.home:
+                Intent home = new Intent(this, Selection.class);
+                home.putExtra("username",username);
+                startActivity(home);
+                finish();
+                break;
+            case R.id.help:
+                showHelp();
+                break;
             case R.id.window:
                 path = "window";
                 if(item.isChecked()){
@@ -981,15 +817,6 @@ public class Main extends AppCompatActivity implements Listener,NavigationView.O
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
-        if(requestCode == REQUEST_GPS_LOCATION){
-            if(grantResults.length != 1 || grantResults[0] != PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(Main.this, "ERROR: Ubication permissions not granted",
-                        Toast.LENGTH_LONG).show();
-            }
-        }else{
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-
         /*if(requestCode == REQUEST_STORAGE_PERMISSION){
             if(grantResults.length != 1 || grantResults[0] != PackageManager.PERMISSION_GRANTED){
                 Toast.makeText(Main.this, "ERROR: Storage writing permissions not granted",
@@ -1078,27 +905,6 @@ public class Main extends AppCompatActivity implements Listener,NavigationView.O
         }
     }
 
-    private void requestUbicationPermission(){
-        if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_FINE_LOCATION)){
-            new AlertDialog.Builder(Main.this).setMessage("R string request permission")
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            ActivityCompat.requestPermissions(Main.this,
-                                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_GPS_LOCATION);
-                        }
-                    }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    finish();
-                }
-            }).create();
-        } else{
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    REQUEST_GPS_LOCATION);
-        }
-    }
-
     /*
     private void createImageFolder(){
         File imageFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
@@ -1149,30 +955,30 @@ public class Main extends AppCompatActivity implements Listener,NavigationView.O
     }
 
      */
-    public class Help_dialogWindow {
-        public Help_dialogWindow(Context context){
-            final Dialog dialog = new Dialog(context);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setCancelable(false);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.setContentView(R.layout.help_dialogwindow);
-            final TextView text =(TextView) dialog.findViewById(R.id.textwindow);
-            text.setText("INSTRUCTIONS\n\nYou have three functions available :\n-Window detection\nPeople \n"+
-                    "Now you are in Window Detection, if you want to change it press then button up to the right and select the function you want\n\n" +
-                    "WINDOW DETECTION:\n\n1.Take pictures of each window of the room\n2.When you have captured all the windows available, " +
-                    "press the button 'end' and wait the response of the server\n\nPEOPLE:\n\nYou have to take a photo from an angle that shows all the " +
-                    "separate people and their respective faces." +
-                    "we can see all the faces of each person and");
-            text.setMovementMethod(new ScrollingMovementMethod());
-            Button ok = (Button) dialog.findViewById(R.id.okbutton);
-            ok.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    dialog.dismiss();
-                }
-            });
-            dialog.show();
 
-        }
+    public void showHelp(){
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(R.layout.help_dialogwindow);
+        final TextView text =(TextView) dialog.findViewById(R.id.textwindow);
+        text.setText("INSTRUCTIONS\n\nYou have three functions available :\n-Window detection\nPeople \n"+
+                "Now you are in Window Detection, if you want to change it press then button up to the right and select the function you want\n\n" +
+                "WINDOW DETECTION:\n\n1.Take pictures of each window of the room\n2.When you have captured all the windows available, " +
+                "press the button 'end' and wait the response of the server\n\nPEOPLE:\n\nYou have to take a photo from an angle that shows all the " +
+                "separate people and their respective faces." +
+                "we can see all the faces of each person and");
+        text.setMovementMethod(new ScrollingMovementMethod());
+        Button ok = (Button) dialog.findViewById(R.id.okbutton);
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+
     }
+
 }
