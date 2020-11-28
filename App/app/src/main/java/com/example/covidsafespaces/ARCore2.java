@@ -291,10 +291,12 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
     //Calculate distancia between 2 points on same frame
     private float distance2Points(float[] array1, float[] array2) {
 
-        Toast.makeText(this, "x: "+array1[13]+"\ny: "+array1[14]
+        /*Toast.makeText(this, "x: "+array1[13]+"\ny: "+array1[14]
                 +"\nz: "+array1[15], Toast.LENGTH_LONG).show();
         Toast.makeText(this, "x: "+array2[13]+"\ny: "+array2[14]
                 +"\nz: "+array2[15], Toast.LENGTH_LONG).show();
+
+         */
 
         float distx1 = array1[13];
         float disty1 = array1[14];
@@ -322,9 +324,9 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.setContentView(R.layout.help_dialogwindow);
         final TextView text = dialog.findViewById(R.id.textwindow);
-        text.setText("STEPS TO FOLLOW\n\nYou will have three markers available to place in three corners of your ground\n" +
+        text.setText("STEPS TO FOLLOW\n\nYou will have two markers available to place in two corners of your ground\n" +
                 "1.Place two markers on two corners of the room to mesure the width of the room. You will see on ths screen the distance between them\n" +
-                "2.Place a third marker on the thrid corner to measure the length, you will also see the distance between this marker and the second one.\nHaving all these measures we " +
+                "2.Press the + button, placed on the menu bar, and repeat the steps explained before to measure the other wall.\nHaving all these measures we " +
                 "proceed to calculate area of the ground");
         text.setMovementMethod(new ScrollingMovementMethod());
         Button ok = (Button) dialog.findViewById(R.id.okbutton);

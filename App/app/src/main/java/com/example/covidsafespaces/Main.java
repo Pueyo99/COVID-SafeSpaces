@@ -963,12 +963,11 @@ public class Main extends AppCompatActivity implements Listener {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.help_dialogwindow);
         final TextView text =(TextView) dialog.findViewById(R.id.textwindow);
-        text.setText("INSTRUCTIONS\n\nYou have three functions available :\n-Window detection\nPeople \n"+
-                "Now you are in Window Detection, if you want to change it press then button up to the right and select the function you want\n\n" +
+        text.setText("INSTRUCTIONS\n\nYou have two functions available :\n-Window detection\nPeople \n"+
+                "Now you are in Window Detection, if you want to change it, press then menu button and select the function you want\n\n" +
                 "WINDOW DETECTION:\n\n1.Take pictures of each window of the room\n2.When you have captured all the windows available, " +
-                "press the button 'end' and wait the response of the server\n\nPEOPLE:\n\nYou have to take a photo from an angle that shows all the " +
-                "separate people and their respective faces." +
-                "we can see all the faces of each person and");
+                "press the 'end' button and wait the response of the server\n\nPEOPLE:\n\nYou have to take a photo from an angle that shows all the " +
+                "separate people and their respective faces.");
         text.setMovementMethod(new ScrollingMovementMethod());
         Button ok = (Button) dialog.findViewById(R.id.okbutton);
         ok.setOnClickListener(new View.OnClickListener() {
