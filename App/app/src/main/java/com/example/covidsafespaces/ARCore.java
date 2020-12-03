@@ -50,7 +50,6 @@ public class ARCore extends AppCompatActivity implements Scene.OnUpdateListener 
     ModelRenderable cubeRenderable;
     private Anchor currentAnchor = null;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
