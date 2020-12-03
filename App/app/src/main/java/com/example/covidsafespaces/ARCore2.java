@@ -27,6 +27,10 @@ import com.google.ar.core.Config;
 import com.google.ar.core.Frame;
 import com.google.ar.core.Pose;
 import com.google.ar.core.Session;
+import com.google.ar.core.exceptions.UnavailableApkTooOldException;
+import com.google.ar.core.exceptions.UnavailableArcoreNotInstalledException;
+import com.google.ar.core.exceptions.UnavailableDeviceNotCompatibleException;
+import com.google.ar.core.exceptions.UnavailableSdkTooOldException;
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.FrameTime;
 import com.google.ar.sceneform.Scene;
@@ -54,6 +58,7 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
     private String username;
     private String building;
     private String room;
+    private boolean edit;
 
     //private final SnackbarHelper messageSnackbarHelper = new SnackbarHelper();
     //private final float[] modelMatrix = new float[16];
@@ -95,6 +100,7 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
             username = extras.getString("username");
             building = extras.getString("building");
             room = extras.getString("room");
+            edit = extras.getBoolean("edit");
             if(extras.containsKey("distances")){
                 distances = (ArrayList<Float>) extras.getSerializable("distances");
                 if(distances.size()>0){
@@ -110,7 +116,21 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
         initAR();
     }
 
-    public void initAR(){
+    public void initAR() {
+
+        /*try {
+            Session mSession = new Session(this);
+            Config mConfig = new Config(mSession);
+            mConfig.setPlaneFindingMode(Config.PlaneFindingMode.HORIZONTAL_AND_VERTICAL);
+            mConfig.setUpdateMode(Config.UpdateMode.LATEST_CAMERA_IMAGE);
+            arFragment.getArSceneView().setupSession(mSession);
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+        
+         */
+
+
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
         initModel();
 
@@ -283,8 +303,14 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
         i.putExtra("room",room);
         i.putExtra("areas", areas);
         startActivity(i);
-        new ServerConnection().insertCapacity(username,building,room,
-                (int) Math.floor((distances.get(0)*distances.get(1))/4));
+        if(!edit){
+            new ServerConnection().insertCapacity(username,building,room,
+                    (int) Math.floor((distances.get(0)*distances.get(1))/4));
+        }else{
+            new ServerConnection().editCapacity(username,building,room,
+                    (int) Math.floor((distances.get(0)*distances.get(1))/4));
+        }
+
 
     }
 

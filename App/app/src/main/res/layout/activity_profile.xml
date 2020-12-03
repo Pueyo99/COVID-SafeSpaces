@@ -64,6 +64,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
+                android:drawableLeft="@drawable/ic_delete"
+                android:onClick="deleteAccount"
+                android:text="Delete account"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:drawableLeft="@drawable/ic_lock"
                 android:text="change password"
                 android:onClick="changePassword"/>

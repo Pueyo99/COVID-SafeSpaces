@@ -31,6 +31,19 @@ public class Adapter  extends ArrayAdapter<String> {
         return items.get(position);
     }
 
+    public int getItemIndex(String item){
+        return items.indexOf(item);
+    }
+
+    public void deleteItem(String item){
+        items.remove(item);
+        notifyDataSetChanged();
+    }
+
+    public int getSize(){
+        return items.size();
+    }
+
     @Override
     public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         return getCustomView(position,convertView,parent);

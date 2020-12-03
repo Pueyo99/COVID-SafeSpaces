@@ -56,8 +56,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:drawableLeft="@drawable/ic_download"
                 android:text="Get capacity"
-                android:onClick="getCapacity"/>
+                android:onClick="getCapacity" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_edit"
+                android:text="Edit Measure"
+                android:onClick="editMeasure"
+                />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Delete measure"
+                android:drawableLeft="@drawable/ic_delete"
+                android:onClick="deleteMeasure"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"

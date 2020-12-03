@@ -227,6 +227,7 @@ public class Selection extends AppCompatActivity implements SelectionListener, L
                                 e.printStackTrace();
                             }
                         }
+                        rooms.setSelection(roomAdapter.getItemIndex("--Select room--"));
                     }
                 });
                 break;
@@ -236,9 +237,37 @@ public class Selection extends AppCompatActivity implements SelectionListener, L
     @Override
     public void receiveMessage(JSONObject data) {
         try {
-            String capacity = data.getString("CAPACITY");
-            Double windowSurface = data.getDouble("WINDOWSURFACE");
-            showCapacity(capacity, windowSurface);
+            switch (data.getString("function")){
+                case "get":
+                    String capacity = data.getString("CAPACITY");
+                    Double windowSurface = data.getDouble("WINDOWSURFACE");
+                    showCapacity(capacity, windowSurface);
+                    break;
+                case "delete":
+                    switch (data.getString("delete")){
+                        case "successful":
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    roomAdapter.deleteItem(selectedRoom);
+                                    if(roomAdapter.getSize() == 1){
+                                        buildingAdapter.deleteItem(selectedBuilding);
+                                    }
+                                }
+                            });
+                            break;
+                        case "unsuccessful":
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(Selection.this, "Measure not deleted",Toast.LENGTH_LONG).show();
+                                }
+                            });
+                            break;
+                    }
+                    break;
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -247,6 +276,19 @@ public class Selection extends AppCompatActivity implements SelectionListener, L
     public void getCapacity(View v){
         new ServerConnection().getCapacity(this,username, selectedBuilding,selectedRoom);
 
+    }
+
+    public void deleteMeasure(View v){
+        new AlertDialog.Builder(this).setTitle("Delete Measure")
+                .setMessage("Are you sure you want to delete this measure?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        new ServerConnection().deleteMeasure(Selection.this, username,selectedBuilding,selectedRoom);
+                    }
+                }).setNegativeButton(android.R.string.cancel,null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     public void showCapacity(String capacity, Double windowSurface){
@@ -282,9 +324,29 @@ public class Selection extends AppCompatActivity implements SelectionListener, L
             i.putExtra("username",username);
             i.putExtra("building", newBuilding);
             i.putExtra("room", newRoom);
+            i.putExtra("edit", false);
             startActivity(i);
         }
 
+    }
+
+    public void editMeasure(View v){
+        if(selectedBuilding == "--Select building--"){
+            Toast.makeText(this, "Select a buuilding", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if(selectedRoom == "--Select room--"){
+            Toast.makeText(this, "Select a room", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        Intent i = new Intent(this, ARCore2.class);
+        i.putExtra("username", username);
+        i.putExtra("building", selectedBuilding);
+        i.putExtra("room", selectedRoom);
+        i.putExtra("edit", true);
+        startActivity(i);
     }
 
     public void setProgressDialog() {

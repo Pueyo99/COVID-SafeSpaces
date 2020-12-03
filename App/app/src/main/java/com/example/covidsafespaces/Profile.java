@@ -8,6 +8,8 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
@@ -16,6 +18,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -174,18 +177,58 @@ public class Profile extends AppCompatActivity implements Listener, NavigationVi
         new ServerConnection().getProfileInfo(this, mUsername);
     }
 
+    public void deleteAccount(View v){
+        new AlertDialog.Builder(this).setTitle("Delete Account")
+                .setMessage("Are you sure you want to delete this account?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        new ServerConnection().deleteAccount(Profile.this, mUsername);
+                    }
+                }).setNegativeButton(android.R.string.cancel,null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
 
     @Override
     public void receiveMessage(JSONObject data) {
         try {
-            mMail=data.getString("mail");
-            mPassword=data.getString("password");
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mail.setText(mMail);
-                }
-            });
+            switch (data.getString("function")){
+                case "profile":
+                    mMail=data.getString("mail");
+                    mPassword=data.getString("password");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mail.setText(mMail);
+                        }
+                    });
+                    break;
+                case "delete":
+                    switch (data.getString("delete")){
+                        case "unsuccessful":
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(Profile.this, "Account not deleted", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                            break;
+                        case "successful":
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    startActivity(new Intent(Profile.this,Login.class));
+                                    finish();
+                                }
+                            });
+                            break;
+                    }
+                    break;
+
+
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
