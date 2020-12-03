@@ -145,6 +145,8 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
             AnchorNode anchorNode = new AnchorNode(anchor);
             anchorNode.setParent(arFragment.getArSceneView().getScene());
 
+
+
             //clearAnchor();
 
             currentAnchor = anchor;
