@@ -34,6 +34,7 @@ import com.google.ar.core.exceptions.UnavailableSdkTooOldException;
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.FrameTime;
 import com.google.ar.sceneform.Scene;
+import com.google.ar.sceneform.math.Quaternion;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.Color;
 import com.google.ar.sceneform.rendering.MaterialFactory;
@@ -201,6 +202,7 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
             currentAnchorNode = null;
         }
     }
+
 
     @Override
     public void onUpdate(FrameTime frameTime) {
