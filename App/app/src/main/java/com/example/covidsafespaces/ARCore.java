@@ -64,6 +64,7 @@ public class ARCore extends AppCompatActivity implements Scene.OnUpdateListener 
         tvDistance = findViewById(R.id.tvDistance);
 
 
+
         initModel();
 
         arFragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
