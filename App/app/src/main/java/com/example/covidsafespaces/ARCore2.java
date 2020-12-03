@@ -68,7 +68,7 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
     int nAnchors = 0;
     float distance;
     float finaldistance;
-    float distance2;
+
     private ArrayList<Float> distances = new ArrayList<>();
     private boolean updateDistance;
     private int rate=0;
@@ -144,7 +144,7 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
             AnchorNode anchorNode = new AnchorNode(anchor);
             anchorNode.setParent(arFragment.getArSceneView().getScene());
 
-            clearAnchor();
+            //clearAnchor();
 
             currentAnchor = anchor;
             currentAnchorNode = anchorNode;
@@ -180,10 +180,10 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
     }
 
     private void initModel() {
-        MaterialFactory.makeTransparentWithColor(this, new Color(android.graphics.Color.RED))
+        MaterialFactory.makeTransparentWithColor(this, new Color(android.graphics.Color.BLUE))
                 .thenAccept(
                         material -> {
-                            Vector3 vector3 = new Vector3(0.05f, 0.01f, 0.01f);
+                            Vector3 vector3 = new Vector3(0.033f, 0.033f, 0.033f);
                             cubeRenderable = ShapeFactory.makeCube(vector3, Vector3.zero(), material);
                             cubeRenderable.setShadowCaster(false);
                             cubeRenderable.setShadowReceiver(false);
