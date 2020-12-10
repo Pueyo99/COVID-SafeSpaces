@@ -222,6 +222,7 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
         //First, find the vector extending between the two points and define a look rotation
         //in terms of this Vector.
         final Vector3 difference = Vector3.subtract(point1, point2);
+
         final Vector3 directionFromTopToBottom = difference.normalized();
         final Quaternion rotationFromAToB =
                 Quaternion.lookRotation(directionFromTopToBottom, Vector3.up());
