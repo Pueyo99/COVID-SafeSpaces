@@ -1,0 +1,984 @@
+Index: app/src/main/java/com/example/covidsafespaces/PictureFragment.java
+===================================================================
+--- app/src/main/java/com/example/covidsafespaces/PictureFragment.java	(revision 0bf3a31c2856dbae5e234e5dff0b8bb25037f2ab)
++++ app/src/main/java/com/example/covidsafespaces/PictureFragment.java	(revision 0bf3a31c2856dbae5e234e5dff0b8bb25037f2ab)
+@@ -1,21 +0,0 @@
+-package com.example.covidsafespaces;
+-
+-import android.content.Intent;
+-import android.os.Bundle;
+-
+-import androidx.fragment.app.Fragment;
+-
+-import android.view.LayoutInflater;
+-import android.view.View;
+-import android.view.ViewGroup;
+-
+-public class PictureFragment extends Fragment {
+-
+-    @Override
+-    public void onCreate(Bundle savedInstanceState) {
+-        super.onCreate(savedInstanceState);
+-        Intent i = new Intent(getActivity(), Main.class);
+-        startActivity(i);
+-    }
+-
+-}
+\ No newline at end of file
+Index: app/src/main/res/layout/fragment_picture.xml
+===================================================================
+--- app/src/main/res/layout/fragment_picture.xml	(revision 0bf3a31c2856dbae5e234e5dff0b8bb25037f2ab)
++++ app/src/main/res/layout/fragment_picture.xml	(revision 0bf3a31c2856dbae5e234e5dff0b8bb25037f2ab)
+@@ -1,11 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+-    xmlns:tools="http://schemas.android.com/tools"
+-    android:layout_width="match_parent"
+-    android:layout_height="match_parent"
+-    tools:context=".PictureFragment">
+-    <TextView
+-        android:layout_width="match_parent"
+-        android:layout_height="match_parent" />
+-
+-</FrameLayout>
+\ No newline at end of file
+Index: app/src/main/res/layout/fragment_a_r.xml
+===================================================================
+--- app/src/main/res/layout/fragment_a_r.xml	(revision 0bf3a31c2856dbae5e234e5dff0b8bb25037f2ab)
++++ app/src/main/res/layout/fragment_a_r.xml	(revision 0bf3a31c2856dbae5e234e5dff0b8bb25037f2ab)
+@@ -1,12 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+-    xmlns:tools="http://schemas.android.com/tools"
+-    android:layout_width="match_parent"
+-    android:layout_height="match_parent"
+-    tools:context=".ARFragment">
+-
+-    <TextView
+-        android:layout_width="match_parent"
+-        android:layout_height="match_parent" />
+-
+-</FrameLayout>
+\ No newline at end of file
+Index: app/src/main/res/drawable/ic_mail.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/drawable/ic_mail.xml	(revision 0bf3a31c2856dbae5e234e5dff0b8bb25037f2ab)
++++ app/src/main/res/drawable/ic_mail.xml	(revision 0bf3a31c2856dbae5e234e5dff0b8bb25037f2ab)
+@@ -1,10 +0,0 @@
+-<vector xmlns:android="http://schemas.android.com/apk/res/android"
+-    android:width="24dp"
+-    android:height="24dp"
+-    android:viewportWidth="24"
+-    android:viewportHeight="24"
+-    android:tint="?attr/colorControlNormal">
+-  <path
+-      android:fillColor="@android:color/white"
+-      android:pathData="M20,4L4,4c-1.1,0 -1.99,0.9 -1.99,2L2,18c0,1.1 0.9,2 2,2h16c1.1,0 2,-0.9 2,-2L22,6c0,-1.1 -0.9,-2 -2,-2zM20,8l-8,5 -8,-5L4,6l8,5 8,-5v2z"/>
+-</vector>
+Index: app/src/main/java/com/example/covidsafespaces/ARFragment.java
+===================================================================
+--- app/src/main/java/com/example/covidsafespaces/ARFragment.java	(revision 0bf3a31c2856dbae5e234e5dff0b8bb25037f2ab)
++++ app/src/main/java/com/example/covidsafespaces/ARFragment.java	(revision 0bf3a31c2856dbae5e234e5dff0b8bb25037f2ab)
+@@ -1,22 +0,0 @@
+-package com.example.covidsafespaces;
+-
+-import android.os.Bundle;
+-
+-import androidx.fragment.app.Fragment;
+-
+-import android.view.LayoutInflater;
+-import android.view.View;
+-import android.view.ViewGroup;
+-
+-public class ARFragment extends Fragment {
+-    private View vista;
+-    @Override
+-    public void onCreate(Bundle savedInstanceState) {
+-        super.onCreate(savedInstanceState);
+-    }
+-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+-                             Bundle savedInstanceState) {
+-        vista=inflater.inflate(R.layout.fragment_contact, container, false);
+-        return vista;
+-    }
+-}
+\ No newline at end of file
+Index: app/src/main/res/layout/activity_login.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:orientation=\"vertical\"\r\n    android:layout_height=\"match_parent\"\r\n    android:layout_width=\"match_parent\"\r\n    android:gravity=\"center\"\r\n    android:background=\"#D1C4E9\"\r\n    >\r\n\r\n    <LinearLayout\r\n        android:orientation=\"vertical\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:gravity=\"center\"\r\n        tools:context=\".Login\">\r\n        <ImageView\r\n            android:layout_width=\"149dp\"\r\n            android:layout_height=\"109dp\"\r\n            android:layout_below=\"@+id/text1\"\r\n            android:layout_margin=\"30dp\"\r\n            android:gravity=\"center\"\r\n            android:scaleType=\"fitCenter\"\r\n            android:src=\"@drawable/logo3\" />\r\n        <EditText\r\n            android:id=\"@+id/username\"\r\n            android:layout_width=\"300dp\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_margin=\"5dp\"\r\n            android:background=\"@drawable/login_edittext\"\r\n            android:drawableLeft=\"@drawable/ic_user\"\r\n            android:gravity=\"center\"\r\n            android:hint=\"Username\"\r\n            android:inputType=\"textPersonName\"\r\n            android:textSize=\"20sp\" />\r\n\r\n        <TextView\r\n            android:id=\"@+id/wrongUsername\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:gravity=\"center\"\r\n            android:background=\"@android:color/transparent\"\r\n            android:visibility=\"gone\"\r\n            android:text=\"Non-existent username\"\r\n            android:textSize=\"15sp\"\r\n            android:textColor=\"#F00\"\r\n            />\r\n\r\n        <EditText\r\n            android:id=\"@+id/password\"\r\n            android:layout_width=\"300dp\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_margin=\"5dp\"\r\n            android:background=\"@drawable/login_edittext\"\r\n            android:drawableLeft=\"@drawable/ic_lock\"\r\n            android:drawableRight=\"@drawable/ic_visible\"\r\n            android:gravity=\"center\"\r\n            android:hint=\"Password\"\r\n            android:inputType=\"textPassword\"\r\n            android:textSize=\"20sp\" />\r\n\r\n        <TextView\r\n            android:id=\"@+id/wrongPassword\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:gravity=\"center\"\r\n            android:background=\"@android:color/transparent\"\r\n            android:visibility=\"gone\"\r\n            android:text=\"Incorrect password\"\r\n            android:textSize=\"15sp\"\r\n            android:textColor=\"#F00\"\r\n            />\r\n\r\n        <TextView\r\n            android:id=\"@+id/recoverPassword\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:gravity=\"center\"\r\n            android:background=\"@android:color/transparent\"\r\n            android:clickable=\"true\"\r\n            android:onClick=\"recoverPassword\"\r\n            android:text=\"Forgot your password?\"\r\n            android:textSize=\"15sp\"\r\n            />\r\n\r\n        <LinearLayout\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:orientation=\"horizontal\">\r\n            <Button\r\n                android:id=\"@+id/enter\"\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"Sign in\"\r\n                android:layout_weight=\"1\"\r\n                />\r\n\r\n            <Button\r\n                android:id=\"@+id/register\"\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_weight=\"1\"\r\n                android:text=\"Register\" />\r\n        </LinearLayout>\r\n\r\n    </LinearLayout>\r\n\r\n\r\n</LinearLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_login.xml	(revision 0bf3a31c2856dbae5e234e5dff0b8bb25037f2ab)
++++ app/src/main/res/layout/activity_login.xml	(date 1607514079165)
+@@ -18,11 +18,10 @@
+         <ImageView
+             android:layout_width="149dp"
+             android:layout_height="109dp"
+-            android:layout_below="@+id/text1"
+             android:layout_margin="30dp"
+             android:gravity="center"
+             android:scaleType="fitCenter"
+-            android:src="@drawable/logo3" />
++            android:src="@drawable/icono" />
+         <EditText
+             android:id="@+id/username"
+             android:layout_width="300dp"
+@@ -94,14 +93,15 @@
+                 android:layout_height="wrap_content"
+                 android:text="Sign in"
+                 android:layout_weight="1"
+-                />
++                android:textAllCaps="false" />
+ 
+             <Button
+                 android:id="@+id/register"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="1"
+-                android:text="Register" />
++                android:text="Register"
++                android:textAllCaps="false"/>
+         </LinearLayout>
+ 
+     </LinearLayout>
+Index: app/src/main/res/layout/activity_register.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<LinearLayout\r\n    xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:orientation=\"vertical\"\r\n    android:layout_height=\"match_parent\"\r\n    android:layout_width=\"match_parent\"\r\n    android:gravity=\"center\"\r\n    android:background=\"#D1C4E9\">\r\n\r\n    <LinearLayout\r\n        android:orientation=\"vertical\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:gravity=\"center\"\r\n        tools:context=\".Login\">\r\n\r\n        <EditText\r\n            android:id=\"@+id/registerUsername\"\r\n            android:layout_width=\"300dp\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_margin=\"5dp\"\r\n            android:background=\"@drawable/login_edittext\"\r\n            android:drawableLeft=\"@drawable/ic_user\"\r\n            android:gravity=\"center\"\r\n            android:hint=\"Username\"\r\n            android:inputType=\"textPersonName\"\r\n            android:textSize=\"20sp\" />\r\n\r\n        <EditText\r\n            android:id=\"@+id/registerMail\"\r\n            android:layout_width=\"300dp\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_margin=\"5dp\"\r\n            android:background=\"@drawable/login_edittext\"\r\n            android:drawableLeft=\"@drawable/ic_mail\"\r\n            android:gravity=\"center\"\r\n            android:hint=\"Mail\"\r\n            android:inputType=\"textEmailSubject\"\r\n            android:textSize=\"20sp\" />\r\n\r\n        <EditText\r\n            android:id=\"@+id/registerPassword\"\r\n            android:layout_width=\"300dp\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_margin=\"5dp\"\r\n            android:background=\"@drawable/login_edittext\"\r\n            android:drawableLeft=\"@drawable/ic_lock\"\r\n            android:drawableRight=\"@drawable/ic_visible\"\r\n            android:gravity=\"center\"\r\n            android:hint=\"Password\"\r\n            android:inputType=\"textPassword\"\r\n            android:textSize=\"20sp\" />\r\n\r\n        <EditText\r\n            android:id=\"@+id/registerpassword2\"\r\n            android:layout_width=\"300dp\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_margin=\"5dp\"\r\n            android:background=\"@drawable/login_edittext\"\r\n            android:drawableLeft=\"@drawable/ic_lock\"\r\n            android:drawableRight=\"@drawable/ic_visible\"\r\n            android:gravity=\"center\"\r\n            android:hint=\"Password\"\r\n            android:inputType=\"textPassword\"\r\n            android:textSize=\"20sp\" />\r\n\r\n        <TextView\r\n            android:id=\"@+id/wrongPassword\"\r\n            android:layout_width=\"300dp\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:gravity=\"center\"\r\n            android:background=\"@android:color/transparent\"\r\n            android:visibility=\"gone\"\r\n            android:text=\"\"\r\n            android:textSize=\"15sp\"\r\n            android:textColor=\"#F00\"\r\n            />\r\n\r\n        <Button\r\n            android:id=\"@+id/registerButton\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_weight=\"1\"\r\n            android:text=\"Register\" />\r\n\r\n    </LinearLayout>\r\n\r\n\r\n</LinearLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_register.xml	(revision 0bf3a31c2856dbae5e234e5dff0b8bb25037f2ab)
++++ app/src/main/res/layout/activity_register.xml	(date 1607340876966)
+@@ -13,7 +13,6 @@
+         android:orientation="vertical"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+-        android:gravity="center"
+         tools:context=".Login">
+ 
+         <EditText
+@@ -64,6 +63,7 @@
+             android:gravity="center"
+             android:hint="Password"
+             android:inputType="textPassword"
++
+             android:textSize="20sp" />
+ 
+         <TextView
+@@ -78,12 +78,67 @@
+             android:textColor="#F00"
+             />
+ 
++        <TextView
++            android:layout_width="299dp"
++            android:layout_height="45dp"
++            android:text="Your password must accomplish at least 3 of this conditions"
++            android:textColor="#000000"
++            android:textSize="15sp" />
++
++        <TextView
++            android:id="@+id/c_uppercase"
++            android:layout_width="299dp"
++            android:layout_height="wrap_content"
++            android:text="-Al least one uppercase"
++            android:textSize="12sp" />
++
++        <TextView
++            android:id="@+id/c_lowercase"
++            android:layout_width="298dp"
++            android:layout_height="wrap_content"
++            android:text="-Al least one lowercase"
++            android:textSize="12sp" />
++
++        <TextView
++            android:id="@+id/c_number"
++            android:layout_width="298dp"
++            android:layout_height="wrap_content"
++            android:text="-At least one number"
++            android:textSize="12sp" />
++
++        <TextView
++            android:id="@+id/c_special_character"
++            android:layout_width="298dp"
++            android:layout_height="wrap_content"
++            android:text="-Al least one especial character"
++            android:textAlignment="textStart"
++            android:textSize="12sp"/>
++        <LinearLayout
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:layout_margin="5dp">
++            <TextView
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:text="Security level:"
++                android:textColor="#000000"
++                android:textSize="15sp" />
++
++            <TextView
++                android:id="@+id/level_sec"
++                android:layout_width="80dp"
++                android:layout_height="wrap_content"
++                android:textAlignment="center"
++                android:textSize="15sp"
++                android:layout_marginLeft="100dp"/>
++        </LinearLayout>
+         <Button
+             android:id="@+id/registerButton"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_weight="1"
+-            android:text="Register" />
++            android:text="Create my account"
++            android:textAllCaps="false"/>
+ 
+     </LinearLayout>
+ 
+Index: app/src/main/res/layout/nav_header_main.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"@dimen/nav_header_height\"\r\n    android:background=\"#7E57C2\"\r\n    android:gravity=\"bottom\"\r\n    android:orientation=\"vertical\"\r\n    android:paddingLeft=\"@dimen/activity_horizontal_margin\"\r\n    android:paddingTop=\"@dimen/activity_vertical_margin\"\r\n    android:paddingRight=\"@dimen/activity_horizontal_margin\"\r\n    android:paddingBottom=\"@dimen/activity_vertical_margin\"\r\n    android:theme=\"@style/ThemeOverlay.AppCompat.Dark\">\r\n\r\n    <ImageView\r\n        android:id=\"@+id/imageView\"\r\n        android:layout_width=\"204dp\"\r\n        android:layout_height=\"97dp\"\r\n        android:contentDescription=\"@string/nav_header_desc\"\r\n        android:paddingTop=\"@dimen/nav_header_vertical_spacing\"\r\n        app:srcCompat=\"@drawable/logo3\" />\r\n\r\n    <TextView\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:paddingTop=\"@dimen/nav_header_vertical_spacing\"\r\n        android:text=\"COVID SAFE SPACES\"\r\n        android:textAppearance=\"@style/TextAppearance.AppCompat.Body1\" />\r\n\r\n\r\n</LinearLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/nav_header_main.xml	(revision 0bf3a31c2856dbae5e234e5dff0b8bb25037f2ab)
++++ app/src/main/res/layout/nav_header_main.xml	(date 1607449890110)
+@@ -18,7 +18,7 @@
+         android:layout_height="97dp"
+         android:contentDescription="@string/nav_header_desc"
+         android:paddingTop="@dimen/nav_header_vertical_spacing"
+-        app:srcCompat="@drawable/logo3" />
++        app:srcCompat="@drawable/icono" />
+ 
+     <TextView
+         android:layout_width="match_parent"
+Index: app/src/main/res/navigation/mobile_navigation.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<navigation xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:id=\"@+id/mobile_navigation\"\r\n    app:startDestination=\"@+id/nav_home\">\r\n\r\n    <fragment\r\n        android:id=\"@+id/nav_home\"\r\n        android:name=\"com.example.covidsafespaces.HomeFragment\"\r\n        android:label=\"@string/menu_home\"\r\n        tools:layout=\"@layout/fragment_home\" />\r\n\r\n    <fragment\r\n        android:id=\"@+id/nav_profile\"\r\n        android:name=\"com.example.covidsafespaces.ProfileFragment\"\r\n        android:label=\"My profile\"\r\n        tools:layout=\"@layout/fragment_profile\" />\r\n\r\n    <fragment\r\n        android:id=\"@+id/nav_exit\"\r\n        android:name=\"com.example.covidsafespaces.SlideshowFragment\"\r\n        android:label=\"Exit\"\r\n        tools:layout=\"@layout/fragment_exit\" />\r\n    <fragment\r\n        android:id=\"@+id/nav_logout\"\r\n        android:name=\"com.example.covidsafespaces.LogoutFragment\"\r\n        android:label=\"Logout\"\r\n        tools:layout=\"@layout/fragment_logout\" />\r\n    <fragment\r\n        android:id=\"@+id/nav_help\"\r\n        android:name=\"com.example.covidsafespaces.HelpFragment\"\r\n        android:label=\"Help\"\r\n        tools:layout=\"@layout/fragment_help\" />\r\n    <fragment\r\n        android:id=\"@+id/nav_contact\"\r\n        android:name=\"com.example.covidsafespaces.ContactFragment\"\r\n        android:label=\"Contact us\"\r\n        tools:layout=\"@layout/fragment_contact\" />\r\n    <fragment\r\n        android:id=\"@+id/nav_AR\"\r\n        android:name=\"com.example.covidsafespaces.ARFragment\"\r\n        android:label=\"AR\"\r\n        tools:layout=\"@layout/fragment_a_r\" />\r\n    <fragment\r\n        android:id=\"@+id/nav_picture\"\r\n        android:name=\"com.example.covidsafespaces.PictureFragment\"\r\n        android:label=\"Picture\"\r\n        tools:layout=\"@layout/fragment_picture\" />\r\n</navigation>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/navigation/mobile_navigation.xml	(revision 0bf3a31c2856dbae5e234e5dff0b8bb25037f2ab)
++++ app/src/main/res/navigation/mobile_navigation.xml	(date 1607334855731)
+@@ -19,7 +19,6 @@
+ 
+     <fragment
+         android:id="@+id/nav_exit"
+-        android:name="com.example.covidsafespaces.SlideshowFragment"
+         android:label="Exit"
+         tools:layout="@layout/fragment_exit" />
+     <fragment
+@@ -35,16 +34,6 @@
+     <fragment
+         android:id="@+id/nav_contact"
+         android:name="com.example.covidsafespaces.ContactFragment"
+-        android:label="Contact us"
++        android:label="Contact"
+         tools:layout="@layout/fragment_contact" />
+-    <fragment
+-        android:id="@+id/nav_AR"
+-        android:name="com.example.covidsafespaces.ARFragment"
+-        android:label="AR"
+-        tools:layout="@layout/fragment_a_r" />
+-    <fragment
+-        android:id="@+id/nav_picture"
+-        android:name="com.example.covidsafespaces.PictureFragment"
+-        android:label="Picture"
+-        tools:layout="@layout/fragment_picture" />
+ </navigation>
+\ No newline at end of file
+Index: app/src/main/java/com/example/covidsafespaces/ContactFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.covidsafespaces;\r\n\r\nimport android.os.Bundle;\r\n\r\nimport androidx.fragment.app.Fragment;\r\n\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\n\r\npublic class ContactFragment extends Fragment {\r\n    private View vista;\r\n    public void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n\r\n    }\r\n    public View onCreateView(LayoutInflater inflater, ViewGroup container,\r\n                             Bundle savedInstanceState) {\r\n        vista=inflater.inflate(R.layout.fragment_contact, container, false);\r\n        return vista;\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/covidsafespaces/ContactFragment.java	(revision 0bf3a31c2856dbae5e234e5dff0b8bb25037f2ab)
++++ app/src/main/java/com/example/covidsafespaces/ContactFragment.java	(date 1607331224445)
+@@ -1,22 +1,74 @@
+ package com.example.covidsafespaces;
+ 
++import android.Manifest;
++import android.content.ActivityNotFoundException;
++import android.content.Intent;
++import android.content.pm.PackageManager;
++import android.net.Uri;
+ import android.os.Bundle;
+ 
++import androidx.core.app.ActivityCompat;
+ import androidx.fragment.app.Fragment;
+ 
+ import android.view.LayoutInflater;
+ import android.view.View;
+ import android.view.ViewGroup;
++import android.widget.Button;
++import android.widget.Toast;
+ 
+ public class ContactFragment extends Fragment {
+     private View vista;
++    private Button email,phone, instagram;
++    private String Email;
+     public void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+-
+     }
+     public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                              Bundle savedInstanceState) {
+         vista=inflater.inflate(R.layout.fragment_contact, container, false);
++        email=vista.findViewById(R.id.contact_email);
++        Email="pae_safe_spaces@accenture.com";
++        email.setOnClickListener(new View.OnClickListener() {
++
++            @Override
++            public void onClick(View view) {
++                sendEmail(Email);
++            }
++        });
++        phone=vista.findViewById(R.id.contact_phone);
++        phone.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View view) {
++                Intent i = new Intent(Intent.ACTION_DIAL);
++                i.setData(Uri.parse("tel:93255678"));
++                startActivity(i);
++            }
++        });
++        instagram=vista.findViewById(R.id.contact_instagram);
++        instagram.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View view) {
++                Uri uri = Uri.parse("http://instagram.com/_u/safespaces20");
++                Intent insta= new Intent(Intent.ACTION_VIEW,uri);
++                insta.setPackage("com.instagram.android");
++                try{
++                    startActivity(insta);
++                }catch(ActivityNotFoundException e){
++                    startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse(("http://instagram.com/_u/safespaces20"))));
++                }
++            }
++        });
+         return vista;
+     }
+-}
+\ No newline at end of file
++    private void sendEmail(String recipient){
++        Intent email = new Intent(Intent.ACTION_SEND);
++        email.setData(Uri.parse("mailto:"));
++        email.setType("text/plain");
++        email.putExtra(Intent.EXTRA_EMAIL,new String[] {recipient});
++        try{
++            startActivity(Intent.createChooser(email,"Choose an email client"));
++        }catch(Exception e){
++            //Toast.makeText(this,e.getMessage(),Toast.LENGTH_SHORT).show();
++        }
++    }
++}
+Index: app/src/main/res/drawable/ic_delete.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><vector xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    android:width=\"24dp\"\r\n    android:height=\"24dp\"\r\n    android:viewportWidth=\"24\"\r\n    android:viewportHeight=\"24\"\r\n    android:tint=\"?attr/colorControlNormal\">\r\n  <path\r\n      android:fillColor=\"@android:color/white\"\r\n      android:pathData=\"M6,19c0,1.1 0.9,2 2,2h8c1.1,0 2,-0.9 2,-2V7H6v12zM19,4h-3.5l-1,-1h-5l-1,1H5v2h14V4z\"/>\r\n</vector>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/drawable/ic_delete.xml	(revision 0bf3a31c2856dbae5e234e5dff0b8bb25037f2ab)
++++ app/src/main/res/drawable/ic_delete.xml	(date 1607336566775)
+@@ -3,7 +3,7 @@
+     android:height="24dp"
+     android:viewportWidth="24"
+     android:viewportHeight="24"
+-    android:tint="?attr/colorControlNormal">
++    android:tint="#000000">
+   <path
+       android:fillColor="@android:color/white"
+       android:pathData="M6,19c0,1.1 0.9,2 2,2h8c1.1,0 2,-0.9 2,-2V7H6v12zM19,4h-3.5l-1,-1h-5l-1,1H5v2h14V4z"/>
+Index: app/src/main/java/com/example/covidsafespaces/Register.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.covidsafespaces;\r\n\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport android.annotation.SuppressLint;\r\nimport android.content.Intent;\r\nimport android.os.Bundle;\r\nimport android.text.method.HideReturnsTransformationMethod;\r\nimport android.text.method.PasswordTransformationMethod;\r\nimport android.view.Gravity;\r\nimport android.view.LayoutInflater;\r\nimport android.view.MotionEvent;\r\nimport android.view.View;\r\nimport android.widget.Button;\r\nimport android.widget.LinearLayout;\r\nimport android.widget.PopupWindow;\r\nimport android.widget.TextView;\r\nimport android.widget.Toast;\r\n\r\nimport org.w3c.dom.Text;\r\n\r\nimport java.util.regex.Pattern;\r\n\r\npublic class Register extends AppCompatActivity {\r\n\r\n    private final String PASSWORDTEXT = \"Password must contain an upper case, a lower case, a number and a special character\";\r\n    private final String REGEXP = \"^(?=.*[a-z])(?=.*[A-Z])(?=.*\\\\d)(?=.*[\\\\-\\\\._$@$!%*?&])([A-Za-z\\\\d$@$!%*?&]|[^ ]){8,15}$\";\r\n\r\n    private TextView username;\r\n    private TextView mail;\r\n    private TextView password1;\r\n    private TextView password2;\r\n    private TextView alertText;\r\n    private Button registerButton;\r\n    private boolean password1Visible = false;\r\n    private boolean password2Visible = false;\r\n\r\n    @SuppressLint(\"ClickableViewAccessibility\")\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_register);\r\n\r\n        username = findViewById(R.id.registerUsername);\r\n        mail = findViewById(R.id.registerMail);\r\n        password1 = findViewById(R.id.registerPassword);\r\n        password2 = findViewById(R.id.registerpassword2);\r\n        alertText = findViewById(R.id.wrongPassword);\r\n        registerButton = findViewById(R.id.registerButton);\r\n\r\n        password1.setOnTouchListener(new View.OnTouchListener() {\r\n            @SuppressLint(\"ClickableViewAccessibility\")\r\n            @Override\r\n            public boolean onTouch(View v, MotionEvent event) {\r\n                final int DRAWABLE_LEFT = 0;\r\n                final int DRAWABLE_TOP = 1;\r\n                final int DRAWABLE_RIGHT = 2;\r\n                final int DRAWABLE_BOTTOM = 3;\r\n\r\n                if(event.getAction() == MotionEvent.ACTION_UP) {\r\n                    if(event.getRawX() >= (password1.getRight() - password1.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {\r\n                        showHidePassword1();\r\n                        return true;\r\n                    }\r\n                }\r\n                return false;\r\n            }\r\n        });\r\n\r\n        password2.setOnTouchListener(new View.OnTouchListener() {\r\n            @SuppressLint(\"ClickableViewAccessibility\")\r\n            @Override\r\n            public boolean onTouch(View v, MotionEvent event) {\r\n                final int DRAWABLE_LEFT = 0;\r\n                final int DRAWABLE_TOP = 1;\r\n                final int DRAWABLE_RIGHT = 2;\r\n                final int DRAWABLE_BOTTOM = 3;\r\n\r\n                if(event.getAction() == MotionEvent.ACTION_UP) {\r\n                    if(event.getRawX() >= (password2.getRight() - password2.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {\r\n                        showHidePassword2();\r\n                        return true;\r\n                    }\r\n                }\r\n                return false;\r\n            }\r\n        });\r\n\r\n        registerButton.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                register();\r\n            }\r\n        });\r\n\r\n\r\n    }\r\n\r\n    private void register(){\r\n        if(password1.getText().toString().trim().equals(password2.getText().toString().trim())){\r\n            if(Pattern.matches(REGEXP, password1.getText().toString().trim())){\r\n                new ServerConnection().register(username.getText().toString().trim(), mail.getText().toString().trim(),\r\n                        password1.getText().toString().trim());\r\n                onBackPressed();\r\n                /*Intent i = new Intent(this, Login.class);\r\n                //i.putExtra(\"username\",username.getText().toString());\r\n                startActivity(i);\r\n                finish();\r\n\r\n                 */\r\n\r\n                //Toast.makeText(this, \"Verification email sended\", Toast.LENGTH_LONG).show();\r\n\r\n            }else{\r\n                alertText.setText(PASSWORDTEXT);\r\n                alertText.setVisibility(View.VISIBLE);\r\n            }\r\n\r\n        } else{\r\n            password1.setText(\"\");\r\n            password2.setText(\"\");\r\n            alertText.setText(\"Passwords do not match\");\r\n            alertText.setVisibility(View.VISIBLE);\r\n        }\r\n    }\r\n\r\n    private void showHidePassword1(){\r\n        if(password1Visible){\r\n            password1.setTransformationMethod(PasswordTransformationMethod.getInstance());\r\n\r\n            password1.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_lock, 0, R.drawable.ic_visible, 0);\r\n            password1Visible = false;\r\n        } else{\r\n            password1.setTransformationMethod(HideReturnsTransformationMethod.getInstance());\r\n            password1.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_lock, 0, R.drawable.ic_novisible, 0);\r\n            password1Visible = true;\r\n        }\r\n    }\r\n\r\n    private void showHidePassword2(){\r\n        if(password2Visible){\r\n            password2.setTransformationMethod(PasswordTransformationMethod.getInstance());\r\n\r\n            password2.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_lock, 0, R.drawable.ic_visible, 0);\r\n            password2Visible = false;\r\n        } else{\r\n            password2.setTransformationMethod(HideReturnsTransformationMethod.getInstance());\r\n            password2.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_lock, 0, R.drawable.ic_novisible, 0);\r\n            password2Visible = true;\r\n        }\r\n    }\r\n\r\n    public void showMessage(){\r\n        LayoutInflater inflater = LayoutInflater.from(this);\r\n        final View v = inflater.inflate(R.layout.show_capacity, null,false);\r\n\r\n        ((TextView)v.findViewById(R.id.capacidad)).setText(\"The passwords entered are not the same\");\r\n\r\n        int width = LinearLayout.LayoutParams.WRAP_CONTENT;\r\n        int height = LinearLayout.LayoutParams.WRAP_CONTENT;\r\n\r\n        final PopupWindow popupWindow = new PopupWindow(v,width,height,true);\r\n        runOnUiThread(new Runnable() {\r\n            @Override\r\n            public void run() {\r\n                popupWindow.showAtLocation(v, Gravity.CENTER, 0 ,0);\r\n            }\r\n        });\r\n\r\n    }\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/covidsafespaces/Register.java	(revision 0bf3a31c2856dbae5e234e5dff0b8bb25037f2ab)
++++ app/src/main/java/com/example/covidsafespaces/Register.java	(date 1607449905033)
+@@ -4,6 +4,7 @@
+ 
+ import android.annotation.SuppressLint;
+ import android.content.Intent;
++import android.graphics.Color;
+ import android.os.Bundle;
+ import android.text.method.HideReturnsTransformationMethod;
+ import android.text.method.PasswordTransformationMethod;
+@@ -12,6 +13,8 @@
+ import android.view.MotionEvent;
+ import android.view.View;
+ import android.widget.Button;
++import android.widget.CheckBox;
++import android.widget.EditText;
+ import android.widget.LinearLayout;
+ import android.widget.PopupWindow;
+ import android.widget.TextView;
+@@ -23,9 +26,8 @@
+ 
+ public class Register extends AppCompatActivity {
+ 
+-    private final String PASSWORDTEXT = "Password must contain an upper case, a lower case, a number and a special character";
++    private final String PASSWORDTEXT = "Your password is not accomplishing enough conditions ";
+     private final String REGEXP = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[\\-\\._$@$!%*?&])([A-Za-z\\d$@$!%*?&]|[^ ]){8,15}$";
+-
+     private TextView username;
+     private TextView mail;
+     private TextView password1;
+@@ -34,20 +36,26 @@
+     private Button registerButton;
+     private boolean password1Visible = false;
+     private boolean password2Visible = false;
++    private int level=0;
++    private TextView  u_case,l_case,number, s_c,level_security;
+ 
+     @SuppressLint("ClickableViewAccessibility")
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_register);
+-
+         username = findViewById(R.id.registerUsername);
+         mail = findViewById(R.id.registerMail);
+         password1 = findViewById(R.id.registerPassword);
+         password2 = findViewById(R.id.registerpassword2);
+         alertText = findViewById(R.id.wrongPassword);
+         registerButton = findViewById(R.id.registerButton);
+-
++        u_case= findViewById(R.id.c_uppercase);
++        l_case=findViewById(R.id.c_lowercase);
++        number=findViewById(R.id.c_number);
++        s_c=findViewById(R.id.c_special_character);
++        level_security=findViewById(R.id.level_sec);
++        level_security.setVisibility(View.INVISIBLE);
+         password1.setOnTouchListener(new View.OnTouchListener() {
+             @SuppressLint("ClickableViewAccessibility")
+             @Override
+@@ -56,17 +64,66 @@
+                 final int DRAWABLE_TOP = 1;
+                 final int DRAWABLE_RIGHT = 2;
+                 final int DRAWABLE_BOTTOM = 3;
+-
+                 if(event.getAction() == MotionEvent.ACTION_UP) {
+                     if(event.getRawX() >= (password1.getRight() - password1.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                         showHidePassword1();
+                         return true;
+                     }
+                 }
++                level=0;
++                if(password1.getText().toString().matches(".*[a-z].*")){
++                    l_case.setTextColor(Color.parseColor("#008000"));
++                    level++;
++                }else{
++                    l_case.setTextColor(Color.parseColor("#000000"));
++                }
++                if(password1.getText().toString().matches(".*[A-Z].*")) {
++                    u_case.setTextColor(Color.parseColor("#008000"));
++                    level++;
++                }else{
++                    u_case.setTextColor(Color.parseColor("#000000"));
++                }
++                if(password1.getText().toString().matches(".*\\d.*")) {
++                    number.setTextColor(Color.parseColor("#008000"));
++                    level++;
++                }else{
++                    number.setTextColor(Color.parseColor("#000000"));
++                }
++                if(password1.getText().toString().matches(".*[\\-\\._$@$!%*?&]")) {
++                    s_c.setTextColor(Color.parseColor("#008000"));
++                    level++;
++                }else{
++                    s_c.setTextColor(Color.parseColor("#000000"));
++                }
++                switch(level){
++                    case 0:
++                        level_security.setVisibility(View.INVISIBLE);
++                        break;
++                    case 1:
++                        level_security.setVisibility(View.VISIBLE);
++                        level_security.setText("Low");
++                        level_security.setTextColor(Color.parseColor("#FF0000"));
++                        break;
++                    case 2:
++                        level_security.setVisibility(View.VISIBLE);
++                        level_security.setText("Medium");
++                        level_security.setTextColor(Color.parseColor("#FFFF00"));
++                        break;
++                    case 3:
++                        level_security.setVisibility(View.VISIBLE);
++                        level_security.setText("High");
++                        level_security.setTextColor(Color.parseColor("#98c201"));
++                        break;
++                    case 4:
++                        level_security.setVisibility(View.VISIBLE);
++                        level_security.setText("Very high");
++                        level_security.setTextColor(Color.parseColor("#008000"));
++                        break;
++                    default:
++                }
+                 return false;
+             }
+         });
+-
+         password2.setOnTouchListener(new View.OnTouchListener() {
+             @SuppressLint("ClickableViewAccessibility")
+             @Override
+@@ -75,7 +132,6 @@
+                 final int DRAWABLE_TOP = 1;
+                 final int DRAWABLE_RIGHT = 2;
+                 final int DRAWABLE_BOTTOM = 3;
+-
+                 if(event.getAction() == MotionEvent.ACTION_UP) {
+                     if(event.getRawX() >= (password2.getRight() - password2.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                         showHidePassword2();
+@@ -85,7 +141,6 @@
+                 return false;
+             }
+         });
+-
+         registerButton.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+Index: app/src/main/java/com/example/covidsafespaces/Drawer.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.covidsafespaces;\r\n\r\nimport android.os.Bundle;\r\nimport android.view.View;\r\nimport android.view.Menu;\r\n\r\nimport com.google.android.material.floatingactionbutton.FloatingActionButton;\r\nimport com.google.android.material.snackbar.Snackbar;\r\nimport com.google.android.material.navigation.NavigationView;\r\n\r\nimport androidx.navigation.NavController;\r\nimport androidx.navigation.Navigation;\r\nimport androidx.navigation.ui.AppBarConfiguration;\r\nimport androidx.navigation.ui.NavigationUI;\r\nimport androidx.drawerlayout.widget.DrawerLayout;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\nimport androidx.appcompat.widget.Toolbar;\r\n\r\npublic class Drawer extends AppCompatActivity {\r\n\r\n    private AppBarConfiguration mAppBarConfiguration;\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_my_drawer);\r\n        Toolbar toolbar = findViewById(R.id.toolbar);\r\n        setSupportActionBar(toolbar);\r\n        DrawerLayout drawer = findViewById(R.id.drawer_layout);\r\n        NavigationView navigationView = findViewById(R.id.nav_view);\r\n        // Passing each menu ID as a set of Ids because each\r\n        // menu should be considered as top level destinations.\r\n        mAppBarConfiguration = new AppBarConfiguration.Builder(\r\n                R.id.nav_home, R.id.nav_profile, R.id.nav_exit,R.id.nav_contact,R.id.nav_logout,R.id.nav_help,R.id.nav_picture,R.id.nav_AR)\r\n                .setDrawerLayout(drawer)\r\n                .build();\r\n        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);\r\n        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);\r\n        NavigationUI.setupWithNavController(navigationView, navController);\r\n    }\r\n\r\n    @Override\r\n    public boolean onCreateOptionsMenu(Menu menu) {\r\n        // Inflate the menu; this adds items to the action bar if it is present.\r\n        getMenuInflater().inflate(R.menu.my_drawer, menu);\r\n        return true;\r\n    }\r\n\r\n    @Override\r\n    public boolean onSupportNavigateUp() {\r\n        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);\r\n        return NavigationUI.navigateUp(navController, mAppBarConfiguration)\r\n                || super.onSupportNavigateUp();\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/covidsafespaces/Drawer.java	(revision 0bf3a31c2856dbae5e234e5dff0b8bb25037f2ab)
++++ app/src/main/java/com/example/covidsafespaces/Drawer.java	(date 1607334868162)
+@@ -31,7 +31,7 @@
+         // Passing each menu ID as a set of Ids because each
+         // menu should be considered as top level destinations.
+         mAppBarConfiguration = new AppBarConfiguration.Builder(
+-                R.id.nav_home, R.id.nav_profile, R.id.nav_exit,R.id.nav_contact,R.id.nav_logout,R.id.nav_help,R.id.nav_picture,R.id.nav_AR)
++                R.id.nav_home, R.id.nav_profile, R.id.nav_exit,R.id.nav_contact,R.id.nav_logout,R.id.nav_help)
+                 .setDrawerLayout(drawer)
+                 .build();
+         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    package=\"com.example.covidsafespaces\">\r\n\r\n    <uses-permission android:name=\"android.permission.CAMERA\" />\r\n    <uses-permission android:name=\"android.permission.INTERNET\" />\r\n    <uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />\r\n    <uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\" />\r\n\r\n    <uses-feature\r\n        android:name=\"android.hardware.camera.ar\"\r\n        android:required=\"true\" />\r\n\r\n    <application\r\n        android:allowBackup=\"true\"\r\n        android:icon=\"@drawable/logo3\"\r\n        android:label=\"@string/app_name\"\r\n        android:networkSecurityConfig=\"@xml/network_security_config\"\r\n        android:requestLegacyExternalStorage=\"true\"\r\n        android:roundIcon=\"@mipmap/ic_launcher_round\"\r\n        android:supportsRtl=\"true\"\r\n        android:theme=\"@style/AppTheme\"\r\n        android:usesCleartextTraffic=\"false\"\r\n        tools:ignore=\"GoogleAppIndexingWarning\">\r\n\r\n        <meta-data\r\n            android:name=\"com.google.ar.core\"\r\n            android:value=\"required\" />\r\n\r\n        <activity\r\n            android:name=\".ARCore2\"\r\n            android:configChanges=\"orientation|screenSize\"\r\n            android:exported=\"true\"\r\n            android:screenOrientation=\"locked\"\r\n            android:theme=\"@style/AppTheme.NoActionBar\"/>\r\n        <activity android:name=\".Profile\"\r\n            android:theme=\"@style/AppTheme.NoActionBar\"/>\r\n        <activity\r\n            android:name=\".ChangePassword\"\r\n            android:label=\"@string/title_activity_change_password\"\r\n            android:theme=\"@style/AppTheme.NoActionBar\" />\r\n        <activity\r\n            android:name=\".Drawer\"\r\n            android:label=\"@string/title_activity_my_drawer\"\r\n            android:theme=\"@style/AppTheme.NoActionBar\" />\r\n        <activity\r\n            android:name=\".Selection\"\r\n            android:theme=\"@style/AppTheme.NoActionBar\" />\r\n        <activity android:name=\".Register\" />\r\n        <activity\r\n            android:name=\".Main\"\r\n            android:theme=\"@style/AppTheme.NoActionBar\" />\r\n        <activity android:name=\".TermsOfUse\" />\r\n        <activity\r\n            android:name=\".Login\"\r\n            android:screenOrientation=\"portrait\">\r\n            <intent-filter>\r\n                <action android:name=\"android.intent.action.MAIN\" />\r\n\r\n                <category android:name=\"android.intent.category.LAUNCHER\" />\r\n            </intent-filter>\r\n        </activity>\r\n    </application>\r\n\r\n</manifest>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/AndroidManifest.xml	(revision 0bf3a31c2856dbae5e234e5dff0b8bb25037f2ab)
++++ app/src/main/AndroidManifest.xml	(date 1607449864930)
+@@ -14,7 +14,7 @@
+ 
+     <application
+         android:allowBackup="true"
+-        android:icon="@drawable/logo3"
++        android:icon="@drawable/icono"
+         android:label="@string/app_name"
+         android:networkSecurityConfig="@xml/network_security_config"
+         android:requestLegacyExternalStorage="true"
+Index: app/src/main/res/menu/activity_main_drawer.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<menu xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    tools:showIn=\"navigation_view\">\r\n\r\n    <group android:checkableBehavior=\"single\">\r\n        <item\r\n            android:id=\"@+id/nav_home\"\r\n            android:icon=\"@drawable/ic_home\"\r\n            android:title=\"@string/menu_home\" />\r\n\r\n        <item\r\n            android:id=\"@+id/nav_profile\"\r\n            android:icon=\"@drawable/ic_profile\"\r\n            android:title=\"My Profile\" />\r\n        <item\r\n            android:id=\"@+id/nav_contact\"\r\n            android:icon=\"@drawable/ic_contact\"\r\n            android:title=\"Contact Us\" />\r\n        <item\r\n            android:id=\"@+id/nav_help\"\r\n            android:icon=\"@drawable/ic_help\"\r\n            android:title=\"Help\" />\r\n        <item\r\n            android:id=\"@+id/nav_logout\"\r\n            android:icon=\"@drawable/ic_logout\"\r\n            android:title=\"Logout\" />\r\n        <item\r\n            android:id=\"@+id/nav_exit\"\r\n            android:icon=\"@drawable/ic_exit\"\r\n            android:title=\"Exit\" />\r\n    </group>\r\n</menu>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/menu/activity_main_drawer.xml	(revision 0bf3a31c2856dbae5e234e5dff0b8bb25037f2ab)
++++ app/src/main/res/menu/activity_main_drawer.xml	(date 1607163358262)
+@@ -16,7 +16,7 @@
+         <item
+             android:id="@+id/nav_contact"
+             android:icon="@drawable/ic_contact"
+-            android:title="Contact Us" />
++            android:title="Contact " />
+         <item
+             android:id="@+id/nav_help"
+             android:icon="@drawable/ic_help"
+Index: app/src/main/java/com/example/covidsafespaces/HelpFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.covidsafespaces;\r\n\r\nimport android.os.Bundle;\r\n\r\nimport androidx.fragment.app.Fragment;\r\n\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.widget.ImageView;\r\nimport android.widget.TextView;\r\n\r\npublic class HelpFragment extends Fragment {\r\n    private TextView text1, text2;\r\n    private View vista;\r\n    public void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n    }\r\n    public View onCreateView(LayoutInflater inflater, ViewGroup container,\r\n                             Bundle savedInstanceState) {\r\n        // Inflate the layout for this fragment\r\n        vista=inflater.inflate(R.layout.fragment_help, container, false);\r\n        text1= vista.findViewById(R.id.text1);\r\n        text1.setText(\"1. You have 4 markers availables to locate on the corners of the room. Do it as in the image bellow:\");\r\n        text2= vista.findViewById(R.id.text2);\r\n        text2.setText(\"2. You will see the measures taken on the screen\\n3. Take a picture of each winddow of the room\\n4.\" +\r\n                \"You will see that each wall is identify with a letter\");\r\n\r\n        return vista;\r\n    }\r\n    }\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/covidsafespaces/HelpFragment.java	(revision 0bf3a31c2856dbae5e234e5dff0b8bb25037f2ab)
++++ app/src/main/java/com/example/covidsafespaces/HelpFragment.java	(date 1607554146590)
+@@ -4,6 +4,7 @@
+ 
+ import androidx.fragment.app.Fragment;
+ 
++import android.text.method.ScrollingMovementMethod;
+ import android.view.LayoutInflater;
+ import android.view.View;
+ import android.view.ViewGroup;
+@@ -11,21 +12,45 @@
+ import android.widget.TextView;
+ 
+ public class HelpFragment extends Fragment {
+-    private TextView text1, text2;
++    private TextView text1, text2,text3,text4,text5,text6;
+     private View vista;
+     public void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+     }
+     public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                              Bundle savedInstanceState) {
+-        // Inflate the layout for this fragment
+         vista=inflater.inflate(R.layout.fragment_help, container, false);
+-        text1= vista.findViewById(R.id.text1);
+-        text1.setText("1. You have 4 markers availables to locate on the corners of the room. Do it as in the image bellow:");
+-        text2= vista.findViewById(R.id.text2);
+-        text2.setText("2. You will see the measures taken on the screen\n3. Take a picture of each winddow of the room\n4." +
+-                "You will see that each wall is identify with a letter");
+-
++        text1= vista.findViewById(R.id.text1_help);
++        text1.setText("In this screen we will try to help you and to resolve your doubts about how works our app. " +
++                "We have though that the best idea to help the user is to explain each screen in detail:");
++        text1.setMovementMethod(new ScrollingMovementMethod());
++        text2=vista.findViewById(R.id.text2_help);
++        text2.setText("In this screen you will be capable to see, edit or delete your previous measurements. " +
++                "If you want to make a new measurement you will have to press the 'new measure button', it will redirect" +
++                " you on the AR screen. There you will see some instructions to make you know what you have to do. You will " +
++                "have to locate the markers on the corners of the room by clicking on the screen.In it you will be available" +
++                "to see the distance between the markers you have placed");
++        text2.setMovementMethod(new ScrollingMovementMethod());
++        text3=vista.findViewById(R.id.text3_help);
++        text3.setText("These distances will be sent to the server to calculate " +
++                "the volume of the room. When you have finished these measurements, press the CAPTURE button, you will be directed to this capture screen.");
++        text3.setMovementMethod(new ScrollingMovementMethod());
++        text4= vista.findViewById(R.id.text4_help);
++        text4.setText("As you can see in this screen you will see some instructions of what you have to do in this part. In this part " +
++                "you have two options to choose: window detection and people. If you choose window detection you will have to focus on " +
++                "each window of the room and press the 'Capture button', when you have captured all the windows of the room press the 'End " +
++                "button'. You will have to wait a few seconds and it will appear a message on the screen with the total capacity of the room.");
++        text4.setMovementMethod(new ScrollingMovementMethod());
++        text5= vista.findViewById(R.id.text5_help);
++        text5.setText("If you choose the people option, you will have to take a picture showing  people faces. " +
++                "When you have captured this picture it will appear at the screen a message telling you the number of people and warning " +
++                "you if someone is not wearing the mask.");
++        text5.setMovementMethod(new ScrollingMovementMethod());
++        text6= vista.findViewById(R.id.text6_help);
++        text6.setText("In this screen you will  be able to see you personal data (username and email) and to change your password if you want. If you deccide to" +
++                "change it you will have to write your current password and your new password twice. Once you have finished, you press" +
++                " the 'Update Password' button and your password will be updated");
++        text6.setMovementMethod(new ScrollingMovementMethod());
+         return vista;
+     }
+     }
+Index: app/src/main/res/layout/fragment_contact.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<FrameLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    tools:context=\".ContactFragment\"\r\n    android:background=\"#D1C4E9\">\r\n\r\n    <TextView\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"match_parent\" />\r\n\r\n</FrameLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/fragment_contact.xml	(revision 0bf3a31c2856dbae5e234e5dff0b8bb25037f2ab)
++++ app/src/main/res/layout/fragment_contact.xml	(date 1607337305314)
+@@ -1,13 +1,47 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
++<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:tools="http://schemas.android.com/tools"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     tools:context=".ContactFragment"
+     android:background="#D1C4E9">
+ 
+-    <TextView
++    <LinearLayout
+         android:layout_width="match_parent"
+-        android:layout_height="match_parent" />
++        android:layout_height="match_parent"
++        android:layout_marginLeft="12dp"
++        android:layout_margin="20dp"
++        android:orientation="vertical">
++        <Button
++            android:id="@+id/contact_email"
++            android:layout_width="299dp"
++            android:layout_height="50dp"
++            android:layout_margin="5dp"
++            android:background="@drawable/borde"
++            android:drawableLeft="@drawable/ic_mail"
++            android:text="Pae_safe_space@accenture.com"
++            android:textAllCaps="false" />
++
++        <Button
++            android:id="@+id/contact_phone"
++            android:layout_width="198dp"
++            android:layout_height="50dp"
++            android:layout_margin="5dp"
++            android:background="@drawable/borde"
++            android:drawableLeft="@drawable/ic_phone"
++            android:text="93255678"
++            android:textAlignment="center" />
++
++        <Button
++            android:id="@+id/contact_instagram"
++            android:layout_width="198dp"
++            android:layout_height="50dp"
++            android:layout_margin="5dp"
++            android:background="@drawable/borde"
++            android:drawableLeft="@drawable/drawable_instagram"
++            android:text="@SafeSpaces20"
++            android:textAlignment="center"
++            android:textAllCaps="false" />
++    </LinearLayout>
+ 
+-</FrameLayout>
+\ No newline at end of file
++</LinearLayout>
+\ No newline at end of file
+Index: app/src/main/res/layout/activity_profile.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n\r\n<androidx.drawerlayout.widget.DrawerLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:id=\"@+id/drawer_layout\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:fitsSystemWindows=\"true\">\r\n\r\n    <LinearLayout\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"match_parent\"\r\n        android:orientation=\"vertical\"\r\n        android:background=\"#D1C4E9\">\r\n\r\n        <com.google.android.material.appbar.AppBarLayout\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:theme=\"@style/AppTheme.ThemeOverlay\">\r\n\r\n            <androidx.appcompat.widget.Toolbar\r\n                android:id=\"@+id/toolbar\"\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                app:title=\"Profile\">\r\n\r\n            </androidx.appcompat.widget.Toolbar>\r\n\r\n        </com.google.android.material.appbar.AppBarLayout>\r\n\r\n        <LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"match_parent\"\r\n            android:orientation=\"vertical\"\r\n            android:padding=\"5dp\"\r\n            android:background=\"#D1C4E9\">\r\n\r\n            <TextView\r\n                android:id=\"@+id/username\"\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_margin=\"5dp\"\r\n                android:padding=\"10dp\"\r\n                android:drawableLeft=\"@drawable/ic_profile\"\r\n                android:textSize=\"25sp\"\r\n                android:gravity=\"center\"\r\n                android:text=\"\"\r\n                android:background=\"@drawable/borde\"/>\r\n\r\n            <TextView\r\n                android:id=\"@+id/mail\"\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_margin=\"5dp\"\r\n                android:padding=\"10dp\"\r\n                android:drawableLeft=\"@drawable/ic_mail\"\r\n                android:textSize=\"25sp\"\r\n                android:gravity=\"center\"\r\n                android:text=\"\"\r\n                android:background=\"@drawable/borde\"/>\r\n\r\n            <Button\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_margin=\"5dp\"\r\n                android:drawableLeft=\"@drawable/ic_delete\"\r\n                android:onClick=\"deleteAccount\"\r\n                android:text=\"Delete account\"/>\r\n\r\n            <Button\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_margin=\"5dp\"\r\n                android:drawableLeft=\"@drawable/ic_lock\"\r\n                android:text=\"change password\"\r\n                android:onClick=\"changePassword\"/>\r\n\r\n            <ScrollView\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\">\r\n\r\n                <LinearLayout\r\n                    android:id=\"@+id/changePasswordLayout\"\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:orientation=\"vertical\"\r\n                    android:layout_marginTop=\"20dp\"\r\n                    android:visibility=\"gone\">\r\n\r\n                    <ImageView\r\n                        android:layout_width=\"300dp\"\r\n                        android:layout_height=\"200dp\"\r\n                        android:layout_gravity=\"center\"\r\n                        android:src=\"@drawable/candado\"/>\r\n\r\n                    <EditText\r\n                        android:id=\"@+id/currentPassword\"\r\n                        android:layout_width=\"match_parent\"\r\n                        android:layout_height=\"wrap_content\"\r\n                        android:layout_margin=\"5dp\"\r\n                        android:padding=\"10dp\"\r\n                        android:drawableLeft=\"@drawable/ic_lock\"\r\n                        android:drawableRight=\"@drawable/ic_visible\"\r\n                        android:textSize=\"25sp\"\r\n                        android:gravity=\"center\"\r\n                        android:hint=\"Current Password\"\r\n                        android:inputType=\"textPassword\"\r\n                        android:background=\"@drawable/borde\"/>\r\n\r\n                    <TextView\r\n                        android:id=\"@+id/wrongCurrentPassword\"\r\n                        android:layout_width=\"match_parent\"\r\n                        android:layout_height=\"wrap_content\"\r\n                        android:layout_margin=\"5dp\"\r\n                        android:gravity=\"center\"\r\n                        android:background=\"@android:color/transparent\"\r\n                        android:visibility=\"gone\"\r\n                        android:text=\"Incorrect password\"\r\n                        android:textSize=\"15sp\"\r\n                        android:textColor=\"#F00\"\r\n                        />\r\n\r\n                    <EditText\r\n                        android:id=\"@+id/password1\"\r\n                        android:layout_width=\"match_parent\"\r\n                        android:layout_height=\"wrap_content\"\r\n                        android:layout_margin=\"5dp\"\r\n                        android:padding=\"10dp\"\r\n                        android:drawableLeft=\"@drawable/ic_lock\"\r\n                        android:drawableRight=\"@drawable/ic_visible\"\r\n                        android:textSize=\"25sp\"\r\n                        android:gravity=\"center\"\r\n                        android:hint=\"New Password\"\r\n                        android:inputType=\"textPassword\"\r\n                        android:background=\"@drawable/borde\"/>\r\n\r\n                    <EditText\r\n                        android:id=\"@+id/password2\"\r\n                        android:layout_width=\"match_parent\"\r\n                        android:layout_height=\"wrap_content\"\r\n                        android:layout_margin=\"5dp\"\r\n                        android:padding=\"10dp\"\r\n                        android:drawableLeft=\"@drawable/ic_lock\"\r\n                        android:drawableRight=\"@drawable/ic_visible\"\r\n                        android:textSize=\"25sp\"\r\n                        android:gravity=\"center\"\r\n                        android:hint=\"New Password\"\r\n                        android:inputType=\"textPassword\"\r\n                        android:background=\"@drawable/borde\"/>\r\n\r\n                    <TextView\r\n                        android:id=\"@+id/wrongNewPassword\"\r\n                        android:layout_width=\"match_parent\"\r\n                        android:layout_height=\"wrap_content\"\r\n                        android:layout_margin=\"5dp\"\r\n                        android:gravity=\"center\"\r\n                        android:background=\"@android:color/transparent\"\r\n                        android:visibility=\"gone\"\r\n                        android:text=\"\"\r\n                        android:textSize=\"15sp\"\r\n                        android:textColor=\"#F00\"\r\n                        />\r\n\r\n                    <Button\r\n                        android:layout_width=\"match_parent\"\r\n                        android:layout_height=\"wrap_content\"\r\n                        android:layout_margin=\"5dp\"\r\n                        android:text=\"update password\"\r\n                        android:onClick=\"updatePassword\"/>\r\n\r\n\r\n                </LinearLayout>\r\n\r\n            </ScrollView>\r\n\r\n        </LinearLayout>\r\n\r\n    </LinearLayout>\r\n\r\n\r\n\r\n    <com.google.android.material.navigation.NavigationView\r\n        android:id=\"@+id/nav_view\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"match_parent\"\r\n        android:layout_gravity=\"start\"\r\n        app:menu=\"@menu/activity_main_drawer\"\r\n        app:headerLayout=\"@layout/nav_header_main\">\r\n\r\n    </com.google.android.material.navigation.NavigationView>\r\n\r\n</androidx.drawerlayout.widget.DrawerLayout>\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_profile.xml	(revision 0bf3a31c2856dbae5e234e5dff0b8bb25037f2ab)
++++ app/src/main/res/layout/activity_profile.xml	(date 1607336773394)
+@@ -66,15 +66,19 @@
+                 android:layout_margin="5dp"
+                 android:drawableLeft="@drawable/ic_delete"
+                 android:onClick="deleteAccount"
+-                android:text="Delete account"/>
++                android:text="Delete account"
++                android:textSize="18dp"
++                android:textAllCaps="false"/>
+ 
+             <Button
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_margin="5dp"
+                 android:drawableLeft="@drawable/ic_lock"
+-                android:text="change password"
+-                android:onClick="changePassword"/>
++                android:text="Change password"
++                android:onClick="changePassword"
++                android:textSize="18dp"
++                android:textAllCaps="false"/>
+ 
+             <ScrollView
+                 android:layout_width="match_parent"
+Index: app/src/main/res/drawable/ic_profile.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><vector xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    android:width=\"24dp\"\r\n    android:height=\"24dp\"\r\n    android:viewportWidth=\"24\"\r\n    android:viewportHeight=\"24\"\r\n    android:tint=\"?attr/colorControlNormal\">\r\n  <path\r\n      android:fillColor=\"@android:color/white\"\r\n      android:pathData=\"M12,12c2.21,0 4,-1.79 4,-4s-1.79,-4 -4,-4 -4,1.79 -4,4 1.79,4 4,4zM12,14c-2.67,0 -8,1.34 -8,4v2h16v-2c0,-2.66 -5.33,-4 -8,-4z\"/>\r\n</vector>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/drawable/ic_profile.xml	(revision 0bf3a31c2856dbae5e234e5dff0b8bb25037f2ab)
++++ app/src/main/res/drawable/ic_profile.xml	(date 1607336485300)
+@@ -3,7 +3,7 @@
+     android:height="24dp"
+     android:viewportWidth="24"
+     android:viewportHeight="24"
+-    android:tint="?attr/colorControlNormal">
++    android:tint="#000000">
+   <path
+       android:fillColor="@android:color/white"
+       android:pathData="M12,12c2.21,0 4,-1.79 4,-4s-1.79,-4 -4,-4 -4,1.79 -4,4 1.79,4 4,4zM12,14c-2.67,0 -8,1.34 -8,4v2h16v-2c0,-2.66 -5.33,-4 -8,-4z"/>
+Index: app/src/main/res/layout/fragment_help.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<RelativeLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    tools:context=\".HelpFragment\"\r\n    tools:layout_anchorGravity=\"center\"\r\n    android:background=\"#D1C4E9\">\r\n\r\n    <TextView\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"122dp\"\r\n        android:text=\"STEPS TO FOLLOW\"\r\n        android:textSize=\"15dp\"\r\n        android:textAlignment=\"center\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/text1\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"122dp\"\r\n        android:layout_marginTop=\"50dp\"\r\n        android:layout_marginRight=\"16sp\"\r\n        android:layout_marginLeft=\"16sp\"/>\r\n\r\n    <ImageView\r\n        android:layout_width=\"339dp\"\r\n        android:layout_height=\"225dp\"\r\n        android:layout_below=\"@+id/text1\"\r\n        android:layout_alignParentEnd=\"true\"\r\n        android:layout_centerVertical=\"true\"\r\n        android:layout_marginTop=\"-60dp\"\r\n        android:layout_marginEnd=\"33dp\"\r\n        android:scaleType=\"fitCenter\"\r\n        android:src=\"@drawable/hab3d\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/text2\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"122dp\"\r\n        android:layout_alignTop=\"@+id/text1\"\r\n        android:layout_marginLeft=\"16sp\"\r\n        android:layout_marginTop=\"307dp\"\r\n        android:layout_marginRight=\"16sp\" />\r\n\r\n\r\n</RelativeLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/fragment_help.xml	(revision 0bf3a31c2856dbae5e234e5dff0b8bb25037f2ab)
++++ app/src/main/res/layout/fragment_help.xml	(date 1607554146584)
+@@ -1,46 +1,123 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
++<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:tools="http://schemas.android.com/tools"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     tools:context=".HelpFragment"
+-    tools:layout_anchorGravity="center"
+-    android:background="#D1C4E9">
++    android:background="#D1C4E9"
++    android:orientation="vertical">
++
++    <ScrollView
++        android:layout_width="match_parent"
++        android:layout_height="match_parent"
++        android:layout_margin="10dp">
++
++        <LinearLayout
++            android:layout_width="match_parent"
++            android:layout_height="match_parent"
++            android:orientation="vertical">
+ 
+-    <TextView
+-        android:layout_width="match_parent"
+-        android:layout_height="122dp"
+-        android:text="STEPS TO FOLLOW"
+-        android:textSize="15dp"
+-        android:textAlignment="center" />
++        <TextView
++            android:id="@+id/text1_help"
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:text="Help"
++            android:textColor="#000000" />
++
++        <TextView
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:layout_margin="1dp"
++            android:text="HOME SCREEN"
++            android:textAlignment="center"
++            android:textColor="#4527A0" />
++
++        <LinearLayout
++            android:layout_width="match_parent"
++            android:layout_height="match_parent"
++            android:orientation="horizontal">
++
++            <ImageView
++                android:layout_width="120dp"
++                android:layout_height="250dp"
++                android:layout_marginLeft="1dp"
++                android:src="@drawable/home" />
++
++            <TextView
++                android:id="@+id/text2_help"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:layout_marginLeft="5dp"
++                android:layout_marginTop="3dp"
++                android:text="HEYY"
++                android:textColor="#000000" />
++        </LinearLayout>
+ 
+-    <TextView
+-        android:id="@+id/text1"
+-        android:layout_width="match_parent"
+-        android:layout_height="122dp"
+-        android:layout_marginTop="50dp"
+-        android:layout_marginRight="16sp"
+-        android:layout_marginLeft="16sp"/>
++        <TextView
++            android:id="@+id/text3_help"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:text="HEYY"
++            android:textColor="#000000"
++            android:layout_marginBottom="5dp"/>
++
++        <LinearLayout
++            android:layout_width="match_parent"
++            android:layout_height="match_parent"
++            android:orientation="horizontal"
++            android:layout_marginTop="5dp">
+ 
+-    <ImageView
+-        android:layout_width="339dp"
+-        android:layout_height="225dp"
+-        android:layout_below="@+id/text1"
+-        android:layout_alignParentEnd="true"
+-        android:layout_centerVertical="true"
+-        android:layout_marginTop="-60dp"
+-        android:layout_marginEnd="33dp"
+-        android:scaleType="fitCenter"
+-        android:src="@drawable/hab3d" />
++            <ImageView
++                android:layout_width="120dp"
++                android:layout_height="250dp"
++                android:layout_marginLeft="1dp"
++                android:src="@drawable/capturescreen" />
+ 
+-    <TextView
+-        android:id="@+id/text2"
+-        android:layout_width="match_parent"
+-        android:layout_height="122dp"
+-        android:layout_alignTop="@+id/text1"
+-        android:layout_marginLeft="16sp"
+-        android:layout_marginTop="307dp"
+-        android:layout_marginRight="16sp" />
++            <TextView
++                android:id="@+id/text4_help"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:layout_marginLeft="5dp"
++                android:text="HEYY"
++                android:textColor="#000000" />
++        </LinearLayout>
++            <TextView
++                android:id="@+id/text5_help"
++                android:layout_width="match_parent"
++                android:layout_height="wrap_content"
++                android:layout_margin="5dp"
++                android:text="HEYY"
++                android:textColor="#000000" />
++
++        <TextView
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:layout_margin="5dp"
++            android:text="PROFILE SCREEN"
++            android:textAlignment="center"
++            android:textColor="#4527A0" />
++            <LinearLayout
++                android:layout_width="match_parent"
++                android:layout_height="match_parent"
++                android:orientation="horizontal">
++
++                <ImageView
++                    android:layout_width="120dp"
++                    android:layout_height="250dp"
++                    android:layout_marginLeft="1dp"
++                    android:src="@drawable/profilescreen" />
++
++                <TextView
++                    android:id="@+id/text6_help"
++                    android:layout_width="wrap_content"
++                    android:layout_height="wrap_content"
++                    android:layout_marginLeft="5dp"
++                    android:text="HEYY"
++                    android:textColor="#000000" />
++            </LinearLayout>
++        </LinearLayout>
++
++    </ScrollView>
+ 
+ 
+-</RelativeLayout>
+\ No newline at end of file
++</LinearLayout>
+\ No newline at end of file
+Index: app/src/main/java/com/example/covidsafespaces/Login.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.covidsafespaces;\r\n\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport android.annotation.SuppressLint;\r\nimport android.content.Intent;\r\nimport android.os.Bundle;\r\nimport android.text.method.HideReturnsTransformationMethod;\r\nimport android.text.method.PasswordTransformationMethod;\r\nimport android.view.MotionEvent;\r\nimport android.view.View;\r\nimport android.widget.Button;\r\nimport android.widget.TextView;\r\nimport android.widget.Toast;\r\n\r\nimport org.json.JSONException;\r\nimport org.json.JSONObject;\r\n\r\npublic class Login extends AppCompatActivity implements Listener{\r\n\r\n    private Button enter;\r\n    private Button register;\r\n    private TextView username;\r\n    private TextView password;\r\n    private boolean passwordVisible = false;\r\n\r\n\r\n    @SuppressLint(\"ClickableViewAccessibility\")\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_login);\r\n\r\n        username = findViewById(R.id.username);\r\n        password = findViewById(R.id.password);\r\n        register = (Button)findViewById(R.id.register);\r\n        enter = (Button)findViewById(R.id.enter);\r\n\r\n        password.setOnTouchListener(new View.OnTouchListener() {\r\n            @Override\r\n            public boolean onTouch(View v, MotionEvent event) {\r\n                final int DRAWABLE_LEFT = 0;\r\n                final int DRAWABLE_TOP = 1;\r\n                final int DRAWABLE_RIGHT = 2;\r\n                final int DRAWABLE_BOTTOM = 3;\r\n\r\n                if(event.getAction() == MotionEvent.ACTION_UP) {\r\n                    if(event.getRawX() >= (password.getRight() - password.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {\r\n                        showHidePassword();\r\n                        return true;\r\n                    }\r\n                }\r\n                return false;\r\n            }\r\n        });\r\n\r\n        enter.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                new ServerConnection().login(Login.this, username.getText().toString().trim());\r\n                /*Intent register = new Intent(Login.this, Selection.class);\r\n                startActivity(register);\r\n\r\n                 */\r\n            }\r\n        });\r\n\r\n        register.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                Intent register = new Intent(Login.this, Register.class);\r\n                startActivity(register);\r\n            }\r\n        });\r\n    }\r\n\r\n    private void showHidePassword(){\r\n        if(passwordVisible){\r\n            password.setTransformationMethod(PasswordTransformationMethod.getInstance());\r\n\r\n            password.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_lock, 0, R.drawable.ic_visible, 0);\r\n            passwordVisible = false;\r\n        } else{\r\n            password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());\r\n            password.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_lock, 0, R.drawable.ic_novisible, 0);\r\n            passwordVisible = true;\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public void receiveMessage(JSONObject data) {\r\n        try {\r\n            switch (data.getString(\"function\")){\r\n                case \"login\":\r\n                    if(data.has(\"password\")){\r\n                        String receivedPassword = data.getString(\"password\");\r\n                        if(password.getText().toString().trim().equals(receivedPassword)){\r\n                            //Intent i = new Intent(this, Main.class);\r\n                            Intent i = new Intent(this, Selection.class);\r\n                            i.putExtra(\"username\", username.getText().toString());\r\n                            startActivity(i);\r\n                            finish();\r\n                        } else{\r\n                            //showMessage();\r\n                            runOnUiThread(new Runnable() {\r\n                                @Override\r\n                                public void run() {\r\n                                    ((TextView) findViewById(R.id.wrongPassword)).setVisibility(View.VISIBLE);\r\n                                    ((TextView) findViewById(R.id.wrongUsername)).setVisibility(View.GONE);\r\n                                    password.setText(\"\");\r\n                                }\r\n                            });\r\n\r\n                        }\r\n                    } else{\r\n                        runOnUiThread(new Runnable() {\r\n                            @Override\r\n                            public void run() {\r\n                                ((TextView) findViewById(R.id.wrongUsername)).setVisibility(View.VISIBLE);\r\n                                ((TextView) findViewById(R.id.wrongPassword)).setVisibility(View.GONE);\r\n                            }\r\n                        });\r\n                    }\r\n                    break;\r\n                case \"recover\":\r\n                    if(data.has(\"error\")){\r\n                        runOnUiThread(new Runnable() {\r\n                            @Override\r\n                            public void run() {\r\n                                ((TextView) findViewById(R.id.wrongUsername)).setVisibility(View.VISIBLE);\r\n                                ((TextView) findViewById(R.id.wrongPassword)).setVisibility(View.GONE);\r\n                            }\r\n                        });\r\n                    } else{\r\n                        runOnUiThread(new Runnable() {\r\n                            @Override\r\n                            public void run() {\r\n                                String str = \"Password sended to email\";\r\n                                Toast.makeText(Login.this, str, Toast.LENGTH_LONG).show();\r\n                            }\r\n                        });\r\n                    }\r\n                    break;\r\n\r\n\r\n            }\r\n        } catch (JSONException e) {\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n\r\n    /*\r\n    @Override\r\n    public void receiveMessage(JSONObject data) {\r\n        try {\r\n            String receivedPassword = data.getString(\"password\");\r\n            if(password.getText().toString().trim().equals(receivedPassword)){\r\n                //Intent i = new Intent(this, Main.class);\r\n                Intent i = new Intent(this, Selection.class);\r\n                i.putExtra(\"username\", username.getText().toString());\r\n                startActivity(i);\r\n                finish();\r\n            } else{\r\n                //showMessage();\r\n                runOnUiThread(new Runnable() {\r\n                    @Override\r\n                    public void run() {\r\n                        ((TextView) findViewById(R.id.wrongPassword)).setVisibility(View.VISIBLE);\r\n                        ((TextView) findViewById(R.id.wrongUsername)).setVisibility(View.GONE);\r\n                        password.setText(\"\");\r\n                    }\r\n                });\r\n\r\n            }\r\n        } catch (JSONException e) {\r\n            //If json doesn't have password key, username is wrong\r\n            runOnUiThread(new Runnable() {\r\n                @Override\r\n                public void run() {\r\n                    ((TextView) findViewById(R.id.wrongUsername)).setVisibility(View.VISIBLE);\r\n                    ((TextView) findViewById(R.id.wrongPassword)).setVisibility(View.GONE);\r\n                }\r\n            });\r\n\r\n        }\r\n    }\r\n\r\n     */\r\n\r\n    public void recoverPassword(View v){\r\n        new ServerConnection().recover(this, username.getText().toString().trim());\r\n    }\r\n\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/covidsafespaces/Login.java	(revision 0bf3a31c2856dbae5e234e5dff0b8bb25037f2ab)
++++ app/src/main/java/com/example/covidsafespaces/Login.java	(date 1606910171365)
+@@ -57,11 +57,9 @@
+         enter.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+-                new ServerConnection().login(Login.this, username.getText().toString().trim());
+-                /*Intent register = new Intent(Login.this, Selection.class);
++                //new ServerConnection().login(Login.this, username.getText().toString().trim());
++                Intent register = new Intent(Login.this, Drawer.class);
+                 startActivity(register);
+-
+-                 */
+             }
+         });
+ 
+diff --git .idea/shelf/Uncommitted_changes_before_Update_at_29_10_2020_10_57__Default_Changelist_.xml .idea/shelf/Uncommitted_changes_before_Update_at_29_10_2020_10_57__Default_Changelist_.xml
