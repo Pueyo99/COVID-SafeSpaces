@@ -6,6 +6,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.Gravity;
@@ -38,7 +40,8 @@ public class Register extends AppCompatActivity {
     private boolean password1Visible = false;
     private boolean password2Visible = false;
     private int level=0;
-    private TextView  u_case,l_case,number, s_c,level_security;
+    private TextView  uppercaseText,lowercaseText,numberText, specialCharacterText,level_security;
+    private CheckBox uppercaseCheck, lowercaseCheck, numberCheck, specialCharacterCheck;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -51,10 +54,14 @@ public class Register extends AppCompatActivity {
         password2 = findViewById(R.id.registerpassword2);
         alertText = findViewById(R.id.wrongPassword);
         registerButton = findViewById(R.id.registerButton);
-        u_case= findViewById(R.id.c_uppercase);
-        l_case=findViewById(R.id.c_lowercase);
-        number=findViewById(R.id.c_number);
-        s_c=findViewById(R.id.c_special_character);
+        uppercaseText= findViewById(R.id.uppercaseText);
+        lowercaseText=findViewById(R.id.lowercaseText);
+        numberText=findViewById(R.id.numberText);
+        specialCharacterText=findViewById(R.id.specialCharacterText);
+        uppercaseCheck=findViewById(R.id.uppercaseCheck);
+        lowercaseCheck=findViewById(R.id.lowercaseCheck);
+        numberCheck=findViewById(R.id.numberCheck);
+        specialCharacterCheck=findViewById(R.id.specialCharacterCheck);
         level_security=findViewById(R.id.level_sec);
         level_security.setVisibility(View.INVISIBLE);
         password1.setOnTouchListener(new View.OnTouchListener() {
@@ -73,6 +80,81 @@ public class Register extends AppCompatActivity {
                 }
 
                 return false;
+            }
+        });
+
+        password1.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                level=0;
+                if(password1.getText().toString().matches(".*[a-z].*")){
+                    lowercaseText.setTextColor(Color.parseColor("#008000"));
+                    lowercaseCheck.setChecked(true);
+                    level++;
+                }else{
+                    lowercaseText.setTextColor(Color.parseColor("#000000"));
+                    lowercaseCheck.setChecked(false);
+                }
+                if(password1.getText().toString().matches(".*[A-Z].*")) {
+                    uppercaseText.setTextColor(Color.parseColor("#008000"));
+                    uppercaseCheck.setChecked(true);
+                    level++;
+                }else{
+                    uppercaseText.setTextColor(Color.parseColor("#000000"));
+                    uppercaseCheck.setChecked(false);
+                }
+                if(password1.getText().toString().matches(".*\\d.*")) {
+                    numberText.setTextColor(Color.parseColor("#008000"));
+                    numberCheck.setChecked(true);
+                    level++;
+                }else{
+                    numberText.setTextColor(Color.parseColor("#000000"));
+                    numberCheck.setChecked(false);
+                }
+                if(password1.getText().toString().matches(".*[\\-\\._$@$!%*?&]")) {
+                    specialCharacterText.setTextColor(Color.parseColor("#008000"));
+                    specialCharacterCheck.setChecked(true);
+                    level++;
+                }else{
+                    specialCharacterText.setTextColor(Color.parseColor("#000000"));
+                    specialCharacterCheck.setChecked(false);
+                }
+                switch(level){
+                    case 0:
+                        level_security.setVisibility(View.INVISIBLE);
+                        break;
+                    case 1:
+                        level_security.setVisibility(View.VISIBLE);
+                        level_security.setText("Low");
+                        level_security.setTextColor(Color.parseColor("#FF0000"));
+                        break;
+                    case 2:
+                        level_security.setVisibility(View.VISIBLE);
+                        level_security.setText("Medium");
+                        level_security.setTextColor(Color.parseColor("#FFFF00"));
+                        break;
+                    case 3:
+                        level_security.setVisibility(View.VISIBLE);
+                        level_security.setText("High");
+                        level_security.setTextColor(Color.parseColor("#98c201"));
+                        break;
+                    case 4:
+                        level_security.setVisibility(View.VISIBLE);
+                        level_security.setText("Very high");
+                        level_security.setTextColor(Color.parseColor("#008000"));
+                        break;
+                    default:
+                }
             }
         });
 
@@ -129,62 +211,6 @@ public class Register extends AppCompatActivity {
             alertText.setText(getResources().getString(R.string.passwordDifferent));
             alertText.setVisibility(View.VISIBLE);
         }
-    }
-
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        level=0;
-        if(password1.getText().toString().matches(".*[a-z].*")){
-            l_case.setTextColor(Color.parseColor("#008000"));
-            level++;
-        }else{
-            l_case.setTextColor(Color.parseColor("#000000"));
-        }
-        if(password1.getText().toString().matches(".*[A-Z].*")) {
-            u_case.setTextColor(Color.parseColor("#008000"));
-            level++;
-        }else{
-            u_case.setTextColor(Color.parseColor("#000000"));
-        }
-        if(password1.getText().toString().matches(".*\\d.*")) {
-            number.setTextColor(Color.parseColor("#008000"));
-            level++;
-        }else{
-            number.setTextColor(Color.parseColor("#000000"));
-        }
-        if(password1.getText().toString().matches(".*[\\-\\._$@$!%*?&]")) {
-            s_c.setTextColor(Color.parseColor("#008000"));
-            level++;
-        }else{
-            s_c.setTextColor(Color.parseColor("#000000"));
-        }
-        switch(level){
-            case 0:
-                level_security.setVisibility(View.INVISIBLE);
-                break;
-            case 1:
-                level_security.setVisibility(View.VISIBLE);
-                level_security.setText("Low");
-                level_security.setTextColor(Color.parseColor("#FF0000"));
-                break;
-            case 2:
-                level_security.setVisibility(View.VISIBLE);
-                level_security.setText("Medium");
-                level_security.setTextColor(Color.parseColor("#FFFF00"));
-                break;
-            case 3:
-                level_security.setVisibility(View.VISIBLE);
-                level_security.setText("High");
-                level_security.setTextColor(Color.parseColor("#98c201"));
-                break;
-            case 4:
-                level_security.setVisibility(View.VISIBLE);
-                level_security.setText("Very high");
-                level_security.setTextColor(Color.parseColor("#008000"));
-                break;
-            default:
-        }
-        return super.onKeyUp(keyCode, event);
     }
 
     private void showHidePassword1(){
