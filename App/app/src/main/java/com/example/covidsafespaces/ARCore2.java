@@ -3,13 +3,14 @@ package com.example.covidsafespaces;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
+import android.graphics.Canvas;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -47,8 +48,10 @@ import com.google.ar.sceneform.rendering.Color;
 import com.google.ar.sceneform.rendering.MaterialFactory;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.rendering.ShapeFactory;
+import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
+import com.google.ar.sceneform.ux.TransformationSystem;
 
 import org.w3c.dom.Text;
 
@@ -86,10 +89,12 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
 
     private ArFragment arFragment;
     private AnchorNode currentAnchorNode;
+    private AnchorNode pastAnchorNode;
     private TextView tvDistance;
     ModelRenderable cubeRenderable;
     private Anchor currentAnchor = null;
     Context context;
+    private Canvas canvas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,6 +168,7 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
 
             currentAnchor = anchor;
             currentAnchorNode = anchorNode;
+
             nAnchors++;
             updateDistance=true;
 
@@ -195,7 +201,7 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
     }
 
     private void initModel() {
-        MaterialFactory.makeTransparentWithColor(this, new Color(android.graphics.Color.BLUE))
+        MaterialFactory.makeTransparentWithColor(this, new Color(android.graphics.Color.rgb(51,0,51)))
                 .thenAccept(
                         material -> {
                             Vector3 vector3 = new Vector3(0.033f, 0.033f, 0.033f);
@@ -203,6 +209,46 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
                             cubeRenderable.setShadowCaster(false);
                             cubeRenderable.setShadowReceiver(false);
                         });
+    }
+
+    public void drawLine(AnchorNode node1, AnchorNode node2, float distance) {
+        //Draw a line between two AnchorNodes
+        Log.d(TAG,"drawLine");
+        Vector3 point1, point2;
+        point1 = node1.getWorldPosition();
+        point2 = node2.getWorldPosition();
+
+
+        //First, find the vector extending between the two points and define a look rotation
+        //in terms of this Vector.
+        final Vector3 difference = Vector3.subtract(point1, point2);
+
+        final Vector3 directionFromTopToBottom = difference.normalized();
+        final Quaternion rotationFromAToB =
+                Quaternion.lookRotation(directionFromTopToBottom, Vector3.up());
+        MaterialFactory.makeOpaqueWithColor(getApplicationContext(), new Color(153, 0, 153))
+                .thenAccept(
+                        material -> {
+                            /* Then, create a rectangular prism, using ShapeFactory.makeCube() and use the difference vector
+                                   to extend to the necessary length.  */
+                            Log.d(TAG,"drawLine insie .thenAccept");
+                            ModelRenderable model = ShapeFactory.makeCube(
+                                    new Vector3(.005f, .005f, difference.length()),
+                                    Vector3.zero(), material);
+                            /* Last, set the world rotation of the node to the rotation calculated earlier and set the world position to
+                                   the midpoint between the given points . */
+                            Anchor lineAnchor = node2.getAnchor();
+                            Node nodeForLine = new Node();
+                            nodeForLine.setParent(node1);
+                            nodeForLine.setRenderable(model);
+                            nodeForLine.setWorldPosition(Vector3.add(point1, point2).scaled(.5f));
+                            nodeForLine.setWorldRotation(rotationFromAToB);
+
+
+
+                        }
+                );
+
     }
 
     private void clearAnchor() {
@@ -231,12 +277,14 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
             if (nAnchors == 1) {
                 //1rst Anchor --- Save current modelMatrix as modelMatrixAnt
                 //System.arraycopy(modelMatrix, 0, modelMatrixAnt, 0, 16);
+
                 if(updateDistance){
                     System.arraycopy(modelMatrix, 0, modelMatrixAnt, 0, 16);
                     //poses.add(modelMatrix);
                     /*Toast.makeText(this, "x: "+modelMatrix[13]+"\ny: "+modelMatrix[14]
                     +"\nz: "+modelMatrix[15], Toast.LENGTH_LONG).show();
                      */
+                    pastAnchorNode = currentAnchorNode;
                     updateDistance = false;
                 }
                 //aux++;
@@ -254,6 +302,7 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
                     distances.add(distance);
                     System.arraycopy(modelMatrix, 0, modelMatrixAnt, 0, 16);
                     nAnchors = 0;
+                    drawLine(currentAnchorNode, pastAnchorNode, distance);
 
 
 
@@ -294,6 +343,8 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
                 totalDistanceSquared += distance_vector[i] * distance_vector[i];*/
         }
     }
+
+
 
     private void showDistance(float distance){
         finaldistance = distance;
