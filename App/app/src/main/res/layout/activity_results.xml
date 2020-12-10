@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Results"
+    android:background="#D1C4E9">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="66dp"
+                android:layout_height="64dp"
+                android:layout_margin="10dp"
+                android:src="@drawable/windowsopen" />
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/w_open_check"
+                android:clickable="false"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="66dp"
+                android:layout_height="64dp"
+                android:layout_margin="10dp"
+                android:src="@drawable/windowshalfopen" />
+
+            <CheckBox
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+                android:id="@+id/w_halfopen_check"
+                android:clickable="false"/>
+
+            <ImageView
+                android:layout_width="66dp"
+                android:layout_height="64dp"
+                android:layout_margin="10dp"
+                android:src="@drawable/maskonoff" />
+            <CheckBox
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+                android:id="@+id/mask_check"
+                android:clickable="false"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="66dp"
+                android:layout_height="64dp"
+                android:layout_margin="10dp"
+                android:src="@drawable/windowclosed" />
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/w_closed_check"
+                android:clickable="false"/>
+        </LinearLayout>
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/Results"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="30dp"
+            android:baselineAligned="false"
+            tools:ignore="MissingConstraints">
+        </com.github.mikephil.charting.charts.BarChart>
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

@@ -321,7 +321,8 @@ public class Main extends AppCompatActivity implements Listener {
             public void onClick(View v) {
                 if(imagesSended==imagesReceived){
                     setProgressDialog();
-                    new ServerConnection().getCapacity(Main.this,username,building,room);
+                    Intent intent = new Intent(Main.this, Results.class);
+                    startActivity(intent);
                 }else{
                     setProgressDialog();
                     endPressed=true;
