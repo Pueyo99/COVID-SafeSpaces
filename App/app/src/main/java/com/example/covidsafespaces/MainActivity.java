@@ -158,10 +158,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 mDrawerLayout.closeDrawer(GravityCompat.START);
                 break;
             case R.id.nav_contact:
-
+                if(!currentView.equals(getResources().getString(R.string.contact))){
+                    Fragment navFragment = new ContactFragment();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,navFragment).commit();
+                    currentView = getResources().getString(R.string.contact);
+                    mToolbar.setTitle(getResources().getString(R.string.contact));
+                }
+                mDrawerLayout.closeDrawer(GravityCompat.START);
                 break;
             case R.id.nav_help:
-
+                if(!currentView.equals(getResources().getString(R.string.help))){
+                    Fragment helpFragment = new HelpFragment();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,helpFragment).commit();
+                    currentView = getResources().getString(R.string.help);
+                    mToolbar.setTitle(getResources().getString(R.string.help));
+                }
+                mDrawerLayout.closeDrawer(GravityCompat.START);
                 break;
             case R.id.nav_logout:
                 startActivity(new Intent(this, Login.class));
