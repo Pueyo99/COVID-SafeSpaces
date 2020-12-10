@@ -1,43 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProfileFragment"
+    android:orientation="vertical"
+    android:padding="5dp"
     android:background="#D1C4E9">
+
     <TextView
-        android:id="@+id/text_profile_username"
+        android:id="@+id/username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50sp"
-        android:text=" Username:"
+        android:layout_margin="5dp"
+        android:padding="10dp"
         android:drawableLeft="@drawable/ic_profile"
+        android:textSize="25sp"
+        android:gravity="center"
+        android:text=""
         android:background="@drawable/borde"/>
 
     <TextView
-        android:id="@+id/text_profile_email"
+        android:id="@+id/mail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text=" Email:"
-        android:layout_marginTop="100sp"
+        android:layout_margin="5dp"
+        android:padding="10dp"
         android:drawableLeft="@drawable/ic_mail"
+        android:textSize="25sp"
+        android:gravity="center"
+        android:text=""
         android:background="@drawable/borde"/>
 
     <Button
-        android:id="@+id/ch_pw"
-        android:layout_width="290dp"
+        android:id="@+id/deleteAccountButton"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/text_profile_email"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="52dp"
-        android:layout_marginEnd="60dp"
+        android:layout_margin="5dp"
+        android:drawableLeft="@drawable/ic_delete"
+        android:text="@string/deleteAccount"/>
+
+    <Button
+        android:id="@+id/changePasswordButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
         android:drawableLeft="@drawable/ic_lock"
-        android:gravity="center"
-        android:text="Change password"
-        android:textAlignment="center" />
+        android:text="@string/changePassword"
+        android:onClick="changePassword"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/changePasswordLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:src="@drawable/candado"/>
+
+            <EditText
+                android:id="@+id/currentPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:padding="10dp"
+                android:drawableLeft="@drawable/ic_lock"
+                android:drawableRight="@drawable/ic_visible"
+                android:textSize="25sp"
+                android:gravity="center"
+                android:hint="@string/currentPassword"
+                android:inputType="textPassword"
+                android:background="@drawable/borde"/>
+
+            <TextView
+                android:id="@+id/wrongCurrentPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:background="@android:color/transparent"
+                android:visibility="gone"
+                android:text="@string/incorrectPassword"
+                android:textSize="15sp"
+                android:textColor="#F00"
+                />
+
+            <EditText
+                android:id="@+id/password1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:padding="10dp"
+                android:drawableLeft="@drawable/ic_lock"
+                android:drawableRight="@drawable/ic_visible"
+                android:textSize="25sp"
+                android:gravity="center"
+                android:hint="@string/newPassword"
+                android:inputType="textPassword"
+                android:background="@drawable/borde"/>
+
+            <EditText
+                android:id="@+id/password2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:padding="10dp"
+                android:drawableLeft="@drawable/ic_lock"
+                android:drawableRight="@drawable/ic_visible"
+                android:textSize="25sp"
+                android:gravity="center"
+                android:hint="@string/newPassword"
+                android:inputType="textPassword"
+                android:background="@drawable/borde"/>
+
+            <TextView
+                android:id="@+id/wrongNewPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:background="@android:color/transparent"
+                android:visibility="gone"
+                android:text=""
+                android:textSize="15sp"
+                android:textColor="#F00"
+                />
+
+            <Button
+                android:id="@+id/updatePasswordButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="@string/updatePassword"
+                android:onClick="updatePassword"/>
 
 
-</RelativeLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

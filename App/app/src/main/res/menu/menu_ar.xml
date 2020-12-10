@@ -3,18 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/showMeasures"
+        android:title="Show"
+        android:icon="@drawable/ic_show_measures"
+        app:showAsAction="ifRoom">
+    </item>
+
+    <item
         android:id="@+id/help"
         android:icon="@android:drawable/ic_menu_help"
         android:title="Help"
         app:showAsAction="ifRoom">
-
-
     </item>
 
     <item
         android:id="@+id/add"
         android:icon="@android:drawable/ic_menu_add"
         android:title="Add"
+        app:showAsAction="ifRoom">
+    </item>
+
+    <item
+        android:id="@+id/back"
+        android:title="Back"
+        android:icon="@drawable/ic_back"
         app:showAsAction="ifRoom">
 
     </item>
@@ -26,5 +38,14 @@
         app:showAsAction="ifRoom">
 
     </item>
+
+    <item
+        android:id="@+id/height"
+        android:title="@string/menuHeight"
+        app:showAsAction="never">
+
+    </item>
+
+
 
 </menu>

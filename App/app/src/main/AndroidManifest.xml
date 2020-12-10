@@ -24,6 +24,9 @@
         android:usesCleartextTraffic="false"
         tools:ignore="GoogleAppIndexingWarning">
 
+        <activity android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
         <meta-data
             android:name="com.google.ar.core"
             android:value="required" />
@@ -33,9 +36,10 @@
             android:configChanges="orientation|screenSize"
             android:exported="true"
             android:screenOrientation="locked"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".Profile"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Profile"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ChangePassword"
             android:label="@string/title_activity_change_password"

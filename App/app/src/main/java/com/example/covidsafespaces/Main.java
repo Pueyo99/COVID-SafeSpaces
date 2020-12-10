@@ -62,6 +62,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
@@ -144,8 +145,8 @@ public class Main extends AppCompatActivity implements Listener {
     private String username;
     private String building;
     private String room;
-    private Button captureButton;
-    private Button endButton;
+    private ImageButton captureButton;
+    private ImageButton endButton;
     private String mCameraId;
     private AutoFitTextureView mTextureView;
     private int mSensorOrientation;
@@ -349,7 +350,6 @@ public class Main extends AppCompatActivity implements Listener {
         builder.setView(v);
 
         AlertDialog resultDialog = builder.create();
-        resultDialog.show();
         Window window = resultDialog.getWindow();
         if (window != null) {
             WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
@@ -358,6 +358,7 @@ public class Main extends AppCompatActivity implements Listener {
             layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
             resultDialog.getWindow().setAttributes(layoutParams);
         }
+        resultDialog.show();
     }
 
     public void setProgressDialog() {
@@ -490,7 +491,7 @@ public class Main extends AppCompatActivity implements Listener {
 
         switch (item.getItemId()){
             case R.id.home:
-                Intent home = new Intent(this, Selection.class);
+                Intent home = new Intent(this, MainActivity.class);
                 home.putExtra("username",username);
                 startActivity(home);
                 finish();
@@ -498,23 +499,9 @@ public class Main extends AppCompatActivity implements Listener {
             case R.id.help:
                 showHelp();
                 break;
-            case R.id.window:
-                path = "window";
-                if(item.isChecked()){
-                    item.setChecked(false);
-                }else{
-                    item.setChecked(true);
-                }
+            case R.id.options:
+                setSingleChoiceDialog();
                 break;
-            case R.id.people:
-                path="people";
-                if(item.isChecked()){
-                    item.setChecked(false);
-                }else{
-                    item.setChecked(true);
-                }
-                break;
-
             case R.id.big:
                 areaIndex = 0;
                 if(item.isChecked()){
@@ -534,6 +521,44 @@ public class Main extends AppCompatActivity implements Listener {
         }
 
         return true;
+    }
+
+    private void setSingleChoiceDialog(){
+        String[] choices = {"Window","People"};
+        int checked =  path=="window"?0:1;
+        //AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        new AlertDialog.Builder(this).setTitle("Select option").setSingleChoiceItems(choices, checked, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case 0:
+                        path = "window";
+                        break;
+                    case 1:
+                        path="people";
+                        break;
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(Main.this, path, Toast.LENGTH_LONG).show();
+
+                    }
+                });
+            }
+        }).setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).create().show();
+
+
     }
 
     private void addOrientationListener()

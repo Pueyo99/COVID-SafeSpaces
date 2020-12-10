@@ -112,14 +112,14 @@ public class Register extends AppCompatActivity {
                 //Toast.makeText(this, "Verification email sended", Toast.LENGTH_LONG).show();
 
             }else{
-                alertText.setText(PASSWORDTEXT);
+                alertText.setText(getResources().getString(R.string.passwordSecurity));
                 alertText.setVisibility(View.VISIBLE);
             }
 
         } else{
             password1.setText("");
             password2.setText("");
-            alertText.setText("Passwords do not match");
+            alertText.setText(getResources().getString(R.string.passwordDifferent));
             alertText.setVisibility(View.VISIBLE);
         }
     }

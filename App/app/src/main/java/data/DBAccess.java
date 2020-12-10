@@ -26,7 +26,10 @@ public class DBAccess {
     public double getDistance(String country){
         String[] values = {country};
         Cursor cursor = database.rawQuery("SELECT DISTANCE FROM DISTANCES WHERE COUNTRY=?",values);
-        cursor.moveToFirst();
-        return cursor.getDouble(0);
+        if(cursor.moveToFirst()){
+            return cursor.getDouble(0);
+        }else{
+            return 2.0;
+        }
     }
 }

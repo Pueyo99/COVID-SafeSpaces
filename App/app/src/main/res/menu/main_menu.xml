@@ -20,21 +20,8 @@
 
     <item
         android:id="@+id/options"
-        android:title="Options">
-
-        <menu>
-            <group android:checkableBehavior="single">
-                <item
-                    android:id="@+id/window"
-                    android:title="Window"
-                    android:checked="true"
-                    />
-
-                <item
-                    android:id="@+id/people"
-                    android:title="People"/>
-            </group>
-        </menu>
+        android:title="Options"
+        app:showAsAction="never">
 
     </item>
 

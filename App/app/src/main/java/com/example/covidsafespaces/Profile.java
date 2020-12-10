@@ -158,13 +158,13 @@ public class Profile extends AppCompatActivity implements Listener, NavigationVi
                     wrongCurrentPassword.setVisibility(View.GONE);
                     wrongPassword.setVisibility(View.GONE);
                 }else{
-                    wrongPassword.setText(PASSWORDTEXT);
+                    wrongPassword.setText(getResources().getString(R.string.passwordSecurity));
                     wrongPassword.setVisibility(View.VISIBLE);
                     wrongCurrentPassword.setVisibility(View.GONE);
                 }
             } else {
                 wrongCurrentPassword.setVisibility(View.GONE);
-                wrongPassword.setText("Passwords do not match");
+                wrongPassword.setText(getResources().getString(R.string.passwordDifferent));
                 wrongPassword.setVisibility(View.VISIBLE);
             }
         }else {
@@ -178,8 +178,8 @@ public class Profile extends AppCompatActivity implements Listener, NavigationVi
     }
 
     public void deleteAccount(View v){
-        new AlertDialog.Builder(this).setTitle("Delete Account")
-                .setMessage("Are you sure you want to delete this account?")
+        new AlertDialog.Builder(this).setTitle(getResources().getString(R.string.deleteAccount))
+                .setMessage(getResources().getString(R.string.alertDeleteMessage))
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -289,6 +289,7 @@ public class Profile extends AppCompatActivity implements Listener, NavigationVi
                 break;
             case R.id.nav_logout:
                 startActivity(new Intent(this, Login.class));
+                finish();
                 break;
             case R.id.nav_exit:
                 mDrawerLayout.closeDrawer(GravityCompat.START);

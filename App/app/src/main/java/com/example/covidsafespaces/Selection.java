@@ -100,19 +100,19 @@ public class Selection extends AppCompatActivity implements SelectionListener, L
         mNavigationView = findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
 
-        selectedBuilding = "--Select building--";
-        selectedRoom = "--Select room--";
+        selectedBuilding = getResources().getString(R.string.selectBuilding);
+        selectedRoom = getResources().getString(R.string.selectRoom);
 
         buildings = findViewById(R.id.buildings);
         buildingAdapter = new Adapter(this, R.layout.item, new ArrayList<String>());
-        buildingAdapter.add("--Select building--");
+        buildingAdapter.add(getResources().getString(R.string.selectBuilding));
         buildings.setAdapter(buildingAdapter);
 
         buildings.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedBuilding = ((TextView)view.findViewById(R.id.spinnerItem)).getText().toString();
-                if(!selectedBuilding.equals("--Select building--")){
+                if(!selectedBuilding.equals(getResources().getString(R.string.selectBuilding))){
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -132,14 +132,14 @@ public class Selection extends AppCompatActivity implements SelectionListener, L
 
         rooms = findViewById(R.id.rooms);
         roomAdapter = new Adapter(this, R.layout.item, new ArrayList<String>());
-        roomAdapter.add("--Select room--");
+        roomAdapter.add(getResources().getString(R.string.selectRoom));
         rooms.setAdapter(roomAdapter);
 
         rooms.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedRoom = ((TextView) view.findViewById(R.id.spinnerItem)).getText().toString();
-                if(!selectedRoom.equals("--Select room--") && !selectedBuilding.equals("--Select building--")){
+                if(!selectedRoom.equals(getResources().getString(R.string.selectRoom)) && !selectedBuilding.equals(getResources().getString(R.string.selectBuilding))){
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -219,7 +219,7 @@ public class Selection extends AppCompatActivity implements SelectionListener, L
                     @Override
                     public void run() {
                         roomAdapter.clear();
-                        roomAdapter.add("--Select room--");
+                        roomAdapter.add(getResources().getString(R.string.selectRoom));
                         for(int i=0; i<data.length(); i++){
                             try {
                                 roomAdapter.add(data.getJSONObject(i).getString("ROOM"));
@@ -227,7 +227,7 @@ public class Selection extends AppCompatActivity implements SelectionListener, L
                                 e.printStackTrace();
                             }
                         }
-                        rooms.setSelection(roomAdapter.getItemIndex("--Select room--"));
+                        rooms.setSelection(roomAdapter.getItemIndex(getResources().getString(R.string.selectRoom)));
                     }
                 });
                 break;
@@ -273,14 +273,16 @@ public class Selection extends AppCompatActivity implements SelectionListener, L
         }
     }
 
-    public void getCapacity(View v){
+    /*public void getCapacity(View v){
         new ServerConnection().getCapacity(this,username, selectedBuilding,selectedRoom);
 
     }
 
+     */
+
     public void deleteMeasure(View v){
-        new AlertDialog.Builder(this).setTitle("Delete Measure")
-                .setMessage("Are you sure you want to delete this measure?")
+        new AlertDialog.Builder(this).setTitle(getResources().getString(R.string.deleteMeasure))
+                .setMessage(getResources().getString(R.string.alertDeleteMeasure))
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -317,7 +319,7 @@ public class Selection extends AppCompatActivity implements SelectionListener, L
         String newRoom = ((TextView)findViewById(R.id.newRoom)).getText().toString().trim();
         if(newBuilding.equals("") || newRoom.equals("")){
             TextView newMeasureWarning = findViewById(R.id.newMeasureWarning);
-            newMeasureWarning.setText("Fields must be filled");
+            newMeasureWarning.setText(getResources().getString(R.string.fieldsFilled));
             newMeasureWarning.setVisibility(View.VISIBLE);
         }else{
             Intent i = new Intent(this, ARCore2.class);
@@ -331,12 +333,12 @@ public class Selection extends AppCompatActivity implements SelectionListener, L
     }
 
     public void editMeasure(View v){
-        if(selectedBuilding == "--Select building--"){
-            Toast.makeText(this, "Select a buuilding", Toast.LENGTH_LONG).show();
+        if(selectedBuilding == getResources().getString(R.string.selectBuilding)){
+            Toast.makeText(this, "Select a building", Toast.LENGTH_LONG).show();
             return;
         }
 
-        if(selectedRoom == "--Select room--"){
+        if(selectedRoom == getResources().getString(R.string.selectRoom)){
             Toast.makeText(this, "Select a room", Toast.LENGTH_LONG).show();
             return;
         }
@@ -392,6 +394,7 @@ public class Selection extends AppCompatActivity implements SelectionListener, L
                 break;
             case R.id.nav_logout:
                 startActivity(new Intent(this, Login.class));
+                finish();
                 break;
             case R.id.nav_exit:
                 mDrawerLayout.closeDrawer(GravityCompat.START);
@@ -421,13 +424,13 @@ public class Selection extends AppCompatActivity implements SelectionListener, L
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(Selection.this);
 
         // Setting Dialog Title
-        alertDialog.setTitle("GPS is settings");
+        alertDialog.setTitle(getResources().getString(R.string.settinsUbicationTitle));
 
         // Setting Dialog Message
-        alertDialog.setMessage("GPS is not enabled. Do you want to go to settings menu?");
+        alertDialog.setMessage(getResources().getString(R.string.settingsUbicationMessage));
 
         // On pressing the Settings button.
-        alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton(getResources().getString(R.string.settings), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int which) {
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 Selection.this.startActivity(intent);

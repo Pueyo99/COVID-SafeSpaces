@@ -57,21 +57,21 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:drawableLeft="@drawable/ic_download"
-                android:text="Get capacity"
+                android:text="@string/getCapacity"
                 android:onClick="getCapacity" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_edit"
-                android:text="Edit Measure"
+                android:text="@string/editMeasure"
                 android:onClick="editMeasure"
                 />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Delete measure"
+                android:text="@string/deleteMeasure"
                 android:drawableLeft="@drawable/ic_delete"
                 android:onClick="deleteMeasure"/>
 
@@ -104,7 +104,7 @@
                 android:inputType="text"
                 android:maxLines="1"
                 android:textSize="20sp"
-                android:hint="Building"
+                android:hint="@string/building"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/borde"/>
@@ -117,7 +117,7 @@
                 android:inputType="text"
                 android:maxLines="1"
                 android:textSize="20sp"
-                android:hint="Room"
+                android:hint="@string/room"
                 android:background="@drawable/borde"/>
 
             <TextView
@@ -133,7 +133,7 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="New Measure"
+                android:text="@string/newMeasure"
                 android:onClick="newMeasure"/>
 
         </LinearLayout>

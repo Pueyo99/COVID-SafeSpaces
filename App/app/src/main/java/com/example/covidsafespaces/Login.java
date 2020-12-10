@@ -96,7 +96,7 @@ public class Login extends AppCompatActivity implements Listener{
                         String receivedPassword = data.getString("password");
                         if(password.getText().toString().trim().equals(receivedPassword)){
                             //Intent i = new Intent(this, Main.class);
-                            Intent i = new Intent(this, Selection.class);
+                            Intent i = new Intent(this, MainActivity.class);
                             i.putExtra("username", username.getText().toString());
                             startActivity(i);
                             finish();

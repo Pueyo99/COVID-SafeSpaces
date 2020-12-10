@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -13,11 +14,14 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,14 +29,17 @@ import com.google.ar.core.Anchor;
 import com.google.ar.core.CameraConfig;
 import com.google.ar.core.Config;
 import com.google.ar.core.Frame;
+import com.google.ar.core.Plane;
 import com.google.ar.core.Pose;
 import com.google.ar.core.Session;
+import com.google.ar.core.exceptions.CameraNotAvailableException;
 import com.google.ar.core.exceptions.UnavailableApkTooOldException;
 import com.google.ar.core.exceptions.UnavailableArcoreNotInstalledException;
 import com.google.ar.core.exceptions.UnavailableDeviceNotCompatibleException;
 import com.google.ar.core.exceptions.UnavailableSdkTooOldException;
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.FrameTime;
+import com.google.ar.sceneform.Node;
 import com.google.ar.sceneform.Scene;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.Color;
@@ -41,6 +48,8 @@ import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.rendering.ShapeFactory;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,13 +60,14 @@ import static java.lang.Math.pow;
 public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener{
 
     private static final double MIN_OPENGL_VERSION = 3.0;
-    private static final String TAG = ARCore.class.getSimpleName();
+    private static final String TAG = ARCore2.class.getSimpleName();
 
     private Toolbar mToolbar;
 
     private String username;
     private String building;
     private String room;
+    private float roomHeight;
     private boolean edit;
 
     //private final SnackbarHelper messageSnackbarHelper = new SnackbarHelper();
@@ -68,7 +78,7 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
     int nAnchors = 0;
     float distance;
     float finaldistance;
-    float distance2;
+
     private ArrayList<Float> distances = new ArrayList<>();
     private boolean updateDistance;
     private int rate=0;
@@ -88,6 +98,8 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
             Toast.makeText(getApplicationContext(), "Device not supported", Toast.LENGTH_LONG).show();
         }
 
+        roomHeight = (float) 3.0;
+
         setContentView(R.layout.activity_a_r_core);
 
         mToolbar = findViewById(R.id.toolbar);
@@ -104,7 +116,7 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
             if(extras.containsKey("distances")){
                 distances = (ArrayList<Float>) extras.getSerializable("distances");
                 if(distances.size()>0){
-                    tvDistance.setText("Distance: " + distances.get(0) + " m.");
+                    tvDistance.setText("Distance: " + distances.get(distances.size()-1) + " m.");
                 }
             }else{
                 showHelp();
@@ -127,7 +139,7 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
         } catch (Exception ex){
             ex.printStackTrace();
         }
-        
+
          */
 
 
@@ -144,7 +156,9 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
             AnchorNode anchorNode = new AnchorNode(anchor);
             anchorNode.setParent(arFragment.getArSceneView().getScene());
 
-            clearAnchor();
+
+
+            //clearAnchor();
 
             currentAnchor = anchor;
             currentAnchorNode = anchorNode;
@@ -180,10 +194,10 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
     }
 
     private void initModel() {
-        MaterialFactory.makeTransparentWithColor(this, new Color(android.graphics.Color.RED))
+        MaterialFactory.makeTransparentWithColor(this, new Color(android.graphics.Color.BLUE))
                 .thenAccept(
                         material -> {
-                            Vector3 vector3 = new Vector3(0.05f, 0.01f, 0.01f);
+                            Vector3 vector3 = new Vector3(0.033f, 0.033f, 0.033f);
                             cubeRenderable = ShapeFactory.makeCube(vector3, Vector3.zero(), material);
                             cubeRenderable.setShadowCaster(false);
                             cubeRenderable.setShadowReceiver(false);
@@ -201,6 +215,7 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
             currentAnchorNode = null;
         }
     }
+
 
     @Override
     public void onUpdate(FrameTime frameTime) {
@@ -220,7 +235,6 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
                     //poses.add(modelMatrix);
                     /*Toast.makeText(this, "x: "+modelMatrix[13]+"\ny: "+modelMatrix[14]
                     +"\nz: "+modelMatrix[15], Toast.LENGTH_LONG).show();
-
                      */
                     updateDistance = false;
                 }
@@ -231,7 +245,6 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
                     //poses.add(modelMatrix);
                     /*Toast.makeText(this, "x: "+modelMatrix[13]+"\ny: "+modelMatrix[14]
                             +"\nz: "+modelMatrix[15], Toast.LENGTH_LONG).show();
-
                      */
                     updateDistance = false;
                     //distance = distance2Points(poses.get(1), poses.get(0));
@@ -246,11 +259,9 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
                     /*modelMatrix = new float[16];
                     modelMatrixAnt = new float[16];
                     clearAnchor();
-
                      */
                     /*getIntent().putExtra("distances",distances);
                     recreate();
-
                      */
 
 
@@ -263,16 +274,13 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
                 tvDistance.setText("Distance: " + distanceString + " m.");
                 //aux=0;
                 System.arraycopy(modelMatrix, 0, modelMatrixAnt, 0, 16);
-
                  */
             }
 
             /*
-
             float dx = objectPose.tx() - cameraPose.tx();
             float dy = objectPose.ty() - cameraPose.ty();
             float dz = objectPose.tz() - cameraPose.tz();
-
             ///Compute the straight-line distance.
             float distanceMeters = (float) Math.sqrt(dx * dx + dy * dy + dz * dz);
             tvDistance.setText("Distance from camera: " + distanceMeters + " metres");
@@ -295,7 +303,7 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
         //Toast.makeText(this, "1: " + distances.get(0) + "\n2: " + distances.get(1), Toast.LENGTH_LONG).show();
         ArrayList<Float> areas = new ArrayList<>();
         for (Float distance : distances) {
-            areas.add((float) (distance * 3.0));
+            areas.add((float) (distance * roomHeight));
         }
         Intent i = new Intent(this, Main.class);
         i.putExtra("username", username);
@@ -321,7 +329,6 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
                 +"\nz: "+array1[15], Toast.LENGTH_LONG).show();
         Toast.makeText(this, "x: "+array2[13]+"\ny: "+array2[14]
                 +"\nz: "+array2[15], Toast.LENGTH_LONG).show();
-
          */
 
         float distx1 = array1[13];
@@ -366,6 +373,59 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
 
     }
 
+    private void showMeasures(){
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.help_dialogwindow);
+        final TextView text = dialog.findViewById(R.id.textwindow);
+        String str = "Room height: "+roomHeight;
+        for(int i=0; i<distances.size(); i++){
+            str += i!=0?"\n":"";
+            str += "Distance "+(i+1)+": "+distances.get(i);
+        }
+        text.setText(str);
+        text.setMovementMethod(new ScrollingMovementMethod());
+        Button ok = (Button) dialog.findViewById(R.id.okbutton);
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+
+    }
+
+    private void selectHeight(){
+        final Dialog dialog = new Dialog(this);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.height_dialog);
+
+        Window window = dialog.getWindow();
+        if(window != null){
+            window.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+            layoutParams.copyFrom(dialog.getWindow().getAttributes());
+            layoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT;
+            layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+            dialog.getWindow().setAttributes(layoutParams);
+        }
+
+        dialog.findViewById(R.id.okbutton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                roomHeight = Float.parseFloat(((TextView)dialog.findViewById(R.id.height)).getText().toString());
+                dialog.dismiss();
+            }
+        });
+
+
+        dialog.show();
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_ar, menu);
@@ -382,16 +442,26 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
                 getIntent().putExtra("distances",distances);
                 recreate();
                 break;
+            case R.id.back:
+                if(distances.size()>0){
+                    distances.remove(distances.size()-1);
+                }
+                getIntent().putExtra("distances",distances);
+                recreate();
+                break;
             case R.id.restart:
-
+                distances.clear();
+                recreate();
+                break;
+            case R.id.showMeasures:
+                showMeasures();
+                break;
+            case R.id.height:
+                selectHeight();
                 break;
         }
 
         return true;
     }
 
-    @Override
-    public void onBackPressed() {
-        moveTaskToBack(true);
-    }
 }
