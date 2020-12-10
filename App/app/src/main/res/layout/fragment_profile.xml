@@ -121,6 +121,131 @@
                 android:background="@drawable/borde"/>
 
             <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Your password must accomplish at least 3 of this conditions"
+                android:textColor="#000000"
+                android:textSize="15dp"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="start">
+
+                <CheckBox
+                    android:id="@+id/uppercaseCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:checked="false"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="At least one uppercase"
+                    android:id="@+id/uppercaseText"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="start">
+
+                <CheckBox
+                    android:id="@+id/lowercaseCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:checked="false"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="At least one lowercase"
+                    android:id="@+id/lowercaseText"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="start">
+
+                <CheckBox
+                    android:id="@+id/numberCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:checked="false"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="At least one number"
+                    android:id="@+id/numberText"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="start">
+
+                <CheckBox
+                    android:id="@+id/specialCharacterCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:checked="false"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="At least one special character"
+                    android:id="@+id/specialCharacterText"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Security level:"
+                    android:layout_weight="1"
+                    android:textColor="#000000"
+                    android:textSize="15dp"
+                    />
+                <TextView
+                    android:id="@+id/level_sec"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text=""
+                    android:layout_marginLeft="30dp"
+                    />
+            </LinearLayout>
+
+            <TextView
                 android:id="@+id/wrongNewPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -6,7 +6,10 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
@@ -14,6 +17,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +55,9 @@ public class ProfileFragment extends Fragment implements Listener{
     private boolean passwordVisibleC;
     private boolean passwordVisible1;
     private boolean passwordVisible2;
+    private int level=0;
+    private TextView  uppercaseText,lowercaseText,numberText, specialCharacterText,level_security;
+    private CheckBox uppercaseCheck, lowercaseCheck, numberCheck, specialCharacterCheck;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +80,16 @@ public class ProfileFragment extends Fragment implements Listener{
         password1 = view.findViewById(R.id.password1);
         password2 = view.findViewById(R.id.password2);
         wrongPassword = view.findViewById(R.id.wrongNewPassword);
+        uppercaseText= view.findViewById(R.id.uppercaseText);
+        lowercaseText=view.findViewById(R.id.lowercaseText);
+        numberText=view.findViewById(R.id.numberText);
+        specialCharacterText=view.findViewById(R.id.specialCharacterText);
+        uppercaseCheck=view.findViewById(R.id.uppercaseCheck);
+        lowercaseCheck=view.findViewById(R.id.lowercaseCheck);
+        numberCheck=view.findViewById(R.id.numberCheck);
+        specialCharacterCheck=view.findViewById(R.id.specialCharacterCheck);
+        level_security=view.findViewById(R.id.level_sec);
+        level_security.setVisibility(View.INVISIBLE);
 
         currentPassword.setOnTouchListener(new View.OnTouchListener() {
             @SuppressLint("ClickableViewAccessibility")
@@ -108,6 +125,81 @@ public class ProfileFragment extends Fragment implements Listener{
                     }
                 }
                 return false;
+            }
+        });
+
+        password1.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                level=0;
+                if(password1.getText().toString().matches(".*[a-z].*")){
+                    lowercaseText.setTextColor(Color.parseColor("#008000"));
+                    lowercaseCheck.setChecked(true);
+                    level++;
+                }else{
+                    lowercaseText.setTextColor(Color.parseColor("#000000"));
+                    lowercaseCheck.setChecked(false);
+                }
+                if(password1.getText().toString().matches(".*[A-Z].*")) {
+                    uppercaseText.setTextColor(Color.parseColor("#008000"));
+                    uppercaseCheck.setChecked(true);
+                    level++;
+                }else{
+                    uppercaseText.setTextColor(Color.parseColor("#000000"));
+                    uppercaseCheck.setChecked(false);
+                }
+                if(password1.getText().toString().matches(".*\\d.*")) {
+                    numberText.setTextColor(Color.parseColor("#008000"));
+                    numberCheck.setChecked(true);
+                    level++;
+                }else{
+                    numberText.setTextColor(Color.parseColor("#000000"));
+                    numberCheck.setChecked(false);
+                }
+                if(password1.getText().toString().matches(".*[\\-\\._$@$!%*?&]")) {
+                    specialCharacterText.setTextColor(Color.parseColor("#008000"));
+                    specialCharacterCheck.setChecked(true);
+                    level++;
+                }else{
+                    specialCharacterText.setTextColor(Color.parseColor("#000000"));
+                    specialCharacterCheck.setChecked(false);
+                }
+                switch(level){
+                    case 0:
+                        level_security.setVisibility(View.INVISIBLE);
+                        break;
+                    case 1:
+                        level_security.setVisibility(View.VISIBLE);
+                        level_security.setText("Low");
+                        level_security.setTextColor(Color.parseColor("#FF0000"));
+                        break;
+                    case 2:
+                        level_security.setVisibility(View.VISIBLE);
+                        level_security.setText("Medium");
+                        level_security.setTextColor(Color.parseColor("#FFFF00"));
+                        break;
+                    case 3:
+                        level_security.setVisibility(View.VISIBLE);
+                        level_security.setText("High");
+                        level_security.setTextColor(Color.parseColor("#98c201"));
+                        break;
+                    case 4:
+                        level_security.setVisibility(View.VISIBLE);
+                        level_security.setText("Very high");
+                        level_security.setTextColor(Color.parseColor("#008000"));
+                        break;
+                    default:
+                }
             }
         });
 
