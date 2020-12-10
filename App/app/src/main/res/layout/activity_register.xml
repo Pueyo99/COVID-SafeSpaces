@@ -24,7 +24,7 @@
             android:background="@drawable/login_edittext"
             android:drawableLeft="@drawable/ic_user"
             android:gravity="center"
-            android:hint="@string/username"
+            android:hint="Username"
             android:inputType="textPersonName"
             android:textSize="20sp" />
 
@@ -36,7 +36,7 @@
             android:background="@drawable/login_edittext"
             android:drawableLeft="@drawable/ic_mail"
             android:gravity="center"
-            android:hint="@string/mail"
+            android:hint="Mail"
             android:inputType="textEmailSubject"
             android:textSize="20sp" />
 
@@ -49,7 +49,7 @@
             android:drawableLeft="@drawable/ic_lock"
             android:drawableRight="@drawable/ic_visible"
             android:gravity="center"
-            android:hint="@string/password"
+            android:hint="Password"
             android:inputType="textPassword"
             android:textSize="20sp" />
 
@@ -62,7 +62,7 @@
             android:drawableLeft="@drawable/ic_lock"
             android:drawableRight="@drawable/ic_visible"
             android:gravity="center"
-            android:hint="@string/password"
+            android:hint="Password"
             android:inputType="textPassword"
             android:textSize="20sp" />
 
@@ -77,13 +77,66 @@
             android:textSize="15sp"
             android:textColor="#F00"
             />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Your password must accomplish at least 3 of this conditions"
+            android:textColor="#000000"
+            android:textSize="15dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="-At least one uppercase"
+            android:id="@+id/c_uppercase"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="-At least one lowercase"
+            android:id="@+id/c_lowercase"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="-At least one number"
+            android:id="@+id/c_number"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="-At least one lowercase"
+            android:id="@+id/c_special_character"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Security level:"
+                android:layout_weight="1"
+                android:textColor="#000000"
+                android:textSize="15dp"
+                />
+            <TextView
+                android:id="@+id/level_sec"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Helloo"
+                android:layout_marginLeft="30dp"
+                />
+        </LinearLayout>
+
 
         <Button
             android:id="@+id/registerButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/register" />
+            android:text="Create my account"
+            android:textAllCaps="false"/>
 
     </LinearLayout>
 

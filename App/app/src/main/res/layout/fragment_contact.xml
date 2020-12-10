@@ -1,13 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ContactFragment"
     android:background="#D1C4E9">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginLeft="12dp"
+        android:layout_margin="20dp"
+        android:orientation="vertical">
+        <Button
+            android:id="@+id/contact_email"
+            android:layout_width="299dp"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/borde"
+            android:drawableLeft="@drawable/ic_mail"
+            android:text="Pae_safe_space@accenture.com"
+            android:textAllCaps="false" />
 
-</FrameLayout>
+        <Button
+            android:id="@+id/contact_phone"
+            android:layout_width="198dp"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/borde"
+            android:drawableLeft="@drawable/ic_phone"
+            android:text="93255678"
+            android:textAlignment="center" />
+
+        <Button
+            android:id="@+id/contact_instagram"
+            android:layout_width="198dp"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/borde"
+            android:drawableLeft="@drawable/drawable_instagram"
+            android:text="@SafeSpaces20"
+            android:textAlignment="center"
+            android:textAllCaps="false" />
+    </LinearLayout>
+
+</LinearLayout>

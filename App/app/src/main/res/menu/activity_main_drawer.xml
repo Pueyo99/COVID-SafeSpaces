@@ -5,32 +5,29 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:checked="true"
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_home"
-            android:title="@string/home" />
+            android:title="@string/menu_home" />
 
         <item
             android:id="@+id/nav_profile"
             android:icon="@drawable/ic_profile"
-            android:title="@string/profile" />
+            android:title="My Profile" />
         <item
             android:id="@+id/nav_contact"
             android:icon="@drawable/ic_contact"
-            android:title="@string/contact" />
+            android:title="Contact Us" />
         <item
             android:id="@+id/nav_help"
             android:icon="@drawable/ic_help"
-            android:title="@string/help" />
+            android:title="Help" />
         <item
-            android:checkable="false"
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_logout"
-            android:title="@string/logout" />
+            android:title="Logout" />
         <item
-            android:checkable="false"
             android:id="@+id/nav_exit"
             android:icon="@drawable/ic_exit"
-            android:title="@string/exit" />
+            android:title="Exit" />
     </group>
 </menu>

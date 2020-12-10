@@ -19,7 +19,6 @@
 
     <fragment
         android:id="@+id/nav_exit"
-        android:name="com.example.covidsafespaces.SlideshowFragment"
         android:label="Exit"
         tools:layout="@layout/fragment_exit" />
     <fragment
@@ -35,16 +34,6 @@
     <fragment
         android:id="@+id/nav_contact"
         android:name="com.example.covidsafespaces.ContactFragment"
-        android:label="Contact us"
+        android:label="Contact"
         tools:layout="@layout/fragment_contact" />
-    <fragment
-        android:id="@+id/nav_AR"
-        android:name="com.example.covidsafespaces.ARFragment"
-        android:label="AR"
-        tools:layout="@layout/fragment_a_r" />
-    <fragment
-        android:id="@+id/nav_picture"
-        android:name="com.example.covidsafespaces.PictureFragment"
-        android:label="Picture"
-        tools:layout="@layout/fragment_picture" />
 </navigation>

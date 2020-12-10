@@ -58,10 +58,6 @@ public class Login extends AppCompatActivity implements Listener{
             @Override
             public void onClick(View view) {
                 new ServerConnection().login(Login.this, username.getText().toString().trim());
-                /*Intent register = new Intent(Login.this, Selection.class);
-                startActivity(register);
-
-                 */
             }
         });
 

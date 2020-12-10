@@ -66,14 +66,14 @@
                 android:layout_margin="5dp"
                 android:drawableLeft="@drawable/ic_delete"
                 android:onClick="deleteAccount"
-                android:text="@string/deleteAccount"/>
+                android:text="Delete account"/>
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:drawableLeft="@drawable/ic_lock"
-                android:text="@string/changePassword"
+                android:text="change password"
                 android:onClick="changePassword"/>
 
             <ScrollView
@@ -104,7 +104,7 @@
                         android:drawableRight="@drawable/ic_visible"
                         android:textSize="25sp"
                         android:gravity="center"
-                        android:hint="@string/currentPassword"
+                        android:hint="Current Password"
                         android:inputType="textPassword"
                         android:background="@drawable/borde"/>
 
@@ -116,7 +116,7 @@
                         android:gravity="center"
                         android:background="@android:color/transparent"
                         android:visibility="gone"
-                        android:text="@string/incorrectPassword"
+                        android:text="Incorrect password"
                         android:textSize="15sp"
                         android:textColor="#F00"
                         />
@@ -131,7 +131,7 @@
                         android:drawableRight="@drawable/ic_visible"
                         android:textSize="25sp"
                         android:gravity="center"
-                        android:hint="@string/newPassword"
+                        android:hint="New Password"
                         android:inputType="textPassword"
                         android:background="@drawable/borde"/>
 
@@ -145,7 +145,7 @@
                         android:drawableRight="@drawable/ic_visible"
                         android:textSize="25sp"
                         android:gravity="center"
-                        android:hint="@string/newPassword"
+                        android:hint="New Password"
                         android:inputType="textPassword"
                         android:background="@drawable/borde"/>
 
@@ -166,7 +166,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:text="@string/updatePassword"
+                        android:text="update password"
                         android:onClick="updatePassword"/>
 
 
