@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Results"
+    android:background="#D1C4E9"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingTop="10dp">
+
+            <ImageView
+                android:layout_width="66dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:src="@drawable/windowclosed" />
+
+            <ImageView
+                android:layout_width="66dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:src="@drawable/windowshalfopen" />
+
+            <ImageView
+                android:layout_width="66dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:src="@drawable/windowsopen" />
+
+        </LinearLayout>
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:progress="100"/>
+
+        <TextView
+            android:id="@+id/progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:text="100%"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="66dp"
+            android:layout_height="64dp"
+            android:layout_margin="10dp"
+            android:src="@drawable/maskonoff" />
+
+        <CheckBox
+            android:id="@+id/mask_check"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:clickable="false" />
+
+    </LinearLayout>
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/Results"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginTop="30dp"
+        android:baselineAligned="false"
+        tools:ignore="MissingConstraints">
+    </com.github.mikephil.charting.charts.BarChart>
+
+</LinearLayout>

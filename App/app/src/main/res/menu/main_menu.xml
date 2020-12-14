@@ -19,6 +19,13 @@
     </item>
 
     <item
+        android:id="@+id/map"
+        android:title="Map"
+        app:showAsAction="never">
+
+    </item>
+
+    <item
         android:id="@+id/options"
         android:title="Options"
         app:showAsAction="never">
@@ -27,24 +34,8 @@
 
     <item
         android:id="@+id/windowSelection"
-        android:title="Window">
-
-        <menu>
-            <group android:checkableBehavior="single">
-                <item
-                    android:id="@+id/big"
-                    android:title="Big"
-                    android:checked="true"
-                    />
-
-                <item
-                    android:id="@+id/small"
-                    android:title="Small"
-                    />
-
-
-            </group>
-        </menu>
+        android:title="Window"
+        app:showAsAction="never">
 
     </item>
 

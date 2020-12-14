@@ -44,6 +44,7 @@ public class HomeFragment extends Fragment implements Listener,SelectionListener
     private AlertDialog alertDialog;
     private Spinner rooms;
     private Adapter roomAdapter;
+    private ArrayList<String> shapes;
     private String selectedBuilding;
     private String selectedRoom;
     private String username;
@@ -57,6 +58,8 @@ public class HomeFragment extends Fragment implements Listener,SelectionListener
 
         selectedBuilding = getResources().getString(R.string.selectBuilding);
         selectedRoom = getResources().getString(R.string.selectRoom);
+
+        shapes = new ArrayList<>();
 
 
     }
@@ -104,7 +107,8 @@ public class HomeFragment extends Fragment implements Listener,SelectionListener
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(context, selectedRoom, Toast.LENGTH_LONG).show();
+                            String shape = shapes.get(roomAdapter.getItemIndex(selectedRoom)-1);
+                            Toast.makeText(context, selectedRoom+"-"+shape, Toast.LENGTH_LONG).show();
                         }
                     });
                 }
@@ -199,7 +203,7 @@ public class HomeFragment extends Fragment implements Listener,SelectionListener
             newMeasureWarning.setText(getResources().getString(R.string.fieldsFilled));
             newMeasureWarning.setVisibility(View.VISIBLE);
         }else{
-            Intent i = new Intent(context, ARCore2.class);
+            Intent i = new Intent(context, RoomShapeSelection.class);
             i.putExtra("username",username);
             i.putExtra("building", newBuilding);
             i.putExtra("room", newRoom);
@@ -220,11 +224,14 @@ public class HomeFragment extends Fragment implements Listener,SelectionListener
             return;
         }
 
+        String shape = shapes.get(roomAdapter.getItemIndex(selectedRoom)-1);
+
         Intent i = new Intent(context, ARCore2.class);
         i.putExtra("username", username);
         i.putExtra("building", selectedBuilding);
         i.putExtra("room", selectedRoom);
         i.putExtra("edit", true);
+        i.putExtra("selectedShape", shape);
         startActivity(i);
     }
 
@@ -251,9 +258,11 @@ public class HomeFragment extends Fragment implements Listener,SelectionListener
                     @Override
                     public void run() {
                         roomAdapter.clear();
+                        shapes.clear();
                         roomAdapter.add(getResources().getString(R.string.selectRoom));
                         for(int i=0; i<data.length(); i++){
                             try {
+                                shapes.add(data.getJSONObject(i).getString("SHAPE"));
                                 roomAdapter.add(data.getJSONObject(i).getString("ROOM"));
                             }catch (JSONException e){
                                 e.printStackTrace();
@@ -271,9 +280,15 @@ public class HomeFragment extends Fragment implements Listener,SelectionListener
         try {
             switch (data.getString("function")){
                 case "get":
-                    String capacity = data.getString("CAPACITY");
+                    int capacity = data.getInt("CAPACITY");
                     Double windowSurface = data.getDouble("WINDOWSURFACE");
-                    showCapacity(capacity, windowSurface);
+                    int ventilationCapacity = (int) Math.floor(windowSurface/0.125);
+                    Intent results = new Intent(context, Results2.class);
+                    results.putExtra("capacity",capacity);
+                    results.putExtra("windowSurface", windowSurface);
+                    results.putExtra("username",username);
+                    startActivity(results);
+                    //showCapacity(String.valueOf(capacity), windowSurface);
                     break;
                 case "delete":
                     switch (data.getString("delete")){
@@ -281,10 +296,15 @@ public class HomeFragment extends Fragment implements Listener,SelectionListener
                             activity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    shapes.remove(roomAdapter.getItemIndex(selectedRoom)-1);
                                     roomAdapter.deleteItem(selectedRoom);
+                                    selectedRoom=getResources().getString(R.string.selectRoom);
                                     if(roomAdapter.getSize() == 1){
                                         buildingAdapter.deleteItem(selectedBuilding);
+                                        selectedBuilding=getResources().getString(R.string.selectBuilding);
                                     }
+                                    rooms.setSelection(roomAdapter.getItemIndex(selectedRoom));
+                                    buildings.setSelection(buildingAdapter.getItemIndex(selectedBuilding));
                                 }
                             });
                             break;

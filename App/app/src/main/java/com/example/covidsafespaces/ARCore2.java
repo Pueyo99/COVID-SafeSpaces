@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -68,9 +69,12 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
 
     private Toolbar mToolbar;
 
+    private ARCoreHelper helper;
+
     private String username;
     private String building;
     private String room;
+    private String selectedShape;
     private float roomHeight;
     private boolean edit;
 
@@ -110,6 +114,7 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
 
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         tvDistance = findViewById(R.id.tvDistance);
 
@@ -118,6 +123,8 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
             username = extras.getString("username");
             building = extras.getString("building");
             room = extras.getString("room");
+            selectedShape = extras.getString("selectedShape");
+            helper = new ARCoreHelper(selectedShape, ARCore2.this);
             edit = extras.getBoolean("edit");
             if(extras.containsKey("distances")){
                 distances = (ArrayList<Float>) extras.getSerializable("distances");
@@ -353,25 +360,32 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
 
     public void onButtonClick(View v) {
         //Toast.makeText(this, "1: " + distances.get(0) + "\n2: " + distances.get(1), Toast.LENGTH_LONG).show();
-        ArrayList<Float> areas = new ArrayList<>();
+        ArrayList<Float>  wallSurfaces = helper.calculateWallSurface(distances,roomHeight);
+        Float surface = helper.calculateSurface(distances);
+
+        //showWallSurfaces(wallSurfaces,surface);
+
+        /*ArrayList<Float> areas = new ArrayList<>();
         for (Float distance : distances) {
             areas.add((float) (distance * roomHeight));
         }
+        */
+
+
         Intent i = new Intent(this, Main.class);
         i.putExtra("username", username);
         i.putExtra("building",building);
         i.putExtra("room",room);
-        i.putExtra("areas", areas);
+        i.putExtra("areas", wallSurfaces);
+        i.putExtra("selectedShape",selectedShape);
         startActivity(i);
         if(!edit){
             new ServerConnection().insertCapacity(username,building,room,
-                    (int) Math.floor((distances.get(0)*distances.get(1))/4));
+                    (int) Math.floor(surface/4),selectedShape);
         }else{
             new ServerConnection().editCapacity(username,building,room,
-                    (int) Math.floor((distances.get(0)*distances.get(1))/4));
+                    (int) Math.floor(surface/4));
         }
-
-
     }
 
     //Calculate distancia between 2 points on same frame
@@ -409,10 +423,7 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.setContentView(R.layout.help_dialogwindow);
         final TextView text = dialog.findViewById(R.id.textwindow);
-        text.setText("STEPS TO FOLLOW\n\nYou will have two markers available to place in two corners of your ground\n" +
-                "1.Place two markers on two corners of the room to mesure the width of the room. You will see on ths screen the distance between them\n" +
-                "2.Press the + button, placed on the menu bar, and repeat the steps explained before to measure the other wall.\nHaving all these measures we " +
-                "proceed to calculate area of the ground");
+        text.setText(helper.getTextHelp());
         text.setMovementMethod(new ScrollingMovementMethod());
         Button ok = (Button) dialog.findViewById(R.id.okbutton);
         ok.setOnClickListener(new View.OnClickListener() {
@@ -434,8 +445,7 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
         final TextView text = dialog.findViewById(R.id.textwindow);
         String str = "Room height: "+roomHeight;
         for(int i=0; i<distances.size(); i++){
-            str += i!=0?"\n":"";
-            str += "Distance "+(i+1)+": "+distances.get(i);
+            str += "\nDistance "+(i+1)+": "+distances.get(i);
         }
         text.setText(str);
         text.setMovementMethod(new ScrollingMovementMethod());
@@ -448,6 +458,30 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
         });
         dialog.show();
 
+    }
+
+    private void showWallSurfaces(ArrayList<Float> wallSurfaces,float surface){
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.help_dialogwindow);
+        final TextView text = dialog.findViewById(R.id.textwindow);
+        String str = "Room height: "+roomHeight;
+        for(int i=0; i<wallSurfaces.size(); i++){
+            str += "\nDistance "+(i+1)+": "+wallSurfaces.get(i);
+        }
+        str+="\nRoom surface: "+surface;
+        text.setText(str);
+        text.setMovementMethod(new ScrollingMovementMethod());
+        Button ok = (Button) dialog.findViewById(R.id.okbutton);
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 
     private void selectHeight(){
@@ -475,6 +509,27 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
 
 
         dialog.show();
+    }
+
+    private void showMap(){
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View v = inflater.inflate(R.layout.map_dialog, null, false);
+        ((ImageView)v.findViewById(R.id.mapImage)).setImageResource(helper.getImageResource());
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setView(v);
+
+        AlertDialog resultDialog = builder.create();
+        Window window = resultDialog.getWindow();
+        if (window != null) {
+            WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+            layoutParams.copyFrom(resultDialog.getWindow().getAttributes());
+            layoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT;
+            layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+            resultDialog.getWindow().setAttributes(layoutParams);
+        }
+        resultDialog.show();
     }
 
 
@@ -510,6 +565,9 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
                 break;
             case R.id.height:
                 selectHeight();
+                break;
+            case R.id.map:
+                showMap();
                 break;
         }
 

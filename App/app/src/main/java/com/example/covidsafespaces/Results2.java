@@ -11,6 +11,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
@@ -24,33 +27,71 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 
-public class Results extends AppCompatActivity {
+public class Results2 extends AppCompatActivity {
 
-    private CheckBox w_open, w_hafopen, w_closed,mask;
+    private CheckBox mask;
     private String username;
+    private double windowSurface;
     private int capacity, ventilationCapacity, people;
+    private SeekBar seekBar;
+    private TextView progress;
+    private BarChart results;
+    private ArrayList<BarEntry> capacidades;
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_results);
+        setContentView(R.layout.activity_results2);
 
         Bundle extras = getIntent().getExtras();
         capacity = extras.getInt("capacity");
-        ventilationCapacity = extras.getInt("ventilationCapacity");
+        windowSurface = extras.getDouble("windowSurface");
+        ventilationCapacity = (int) Math.floor(windowSurface/0.125);
         people = extras.containsKey("people")?extras.getInt("people"):0;
         username = extras.getString("username");
 
-        BarChart results = findViewById(R.id.Results);
-        w_open=findViewById(R.id.w_open_check);
-        w_hafopen=findViewById(R.id.w_halfopen_check);
-        w_closed=findViewById(R.id.w_closed_check);
+        results = findViewById(R.id.Results);
+        seekBar = findViewById(R.id.seekBar);
+        progress = findViewById(R.id.progress);
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                Results2.this.progress.setText(progress+"%");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                Double currentWindowSurface = ((seekBar.getProgress())*windowSurface)/100;
+                int ventilationCapacity = (int) Math.floor(currentWindowSurface/0.125);
+                capacidades.set(2,new BarEntry(2,ventilationCapacity));
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        BarDataSet barDataSet = new BarDataSet(capacidades, "People, Capacity, Ventilation");
+                        //Porque no cambia el colo
+                        barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+                        barDataSet.setValueTextColor(android.R.color.black);
+                        barDataSet.setValueTextSize(16f);
+                        BarData barData = new BarData(barDataSet);
+                        results.clear();
+                        drawGraph(barData);
+                    }
+                });
+            }
+        });
+
         mask=findViewById(R.id.mask_check);
-        w_open.setChecked(true);
         mask.setChecked(true);
 
-        ArrayList<BarEntry> capacidades = new ArrayList<>();
+        capacidades = new ArrayList<>();
         capacidades.add(new BarEntry(0, people));
         capacidades.add(new BarEntry(1, capacity));
         capacidades.add(new BarEntry(2, ventilationCapacity));
@@ -62,6 +103,10 @@ public class Results extends AppCompatActivity {
         barDataSet.setValueTextSize(16f);
 
         BarData barData = new BarData(barDataSet);
+        drawGraph(barData);
+    }
+
+    private void drawGraph(BarData barData){
         //El texto del eje X
         ArrayList<String> labelsNames = new ArrayList<>();
         labelsNames.add("People");
@@ -102,7 +147,7 @@ public class Results extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.home:
-                Intent i = new Intent(Results.this, MainActivity.class);
+                Intent i = new Intent(Results2.this, MainActivity.class);
                 i.putExtra("username",username);
                 startActivity(i);
                 break;

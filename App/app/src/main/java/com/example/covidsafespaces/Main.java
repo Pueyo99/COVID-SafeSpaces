@@ -63,6 +63,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
@@ -145,6 +146,9 @@ public class Main extends AppCompatActivity implements Listener {
     private String username;
     private String building;
     private String room;
+    private String selectedShape;
+    private ARCoreHelper helper;
+    private int people=0;
     private ImageButton captureButton;
     private ImageButton endButton;
     private String mCameraId;
@@ -294,6 +298,8 @@ public class Main extends AppCompatActivity implements Listener {
             building = datos.getString("building");
             room = datos.getString("room");
             areas = (ArrayList<Float>) datos.getSerializable("areas");
+            selectedShape = datos.getString("selectedShape");
+            helper = new ARCoreHelper(selectedShape, Main.this);
         }
 
         path = "window";
@@ -321,8 +327,7 @@ public class Main extends AppCompatActivity implements Listener {
             public void onClick(View v) {
                 if(imagesSended==imagesReceived){
                     setProgressDialog();
-                    Intent intent = new Intent(Main.this, Results.class);
-                    startActivity(intent);
+                    new ServerConnection().getCapacity(Main.this, username,building,room);
                 }else{
                     setProgressDialog();
                     endPressed=true;
@@ -412,6 +417,7 @@ public class Main extends AppCompatActivity implements Listener {
                     break;
                 case "people":
                     alertDialog.dismiss();
+                    people = data.getInt("Número de personas");
                     String warning = "People: "+data.getString("Número de personas");
                     String message = data.getString("Message");
                     runOnUiThread(new Runnable() {
@@ -423,9 +429,17 @@ public class Main extends AppCompatActivity implements Listener {
                     break;
                 case "get":
                     alertDialog.dismiss();
-                    String capacity = data.getString("CAPACITY");
+                    int capacity = data.getInt("CAPACITY");
                     Double windowSurface = data.getDouble("WINDOWSURFACE");
-                    showCapacity(capacity,windowSurface);
+                    int ventilationCapacity = (int) Math.floor(windowSurface/0.125);
+                    Intent results = new Intent(context, Results2.class);
+                    results.putExtra("capacity",capacity);
+                    results.putExtra("windowSurface", windowSurface);
+                    results.putExtra("people",people);
+                    results.putExtra("username",username);
+                    startActivity(results);
+                    finish();
+                    //showCapacity(capacity,windowSurface);
                     break;
             }
 
@@ -500,28 +514,63 @@ public class Main extends AppCompatActivity implements Listener {
             case R.id.help:
                 showHelp();
                 break;
+            case R.id.map:
+                showMap();
+                break;
             case R.id.options:
                 setSingleChoiceDialog();
                 break;
-            case R.id.big:
-                areaIndex = 0;
-                if(item.isChecked()){
-                    item.setChecked(false);
-                }else{
-                    item.setChecked(true);
-                }
-                break;
-            case R.id.small:
-                areaIndex = 1;
-                if(item.isChecked()){
-                    item.setChecked(false);
-                }else{
-                    item.setChecked(true);
-                }
+            case R.id.windowSelection:
+                setWindowSelectionDialog();
                 break;
         }
 
         return true;
+    }
+
+    private void showMap(){
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View v = inflater.inflate(R.layout.map_dialog, null, false);
+        ((ImageView)v.findViewById(R.id.mapImage)).setImageResource(helper.getImageResource());
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setView(v);
+
+        AlertDialog resultDialog = builder.create();
+        Window window = resultDialog.getWindow();
+        if (window != null) {
+            WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+            layoutParams.copyFrom(resultDialog.getWindow().getAttributes());
+            layoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT;
+            layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+            resultDialog.getWindow().setAttributes(layoutParams);
+        }
+        resultDialog.show();
+    }
+
+    private void setWindowSelectionDialog(){
+        String[] choices = helper.getSelectionItems();
+
+        //AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        new AlertDialog.Builder(this).setTitle("Select option").setSingleChoiceItems(choices, areaIndex, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                areaIndex=which;
+            }
+        }).setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).create().show();
+
+
     }
 
     private void setSingleChoiceDialog(){

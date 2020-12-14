@@ -46,6 +46,18 @@
     <string name="height">Introduce room height</string>
     <string name="menuHeight">Height</string>
     <string name="measuresDone">No Measures Done</string>
+
+    <string name="squareHelp">STEPS TO FOLLOW\n\nPlace two markers in each side of one wall. We will take care of the rest\n
+                \nHaving the measure done, click capture button</string>
+    <string name="rectangularHelp">STEPS TO FOLLOW\n\nPlace two markers in each side of wall number 1. Then, press + button (Placed in the menu)
+        and measure the second wall. We will take care of the rest\n
+                \nHaving the measures done, click capture button</string>
+    <string name="lHelp">STEPS TO FOLLOW\n\nPlace two markers in each side of wall number 1. Then, press + button (Placed in the menu)
+        and measure the second wall. Press + again and repeat with third wall. Do this until all walls are measured\n
+                \nHaving the measures done, click capture button</string>
+    <string name="tHelp">STEPS TO FOLLOW\n\nPlace two markers in each side of wall number 1. Then, press + button (Placed in the menu)
+        and measure the second wall. Press + again and repeat with third wall. Do this until all walls are measured\n
+                \nHaving the measures done, click capture button</string>
     <!-- ................................-->
 
     <string name="drawer_open">Open Drawer</string>

@@ -23,7 +23,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="false"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Results"></activity>
+        <activity android:name=".RoomShapeSelection"></activity>
+        <activity android:name=".Results2" />
+        <activity android:name=".Results" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />

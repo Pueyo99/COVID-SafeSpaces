@@ -1,55 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<ScrollView android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="5dp"
-    android:background="#D1C4E9">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-        android:id="@+id/username"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:padding="10dp"
-        android:drawableLeft="@drawable/ic_profile"
-        android:textSize="25sp"
-        android:gravity="center"
-        android:text=""
-        android:background="@drawable/borde"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="5dp"
+        android:background="#D1C4E9">
 
-    <TextView
-        android:id="@+id/mail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:padding="10dp"
-        android:drawableLeft="@drawable/ic_mail"
-        android:textSize="25sp"
-        android:gravity="center"
-        android:text=""
-        android:background="@drawable/borde"/>
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:padding="10dp"
+            android:drawableLeft="@drawable/ic_profile"
+            android:textSize="25sp"
+            android:gravity="center"
+            android:text=""
+            android:background="@drawable/borde"/>
 
-    <Button
-        android:id="@+id/deleteAccountButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:drawableLeft="@drawable/ic_delete"
-        android:text="@string/deleteAccount"/>
+        <TextView
+            android:id="@+id/mail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:padding="10dp"
+            android:drawableLeft="@drawable/ic_mail"
+            android:textSize="25sp"
+            android:gravity="center"
+            android:text=""
+            android:background="@drawable/borde"/>
 
-    <Button
-        android:id="@+id/changePasswordButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:drawableLeft="@drawable/ic_lock"
-        android:text="@string/changePassword"
-        android:onClick="changePassword"/>
+        <Button
+            android:id="@+id/deleteAccountButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:drawableLeft="@drawable/ic_delete"
+            android:text="@string/deleteAccount"/>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/changePasswordButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:drawableLeft="@drawable/ic_lock"
+            android:text="@string/changePassword"
+            android:onClick="changePassword"/>
 
         <LinearLayout
             android:id="@+id/changePasswordLayout"
@@ -269,6 +269,6 @@
 
         </LinearLayout>
 
-    </ScrollView>
+    </LinearLayout>
 
-</LinearLayout>
+</ScrollView>

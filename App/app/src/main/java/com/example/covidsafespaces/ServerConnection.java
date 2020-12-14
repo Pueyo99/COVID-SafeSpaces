@@ -460,7 +460,7 @@ public class ServerConnection {
     }
 
     public void insertCapacity(final String username, final String building, final String room,
-                               final int capacity){
+                               final int capacity,final String shape){
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -477,6 +477,7 @@ public class ServerConnection {
                     data.put("building", building);
                     data.put("room", room);
                     data.put("capacity", capacity);
+                    data.put("shape", shape);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
