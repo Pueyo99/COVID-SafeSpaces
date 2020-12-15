@@ -76,7 +76,6 @@ public class Results2 extends AppCompatActivity {
                     @Override
                     public void run() {
                         BarDataSet barDataSet = new BarDataSet(capacidades, "People, Capacity, Ventilation");
-                        //Porque no cambia el colo
                         barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
                         barDataSet.setValueTextColor(android.R.color.black);
                         barDataSet.setValueTextSize(16f);
@@ -97,11 +96,9 @@ public class Results2 extends AppCompatActivity {
         capacidades.add(new BarEntry(2, ventilationCapacity));
 
         BarDataSet barDataSet = new BarDataSet(capacidades, "People, Capacity, Ventilation");
-        //Porque no cambia el colo
         barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
         barDataSet.setValueTextColor(android.R.color.black);
         barDataSet.setValueTextSize(16f);
-
         BarData barData = new BarData(barDataSet);
         drawGraph(barData);
     }
