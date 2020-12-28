@@ -148,7 +148,9 @@ public class Main extends AppCompatActivity implements Listener {
     private String room;
     private String selectedShape;
     private ARCoreHelper helper;
+    private boolean onlyPeople;
     private int people=0;
+    private boolean mask = true;   //False: Someone is not using a mask
     private ImageButton captureButton;
     private ImageButton endButton;
     private String mCameraId;
@@ -207,16 +209,21 @@ public class Main extends AppCompatActivity implements Listener {
             ByteBuffer byteBuffer = mImage.getPlanes()[0].getBuffer();
             byte[] bytes = new byte[byteBuffer.remaining()];
             byteBuffer.get(bytes);
+            float wallArea = onlyPeople?(float)0.0:areas.get(areaIndex);
             new ServerConnection().postImage(bytes, createFileName(), mDisplayRotation, username,path,
-                    building,room,areas.get(areaIndex),Main.this);
+                    building,room,wallArea,Main.this);
             mImage.close();
-            if (path=="people"){
+            imagesSended++;
+            /*if (path=="people"){
                 setProgressDialog();
             }
+
             if(path=="window"){
                 imagesSended++;
             }
-            Toast.makeText(Main.this, "Sended: "+imagesSended,Toast.LENGTH_LONG).show();
+
+             */
+            //Toast.makeText(Main.this, "Sended: "+imagesSended,Toast.LENGTH_LONG).show();
             /*FileOutputStream fileOutputStream = null;
             try {
                 fileOutputStream = new FileOutputStream(mImageFileName);
@@ -291,18 +298,20 @@ public class Main extends AppCompatActivity implements Listener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         context =this;
-        showHelp();
         Bundle datos = getIntent().getExtras();
         if(datos != null){
             username = datos.getString("username");
             building = datos.getString("building");
             room = datos.getString("room");
-            areas = (ArrayList<Float>) datos.getSerializable("areas");
-            selectedShape = datos.getString("selectedShape");
-            helper = new ARCoreHelper(selectedShape, Main.this);
+            onlyPeople = datos.containsKey("onlyPeople");
+            areas = datos.containsKey("areas")?(ArrayList<Float>) datos.getSerializable("areas"):null;
+            selectedShape = datos.containsKey("selectedShape")?datos.getString("selectedShape"):null;
+            helper = datos.containsKey("selectedShape")?new ARCoreHelper(selectedShape,Main.this):null;
         }
 
-        path = "window";
+        showHelp();
+
+        path = onlyPeople?"people":"window";
         areaIndex = 0;
 
         mToolbar = findViewById(R.id.toolbar);
@@ -397,7 +406,7 @@ public class Main extends AppCompatActivity implements Listener {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(Main.this,data.toString(), Toast.LENGTH_LONG).show();
+                            //Toast.makeText(Main.this,data.toString(), Toast.LENGTH_LONG).show();
                         }
                     });
 
@@ -407,8 +416,8 @@ public class Main extends AppCompatActivity implements Listener {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(Main.this,"Received: "+imagesReceived,Toast.LENGTH_LONG).show();
-                            Toast.makeText(Main.this,data.toString(), Toast.LENGTH_LONG).show();
+                            //Toast.makeText(Main.this,"Received: "+imagesReceived,Toast.LENGTH_LONG).show();
+                            //Toast.makeText(Main.this,data.toString(), Toast.LENGTH_LONG).show();
                         }
                     });
                     if(imagesReceived==imagesSended && endPressed){
@@ -416,16 +425,24 @@ public class Main extends AppCompatActivity implements Listener {
                     }
                     break;
                 case "people":
-                    alertDialog.dismiss();
+                    //alertDialog.dismiss();
+                    imagesReceived++;
                     people = data.getInt("Número de personas");
-                    String warning = "People: "+data.getString("Número de personas");
+                    mask = data.getBoolean("Message");
+                    /*String warning = "People: "+data.getString("Número de personas");
                     String message = data.getString("Message");
+                    String message = mask?"Everyone wearing a mask":"Someone not wearing a mask";
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             setResultDialog(warning,message);
                         }
                     });
+
+                     */
+                    if(imagesReceived==imagesSended && endPressed){
+                        new ServerConnection().getCapacity(Main.this, username,building,room);
+                    }
                     break;
                 case "get":
                     alertDialog.dismiss();
@@ -437,6 +454,9 @@ public class Main extends AppCompatActivity implements Listener {
                     results.putExtra("windowSurface", windowSurface);
                     results.putExtra("people",people);
                     results.putExtra("username",username);
+                    results.putExtra("building",building);
+                    results.putExtra("room",room);
+                    results.putExtra("mask",mask);
                     startActivity(results);
                     finish();
                     //showCapacity(capacity,windowSurface);
@@ -497,7 +517,11 @@ public class Main extends AppCompatActivity implements Listener {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
+        if(!onlyPeople){
+            getMenuInflater().inflate(R.menu.main_menu, menu);
+        }else {
+            getMenuInflater().inflate(R.menu.main_menu_people,menu);
+        }
         return true;
     }
 
@@ -588,13 +612,6 @@ public class Main extends AppCompatActivity implements Listener {
                         path="people";
                         break;
                 }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(Main.this, path, Toast.LENGTH_LONG).show();
-
-                    }
-                });
             }
         }).setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
@@ -1038,11 +1055,8 @@ public class Main extends AppCompatActivity implements Listener {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.help_dialogwindow);
         final TextView text =(TextView) dialog.findViewById(R.id.textwindow);
-        text.setText("INSTRUCTIONS\n\nYou have two functions available :\n-Window detection\nPeople \n"+
-                "Now you are in Window Detection, if you want to change it, press then menu button and select the function you want\n\n" +
-                "WINDOW DETECTION:\n\n1.Take pictures of each window of the room\n2.When you have captured all the windows available, " +
-                "press the 'end' button and wait the response of the server\n\nPEOPLE:\n\nYou have to take a photo from an angle that shows all the " +
-                "separate people and their respective faces.");
+        String str = onlyPeople?getResources().getString(R.string.mlHelpPeople):getResources().getString(R.string.mlHelp);
+        text.setText(str);
         text.setMovementMethod(new ScrollingMovementMethod());
         Button ok = (Button) dialog.findViewById(R.id.okbutton);
         ok.setOnClickListener(new View.OnClickListener() {

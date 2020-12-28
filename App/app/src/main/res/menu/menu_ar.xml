@@ -10,13 +10,6 @@
     </item>
 
     <item
-        android:id="@+id/help"
-        android:icon="@android:drawable/ic_menu_help"
-        android:title="Help"
-        app:showAsAction="ifRoom">
-    </item>
-
-    <item
         android:id="@+id/add"
         android:icon="@android:drawable/ic_menu_add"
         android:title="Add"
@@ -24,8 +17,15 @@
     </item>
 
     <item
+        android:id="@+id/help"
+        android:icon="@android:drawable/ic_menu_help"
+        android:title="@string/help"
+        app:showAsAction="ifRoom">
+    </item>
+
+    <item
         android:id="@+id/back"
-        android:title="Back"
+        android:title="@string/back"
         android:icon="@drawable/ic_back"
         app:showAsAction="ifRoom">
 
@@ -34,7 +34,7 @@
     <item
         android:id="@+id/restart"
         android:icon="@android:drawable/ic_menu_revert"
-        android:title="Restart"
+        android:title="@string/restart"
         app:showAsAction="ifRoom">
 
     </item>
@@ -48,7 +48,7 @@
 
     <item
         android:id="@+id/map"
-        android:title="Map"
+        android:title="@string/map"
         app:showAsAction="never">
     </item>
 

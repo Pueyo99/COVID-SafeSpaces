@@ -81,18 +81,19 @@ public class ARCoreHelper {
     }
 
     public String[] getSelectionItems(){
+        String wall = context.getResources().getString(R.string.wall);
         switch (selectedShape){
             case "habc":
-                String[] habc = {"Wall 1","Wall 2","Wall 3","Wall 4"};
+                String[] habc = {wall+" 1",wall+" 2",wall+" 3",wall+" 4"};
                 return habc;
             case "habr":
-                String[] habr = {"Wall 1","Wall 2","Wall 3","Wall 4"};
+                String[] habr = {wall+" 1",wall+" 2",wall+" 3",wall+" 4"};
                 return habr;
             case "habl":
-                String[] habl = {"Wall 1","Wall 2","Wall 3","Wall 4","Wall 5", "Wall 6"};
+                String[] habl = {wall+" 1",wall+" 2",wall+" 3",wall+" 4",wall+" 5",wall+" 6"};
                 return habl;
             case "habt":
-                String[] habt = {"Wall 1","Wall 2","Wall 3","Wall 4","Wall 5", "Wall 6","Wall 7", "Wall 8"};
+                String[] habt = {wall+" 1",wall+" 2",wall+" 3",wall+" 4",wall+" 5",wall+" 6",wall+" 7",wall+" 8"};
                 return habt;
 
         }

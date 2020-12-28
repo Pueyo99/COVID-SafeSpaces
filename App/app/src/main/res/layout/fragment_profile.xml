@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#D1C4E9">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -123,7 +124,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Your password must accomplish at least 3 of this conditions"
+                android:text="@string/passwordConditions"
                 android:textColor="#000000"
                 android:textSize="15dp"/>
 
@@ -145,7 +146,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="At least one uppercase"
+                    android:text="@string/uppercase"
                     android:id="@+id/uppercaseText"
                     />
 
@@ -169,7 +170,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="At least one lowercase"
+                    android:text="@string/lowercase"
                     android:id="@+id/lowercaseText"
                     />
 
@@ -193,7 +194,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="At least one number"
+                    android:text="@string/number"
                     android:id="@+id/numberText"
                     />
 
@@ -217,7 +218,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="At least one special character"
+                    android:text="@string/specialCharacter"
                     android:id="@+id/specialCharacterText"
                     />
 

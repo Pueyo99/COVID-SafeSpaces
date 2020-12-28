@@ -324,7 +324,7 @@ public class ProfileFragment extends Fragment implements Listener{
     public void updatePassword(View v){
         if(currentPassword.getText().toString().equals(mPassword)){
             if(password1.getText().toString().equals(password2.getText().toString())){
-                if(Pattern.matches(REGEXP,password1.getText().toString())){
+                if(level >= 3){
                     mPassword = password1.getText().toString();
                     new ServerConnection().updatePassword(mUsername, mPassword);
                     view.findViewById(R.id.changePasswordLayout).setVisibility(View.GONE);

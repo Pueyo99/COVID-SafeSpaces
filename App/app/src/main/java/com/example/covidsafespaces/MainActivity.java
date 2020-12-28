@@ -137,8 +137,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Bundle homeData = new Bundle();
                     homeData.putString("username",username);
                     homeFragment.setArguments(homeData);
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,homeFragment).
-                            addToBackStack(null).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,homeFragment).commit();
+                    item.setChecked(true);
                     currentView = getResources().getString(R.string.home);
                     mToolbar.setTitle(getResources().getString(R.string.home));
                 }
@@ -150,8 +150,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Bundle profileData = new Bundle();
                     profileData.putString("username",username);
                     profileFragment.setArguments(profileData);
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,profileFragment).
-                            addToBackStack(null).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,profileFragment).commit();
+                    item.setChecked(true);
                     currentView = getResources().getString(R.string.profile);
                     mToolbar.setTitle(getResources().getString(R.string.profile));
                 }
@@ -161,6 +161,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if(!currentView.equals(getResources().getString(R.string.contact))){
                     Fragment navFragment = new ContactFragment();
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,navFragment).commit();
+                    item.setChecked(true);
                     currentView = getResources().getString(R.string.contact);
                     mToolbar.setTitle(getResources().getString(R.string.contact));
                 }
@@ -170,6 +171,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if(!currentView.equals(getResources().getString(R.string.help))){
                     Fragment helpFragment = new HelpFragment();
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,helpFragment).commit();
+                    item.setChecked(true);
                     currentView = getResources().getString(R.string.help);
                     mToolbar.setTitle(getResources().getString(R.string.help));
                 }
@@ -177,13 +179,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_logout:
                 startActivity(new Intent(this, Login.class));
+                finishAffinity();
                 finish();
                 break;
             case R.id.nav_exit:
+                item.setChecked(false);
                 mDrawerLayout.closeDrawer(GravityCompat.START);
                 moveTaskToBack(true);
-
-                break;
+                return false;
         }
 
         return true;

@@ -10,9 +10,11 @@
     <string name="forgotPassword">Olvidaste tu contraseña?</string>
     <string name="login">Login</string>
     <string name="register">Registro</string>
+    <string name="createAccount">Crear mi cuenta</string>
 
     <string name="mail">Mail</string>
-    <string name="passwordSecurity">La contraseña debe contener una mayúscula, una minúscula, un número y un carácter especial</string>
+    <string name="passwordConditions">La contraseña debe cumplir, al menos, 3 de las siguientes condiciones</string>
+    <string name="passwordSecurity">La contraseña no cumple, al menos, 3 condiciones</string>
     <string name="passwordDifferent">Las contraseñas no coinciden</string>
 
     <string name="deleteAccount">Eliminar cuenta</string>
@@ -46,6 +48,42 @@
     <string name="height">Introduce la altura</string>
     <string name="menuHeight">Altura</string>
     <string name="measuresDone">Ninguna medida hecha</string>
+
+    <string name="squareHelp">PASOS A SEGUIR\n\nPosiciona dos markers en cada lado de la pared. Nosotros nos encargamos del resto\n
+                \nTeniendo la medida hecha, presiona capture</string>
+    <string name="rectangularHelp">PASOS A SEGUIR\n\nPosiciona dos markers en cada lado de la pared. Entonces, presiona el botón +(Situado
+        en el menú) y mide la segunda pared. Nos encargamos del resto\nTeniendo las medidas hechas, presiona capture</string>
+    <string name="lHelp">PASOS A SEGUIR\n\nPosiciona dos markers en cada lado de la pared. Entonces, presiona el botón +(Situado
+        en el menú) y mide la segunda pared. Presiona otra + y repite con la tercera pared. Repite hasta que hayas medido todas las paredes.
+        \nTeniendo las medidas hechas, presiona capture</string>
+    <string name="tHelp">PASOS A SEGUIR\n\nPosiciona dos markers en cada lado de la pared. Entonces, presiona el botón +(Situado
+        en el menú) y mide la segunda pared. Presiona otra + y repite con la tercera pared. Repite hasta que hayas medido todas las paredes.
+        \nTeniendo las medidas hechas, presiona capture</string>
+
+    <string name="mlHelp">INSTRUCCIONES\n\nTienes dos funciones disponible: \n-Detección de ventanas\n-Personas\n
+            Ahora estás en detección de ventanas. Si quieres cambiarlo, presiona el botón Opciones del menú y selecciona la función correspondiente\n\n
+            DETECCIÓN DE VENTANAS:\n\nPara cada ventana de la habitación, selecciona a que ventana pertenece (Menú) y presiona el botón de captura.
+            Cuando todas las ventanas estén capturadas, presiona el botón de descarga y los resultados serán mostrados.
+    </string>
+    <string name="mlHelpPeople">En esta ventana podrás mesurar otra vez la gente que hay actualmente.\n\n
+        Haz una foto que incluya a toda la gente y luego presiona el botón de descarga. Entonces, los resultados con la
+        gente actual serán mostrados.
+    </string>
+
+
+    <string name="wall">Pared</string>
+    <string name="back">Atràs</string>
+    <string name="restart">Reinicia</string>
+    <string name="map">Mapa</string>
+
+    <string name="uppercase">Al menos una mayúscula</string>
+    <string name="lowercase">Al menos una minúscula</string>
+    <string name="number">Al menos un número</string>
+    <string name="specialCharacter">Al menos un carácter especial</string>
+
+    <string name="mode">Modo</string>
+
+    <string name="people">Personas</string>
     <!-- ................................-->
 
     <string name="drawer_open">Open Drawer</string>

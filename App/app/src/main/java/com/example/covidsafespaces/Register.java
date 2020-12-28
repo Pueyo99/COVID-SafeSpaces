@@ -187,7 +187,7 @@ public class Register extends AppCompatActivity {
 
     private void register(){
         if(password1.getText().toString().trim().equals(password2.getText().toString().trim())){
-            if(Pattern.matches(REGEXP, password1.getText().toString().trim())){
+            if(level >= 3){
                 new ServerConnection().register(username.getText().toString().trim(), mail.getText().toString().trim(),
                         password1.getText().toString().trim());
                 onBackPressed();

@@ -80,7 +80,7 @@ public class HomeFragment extends Fragment implements Listener,SelectionListener
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(context, selectedBuilding, Toast.LENGTH_LONG).show();
+                            //Toast.makeText(context, selectedBuilding, Toast.LENGTH_LONG).show();
                             setProgressDialog();
                         }
                     });
@@ -103,7 +103,7 @@ public class HomeFragment extends Fragment implements Listener,SelectionListener
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedRoom = ((TextView) view.findViewById(R.id.spinnerItem)).getText().toString();
-                if(!selectedRoom.equals(getResources().getString(R.string.selectRoom)) && !selectedBuilding.equals(getResources().getString(R.string.selectBuilding))){
+                /*if(!selectedRoom.equals(getResources().getString(R.string.selectRoom)) && !selectedBuilding.equals(getResources().getString(R.string.selectBuilding))){
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -112,6 +112,8 @@ public class HomeFragment extends Fragment implements Listener,SelectionListener
                         }
                     });
                 }
+
+                 */
             }
 
             @Override
@@ -287,6 +289,8 @@ public class HomeFragment extends Fragment implements Listener,SelectionListener
                     results.putExtra("capacity",capacity);
                     results.putExtra("windowSurface", windowSurface);
                     results.putExtra("username",username);
+                    results.putExtra("building",selectedBuilding);
+                    results.putExtra("room",selectedRoom);
                     startActivity(results);
                     //showCapacity(String.valueOf(capacity), windowSurface);
                     break;

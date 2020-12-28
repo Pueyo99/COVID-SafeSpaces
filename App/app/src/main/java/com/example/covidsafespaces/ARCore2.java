@@ -114,7 +114,7 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
 
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        mToolbar.setTitle("ARCore");
 
         tvDistance = findViewById(R.id.tvDistance);
 
@@ -131,6 +131,7 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
                 if(distances.size()>0){
                     tvDistance.setText("Distance: " + distances.get(distances.size()-1) + " m.");
                 }
+            roomHeight = extras.containsKey("height")?extras.getFloat("height"):(float)3.0;
             }else{
                 showHelp();
             }
@@ -379,12 +380,12 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
         i.putExtra("areas", wallSurfaces);
         i.putExtra("selectedShape",selectedShape);
         startActivity(i);
+        int capacity = (int) Math.floor(surface/4);
+        capacity = capacity==0?1:capacity;
         if(!edit){
-            new ServerConnection().insertCapacity(username,building,room,
-                    (int) Math.floor(surface/4),selectedShape);
+            new ServerConnection().insertCapacity(username,building,room, capacity,selectedShape);
         }else{
-            new ServerConnection().editCapacity(username,building,room,
-                    (int) Math.floor(surface/4));
+            new ServerConnection().editCapacity(username,building,room, capacity);
         }
     }
 
@@ -554,6 +555,7 @@ public class ARCore2 extends AppCompatActivity implements Scene.OnUpdateListener
                     distances.remove(distances.size()-1);
                 }
                 getIntent().putExtra("distances",distances);
+                getIntent().putExtra("height",roomHeight);
                 recreate();
                 break;
             case R.id.restart:

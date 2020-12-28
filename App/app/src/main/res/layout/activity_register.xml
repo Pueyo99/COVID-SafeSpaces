@@ -24,7 +24,7 @@
             android:background="@drawable/login_edittext"
             android:drawableLeft="@drawable/ic_user"
             android:gravity="center"
-            android:hint="Username"
+            android:hint="@string/username"
             android:inputType="textPersonName"
             android:textSize="20sp" />
 
@@ -36,7 +36,7 @@
             android:background="@drawable/login_edittext"
             android:drawableLeft="@drawable/ic_mail"
             android:gravity="center"
-            android:hint="Mail"
+            android:hint="@string/mail"
             android:inputType="textEmailSubject"
             android:textSize="20sp" />
 
@@ -49,7 +49,7 @@
             android:drawableLeft="@drawable/ic_lock"
             android:drawableRight="@drawable/ic_visible"
             android:gravity="center"
-            android:hint="Password"
+            android:hint="@string/password"
             android:inputType="textPassword"
             android:textSize="20sp" />
 
@@ -62,7 +62,7 @@
             android:drawableLeft="@drawable/ic_lock"
             android:drawableRight="@drawable/ic_visible"
             android:gravity="center"
-            android:hint="Password"
+            android:hint="@string/password"
             android:inputType="textPassword"
             android:textSize="20sp" />
 
@@ -80,7 +80,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Your password must accomplish at least 3 of this conditions"
+            android:text="@string/passwordConditions"
             android:textColor="#000000"
             android:textSize="15dp"/>
 
@@ -102,7 +102,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="At least one uppercase"
+                android:text="@string/uppercase"
                 android:id="@+id/uppercaseText"
                 />
 
@@ -126,7 +126,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="At least one lowercase"
+                android:text="@string/lowercase"
                 android:id="@+id/lowercaseText"
                 />
 
@@ -150,7 +150,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="At least one number"
+                android:text="@string/number"
                 android:id="@+id/numberText"
                 />
 
@@ -174,7 +174,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="At least one special character"
+                android:text="@string/specialCharacter"
                 android:id="@+id/specialCharacterText"
                 />
 
@@ -208,7 +208,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Create my account"
+            android:text="@string/createAccount"
             android:textAllCaps="false"/>
 
     </LinearLayout>

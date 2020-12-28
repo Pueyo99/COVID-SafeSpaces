@@ -9,4 +9,11 @@
         app:showAsAction="ifRoom">
     </item>
 
+    <item android:id="@+id/people"
+        android:title="@string/people"
+        android:icon="@drawable/ic_people"
+        app:showAsAction="ifRoom">
+
+    </item>
+
 </menu>

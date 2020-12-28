@@ -10,9 +10,11 @@
     <string name="forgotPassword">Forgot your password?</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
+    <string name="createAccount">Create my Account</string>
 
     <string name="mail">Mail</string>
-    <string name="passwordSecurity">Password must contain an upper case, a lower case, a number and a special character</string>
+    <string name="passwordConditions">Your password must match at least 3 of these conditions</string>
+    <string name="passwordSecurity">Password does not match at least 3 conditions</string>
     <string name="passwordDifferent">Passwords do not match</string>
 
     <string name="deleteAccount">Delete Account</string>
@@ -58,6 +60,31 @@
     <string name="tHelp">STEPS TO FOLLOW\n\nPlace two markers in each side of wall number 1. Then, press + button (Placed in the menu)
         and measure the second wall. Press + again and repeat with third wall. Do this until all walls are measured\n
                 \nHaving the measures done, click capture button</string>
+
+    <string name="mlHelp">INSTRUCTIONS\n\nYou have two functions available :\n-Window detection\n-People \n
+                Now you are in Window Detection, if you want to change it, press then menu button and select the function you want\n\n
+                WINDOW DETECTION:\n\n1.For each window of the room, select to which wall it belongs (Wall menu) and then press capture button.
+                When all the windows are captured, press the download icon and the results will be showed.
+    </string>
+    <string name="mlHelpPeople">In this window you will be able to measure the current people again.\n\n
+        Make a photo that includes all the people and press the download icon. Then, the results with the current people will be shown.
+    </string>
+
+    <string name="wall">Wall</string>
+    <string name="back">Back</string>
+    <string name="restart">Restart</string>
+    <string name="map">Map</string>
+
+
+    <string name="uppercase">At least one uppercase</string>
+    <string name="lowercase">At least one lowercase</string>
+    <string name="number">At least one number</string>
+    <string name="specialCharacter">At least one special character</string>
+
+    <string name="mode">Mode</string>
+
+    <string name="people">People</string>
+
     <!-- ................................-->
 
     <string name="drawer_open">Open Drawer</string>
