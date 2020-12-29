@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.w3c.dom.Text;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 public class RoomShapeSelection extends AppCompatActivity {
     private String username, building, room;
     private boolean edit;
+    private TextView title;
 
     private int currentChecked, numberOfSelected;
     private ArrayList<CheckBox> checkBoxes;
@@ -27,6 +29,9 @@ public class RoomShapeSelection extends AppCompatActivity {
         setContentView(R.layout.activity_room_shape_selection);
 
         Bundle data = getIntent().getExtras();
+        title=findViewById(R.id.shape_title);
+        title.setText("To identify each wall we have placed a number on each side of the different room types designed.\n\nTo proceed, " +
+                "you have to select your room type:");
         username = data.getString("username");
         building = data.getString("building");
         room = data.getString("room");

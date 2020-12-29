@@ -27,6 +27,7 @@
         android:layout_marginTop="10dp"
         android:drawableLeft="@drawable/ic_download"
         android:text="@string/getCapacity"
+        android:textAllCaps="false"
          />
 
     <Button
@@ -35,6 +36,7 @@
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/ic_edit"
         android:text="@string/editMeasure"
+        android:textAllCaps="false"
         />
 
     <Button
@@ -42,7 +44,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/deleteMeasure"
-        android:drawableLeft="@drawable/ic_delete" />
+        android:drawableLeft="@drawable/ic_delete"
+        android:textAllCaps="false"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -104,6 +107,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/newMeasure"
+        android:textAllCaps="false"
         />
 
 </LinearLayout>

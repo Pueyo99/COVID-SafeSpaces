@@ -54,7 +54,7 @@ public class HomeFragment extends Fragment implements Listener,SelectionListener
 
         activity = getActivity();
         context = activity.getApplicationContext();
-        username = getArguments().getString("username");
+        //username = getArguments().getString("username");
 
         selectedBuilding = getResources().getString(R.string.selectBuilding);
         selectedRoom = getResources().getString(R.string.selectRoom);
