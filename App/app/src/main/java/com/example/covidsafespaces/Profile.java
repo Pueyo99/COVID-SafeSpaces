@@ -71,7 +71,7 @@ public class Profile extends AppCompatActivity implements Listener, NavigationVi
         mNavigationView.setNavigationItemSelectedListener(this);
 
         Bundle datos = getIntent().getExtras();
-        //mUsername = datos.getString("username");
+        mUsername = datos.getString("username");
 
         username = findViewById(R.id.username);
         username.setText(mUsername);

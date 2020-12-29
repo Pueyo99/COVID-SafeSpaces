@@ -57,9 +57,7 @@ public class Login extends AppCompatActivity implements Listener{
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //new ServerConnection().login(Login.this, username.getText().toString().trim());
-                Intent intent = new Intent(Login.this,Drawer.class);
-                startActivity(intent);
+                new ServerConnection().login(Login.this, username.getText().toString().trim());
              }
         });
 
